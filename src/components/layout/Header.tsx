@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ChevronLeft } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 interface NavItem {
   label: string;
@@ -13,8 +13,6 @@ interface NavItem {
 
 interface HeaderProps {
   transparent?: boolean;
-  backHref?: string;
-  backLabel?: string;
   navItems?: NavItem[];
 }
 
@@ -25,25 +23,16 @@ const DEFAULT_NAV: NavItem[] = [
 
 export default function Header({
   transparent = false,
-  backHref,
-  backLabel,
   navItems = DEFAULT_NAV,
 }: HeaderProps) {
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const showLight = !transparent || scrolled;
+  const showLight = !transparent;
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
+        className={`${transparent ? "absolute" : "relative"} top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
           showLight
             ? "bg-white/90 backdrop-blur-2xl shadow-[0_1px_0_rgba(0,0,0,0.04)]"
             : "bg-transparent"
@@ -51,21 +40,8 @@ export default function Header({
       >
         <nav className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-14 md:h-16 flex items-center justify-between">
-            {/* Left: Back or Logo */}
+            {/* Left: Logo */}
             <div className="flex items-center gap-3">
-              {backHref && (
-                <Link
-                  href={backHref}
-                  className={`flex items-center gap-1 text-sm transition-colors ${
-                    showLight
-                      ? "text-warm-500 hover:text-warm-800"
-                      : "text-white/70 hover:text-white"
-                  }`}
-                >
-                  <ChevronLeft className="w-4 h-4" />
-                  <span className="hidden md:inline">{backLabel || "뒤로"}</span>
-                </Link>
-              )}
               <Link href="/" className="flex items-center gap-2 group">
                 <Image
                   src="/coolstay_logo.png"
@@ -75,9 +51,7 @@ export default function Header({
                   className="h-5 md:h-6 w-auto transition-opacity duration-300 group-hover:opacity-80"
                 />
                 <span
-                  className={`font-serif text-sm italic transition-colors duration-500 ${
-                    showLight ? "text-brand-700" : "text-white"
-                  }`}
+                  className="font-serif text-sm italic text-brand-700"
                 >
                   Hotel
                 </span>

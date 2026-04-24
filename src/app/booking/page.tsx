@@ -30,13 +30,11 @@ export default async function BookingPage({ searchParams }: Props) {
   return (
     <main className="min-h-screen bg-[var(--warm-50)]">
       <Header
-        backHref="/"
-        backLabel="홈"
         navItems={[{ label: "호텔", href: "/hotels" }]}
       />
 
       {/* Hero Section with title + inline search */}
-      <section className="pt-24 md:pt-28">
+      <section className="pt-8 md:pt-10">
         <div className="text-center py-10 md:py-14">
           <h1 className="text-3xl md:text-4xl font-medium text-warm-900 tracking-tight">
             객실 예약

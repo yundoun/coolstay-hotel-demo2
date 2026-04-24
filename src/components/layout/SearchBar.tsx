@@ -105,7 +105,7 @@ export default function SearchBar({
     <div className={isInline ? "w-full" : "fixed bottom-0 left-0 right-0 z-40"}>
       <div className={isInline
         ? "bg-[#e8e4e0] border-y border-warm-200/50"
-        : "bg-white/90 backdrop-blur-2xl border-t border-warm-200/50 shadow-[0_-4px_30px_rgba(0,0,0,0.06)]"
+        : "bg-white/40 backdrop-blur-xl border-t border-white/30 shadow-[0_-8px_32px_rgba(0,0,0,0.08)]"
       }>
         <div className={isInline ? "max-w-5xl mx-auto px-4 md:px-6 py-4 md:py-5" : "max-w-4xl mx-auto px-4 md:px-6 py-3 md:py-3.5"}>
           {/* Desktop */}

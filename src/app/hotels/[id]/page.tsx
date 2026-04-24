@@ -21,8 +21,6 @@ export default async function HotelDetailPage({ params }: Props) {
     <main className="min-h-screen bg-[var(--warm-50)]">
       <Header
         transparent
-        backHref="/hotels"
-        backLabel="호텔 목록"
         navItems={[{ label: "예약", href: `/hotels/${hotel.id}#rooms`, variant: "button" }]}
       />
       <HotelDetailClient hotel={hotel} rooms={rooms} />
