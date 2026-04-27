@@ -173,7 +173,7 @@ export default function SearchBar({
             )}
 
             {/* Check-in / Nights / Check-out Group */}
-            <div className="flex items-center gap-5 shrink-0">
+            <div className="flex items-center gap-10 shrink-0">
               <button
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
@@ -416,7 +416,7 @@ function InlineSearchBar({
           )}
 
           {/* Check-in / Nights / Check-out Group */}
-          <div className="flex items-center gap-5 shrink-0">
+          <div className="flex items-center gap-10 shrink-0">
             <button
               onClick={() => toggleDropdown("calendar")}
               className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
