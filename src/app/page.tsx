@@ -14,7 +14,7 @@ export default async function HomePage() {
   ]);
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background pb-[72px]">
       <Header transparent />
       <HeroCarousel slides={heroSlides} />
       <FeaturedHotels hotels={featuredHotels} />

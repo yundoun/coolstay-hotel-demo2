@@ -31,7 +31,7 @@ export default async function BookingConfirmPage({ searchParams }: Props) {
   );
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-background flex flex-col">
       <Header />
       <BookingConfirmClient
         hotel={hotel}
@@ -41,6 +41,7 @@ export default async function BookingConfirmPage({ searchParams }: Props) {
         nights={nights}
         guests={Number(guests) || 2}
       />
+      <div className="flex-1" />
       <Footer />
     </main>
   );

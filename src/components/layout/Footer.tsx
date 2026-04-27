@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-warm-900 pb-24 md:pb-20">
+    <footer className="bg-warm-900">
       <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 py-8 md:py-10">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           {/* Left: Brand + Description */}

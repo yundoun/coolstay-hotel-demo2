@@ -28,7 +28,7 @@ export default async function BookingPage({ searchParams }: Props) {
     : [];
 
   return (
-    <main className="min-h-screen bg-[var(--warm-50)]">
+    <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
       <Header
         navItems={[{ label: "호텔", href: "/hotels" }]}
       />
@@ -46,7 +46,7 @@ export default async function BookingPage({ searchParams }: Props) {
 
       {/* Results or Empty State */}
       {hasSearched ? (
-        <section className="pt-4 pb-8">
+        <section className="pt-4 pb-8 flex-1">
           <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
             <div className="flex items-baseline justify-between mb-6 mt-4">
               <div>
@@ -66,7 +66,7 @@ export default async function BookingPage({ searchParams }: Props) {
           <BookingSearchClient hotels={hotels} searchParams={searchParams} />
         </section>
       ) : (
-        <section className="py-24 md:py-32 text-center">
+        <section className="py-24 md:py-32 text-center flex-1 flex items-center justify-center">
           <p className="text-warm-400 text-base md:text-lg">
             예약을 원하시는 숙소, 날짜, 객실 수를 선택 후 검색 버튼을 눌러주세요
           </p>

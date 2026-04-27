@@ -104,17 +104,18 @@ function BookingCompleteContent() {
 
 export default function BookingCompletePage() {
   return (
-    <main className="min-h-screen bg-[var(--warm-50)]">
+    <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
       <Header />
       <Suspense
         fallback={
-          <div className="pt-32 pb-20 text-center text-warm-500">
+          <div className="pt-32 pb-20 text-center text-warm-500 flex-1">
             로딩 중...
           </div>
         }
       >
         <BookingCompleteContent />
       </Suspense>
+      <div className="flex-1" />
       <Footer />
     </main>
   );

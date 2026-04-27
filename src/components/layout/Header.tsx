@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 
 interface NavItem {
   label: string;
@@ -27,6 +27,16 @@ export default function Header({
 }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileOpen]);
+
   const showLight = !transparent;
 
   return (
@@ -40,7 +50,7 @@ export default function Header({
       >
         <nav className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="h-14 md:h-16 flex items-center justify-between">
-            {/* Left: Logo */}
+            {/* Logo */}
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2 group">
                 <Image
@@ -50,9 +60,7 @@ export default function Header({
                   height={28}
                   className="h-5 md:h-6 w-auto transition-opacity duration-300 group-hover:opacity-80"
                 />
-                <span
-                  className="font-serif text-sm italic text-brand-700"
-                >
+                <span className="font-serif text-sm italic text-brand-700">
                   Hotel
                 </span>
               </Link>
@@ -86,8 +94,8 @@ export default function Header({
             {/* Mobile Hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className={`md:hidden p-2 transition-colors ${
-                showLight ? "text-warm-700" : "text-white"
+              className={`md:hidden p-2 transition-colors relative z-[60] ${
+                mobileOpen ? "text-warm-700" : showLight ? "text-warm-700" : "text-white"
               }`}
             >
               {mobileOpen ? (
@@ -100,27 +108,44 @@ export default function Header({
         </nav>
       </header>
 
-      {/* Mobile Menu */}
-      {mobileOpen && (
-        <div className="fixed inset-0 z-[49] bg-white pt-14 px-5 md:hidden">
-          <div className="flex flex-col gap-4 pt-6">
-            {navItems.map((item) => (
+      {/* Mobile Menu Backdrop */}
+      <div
+        className={`fixed inset-0 z-[48] bg-black/40 md:hidden transition-opacity duration-300 ${
+          mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setMobileOpen(false)}
+      />
+
+      {/* Mobile Menu Panel — 70% width, slides from right */}
+      <div
+        className={`fixed top-0 right-0 bottom-0 z-[49] w-[70%] max-w-[300px] bg-white md:hidden transition-transform duration-300 ease-out ${
+          mobileOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col h-full pt-16 px-6 pb-8">
+          {/* Nav Links */}
+          <div className="flex flex-col gap-1 flex-1">
+            {navItems.map((item, i) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className={
-                  item.variant === "button"
-                    ? "mt-2 text-center py-3 bg-brand-500 text-warm-900 font-semibold rounded-lg text-sm"
-                    : "text-warm-800 text-base border-b border-warm-100 pb-3"
-                }
+                className="flex items-center justify-between py-4 text-warm-800 text-[15px] font-medium border-b border-warm-100/80 group"
+                style={{ transitionDelay: mobileOpen ? `${(i + 1) * 50}ms` : "0ms" }}
               >
-                {item.label}
+                <span className="group-hover:text-brand-600 transition-colors">{item.label}</span>
+                <ArrowRight className="w-4 h-4 text-warm-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all" />
               </Link>
             ))}
           </div>
+
+          {/* Brand footer */}
+          <div className="mt-6 pt-4 border-t border-warm-100">
+            <p className="text-warm-400 text-[11px]">1588-0000</p>
+            <p className="text-warm-300 text-[10px] mt-1">&copy; 2024 CoolStay Hotel</p>
+          </div>
         </div>
-      )}
+      </div>
     </>
   );
 }

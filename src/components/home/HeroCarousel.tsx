@@ -20,7 +20,7 @@ export default function HeroCarousel({ slides }: Props) {
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
 
   return (
-    <section className="relative h-[80vh] md:h-[92vh] w-full overflow-hidden">
+    <section className="relative h-screen w-full overflow-hidden">
       <Swiper
         modules={[Autoplay, EffectFade]}
         effect="fade"
@@ -45,7 +45,7 @@ export default function HeroCarousel({ slides }: Props) {
 
       {/* Content overlay */}
       <div className="absolute inset-0 z-10 flex items-end pointer-events-none">
-        <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 w-full pb-28 md:pb-36">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 w-full pb-36 md:pb-40">
           <div className="max-w-lg md:max-w-xl pointer-events-auto">
             <p className="text-white/50 text-[11px] md:text-xs tracking-widest uppercase mb-3 md:mb-4 opacity-0 animate-fade-in-up">
               {slides[activeIndex]?.subtitle}
@@ -78,7 +78,7 @@ export default function HeroCarousel({ slides }: Props) {
       </div>
 
       {/* Pagination - minimal */}
-      <div className="absolute bottom-28 md:bottom-36 right-5 md:right-8 lg:right-12 z-10 flex items-center gap-1.5">
+      <div className="absolute bottom-36 md:bottom-40 right-5 md:right-8 lg:right-12 z-10 flex items-center gap-1.5">
         {slides.map((_, i) => (
           <button
             key={i}

@@ -18,7 +18,7 @@ export default async function HotelDetailPage({ params }: Props) {
   if (!hotel) return notFound();
 
   return (
-    <main className="min-h-screen bg-[var(--warm-50)]">
+    <main className="min-h-screen bg-[var(--warm-50)] pb-[72px]">
       <Header
         transparent
         navItems={[{ label: "예약", href: `/hotels/${hotel.id}#rooms`, variant: "button" }]}
