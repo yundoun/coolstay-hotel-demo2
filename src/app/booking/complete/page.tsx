@@ -2,101 +2,168 @@
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import StepIndicator from "@/components/booking/StepIndicator";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
-import { CheckCircle2, CalendarDays, Users, MapPin, Download, Home } from "lucide-react";
+import {
+  Check,
+  CalendarDays,
+  Users,
+  Download,
+  Home,
+  Phone,
+  Clock,
+  Sparkles,
+} from "lucide-react";
 
 function BookingCompleteContent() {
   const params = useSearchParams();
   const bookingId = params.get("bookingId") || "BK-000000";
   const hotelName = params.get("hotelName") || "";
   const roomName = params.get("roomName") || "";
+  const roomImage = params.get("roomImage") || "";
   const checkIn = params.get("checkIn") || "";
   const checkOut = params.get("checkOut") || "";
   const guests = params.get("guests") || "2";
   const totalPrice = params.get("totalPrice") || "0";
   const guestName = params.get("guestName") || "";
 
+  const checkInDate = checkIn ? new Date(checkIn) : null;
+  const checkOutDate = checkOut ? new Date(checkOut) : null;
+  const nights =
+    checkInDate && checkOutDate
+      ? Math.ceil(
+          (checkOutDate.getTime() - checkInDate.getTime()) / (1000 * 60 * 60 * 24)
+        )
+      : 1;
+
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    const d = new Date(dateStr);
+    const days = ["일", "월", "화", "수", "목", "금", "토"];
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}(${days[d.getDay()]})`;
+  };
+
   return (
-    <section className="pt-12 pb-20 bg-[var(--warm-50)]">
-      <div className="max-w-2xl mx-auto px-8 lg:px-12 text-center">
-        <div className="mb-10">
-          <div className="w-20 h-20 rounded-full bg-brand-500 mx-auto flex items-center justify-center mb-7">
-            <CheckCircle2 className="w-10 h-10 text-warm-900" />
+    <section className="pt-16 pb-24 flex-1">
+      <div className="max-w-[640px] mx-auto px-5 md:px-8">
+        {/* Success header */}
+        <div className="text-center mb-10">
+          <div className="w-16 h-16 rounded-full bg-brand-500 mx-auto flex items-center justify-center mb-5">
+            <Check className="w-7 h-7 text-warm-900" strokeWidth={2.5} />
           </div>
-          <h1 className="font-serif text-4xl text-warm-900 mb-3">
+          <h1 className="font-serif text-2xl md:text-3xl text-warm-900 mb-2">
             예약이 완료되었습니다
           </h1>
-          <p className="text-warm-500">
-            예약 확인 메일이 발송되었습니다. 즐거운 여행 되세요!
+          <p className="text-warm-400 text-sm">
+            예약 상세 내용은 메일로 발송되었습니다.
           </p>
         </div>
 
-        <div className="bg-white border border-warm-200/50 rounded-sm p-8 text-left mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-warm-900 font-medium text-lg">예약 정보</h2>
-            <span className="text-brand-700 text-sm font-mono bg-brand-500/10 px-3 py-1 rounded-sm">
-              {bookingId}
-            </span>
-          </div>
-
-          <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-warm-100">
-              <div className="flex items-center gap-3 text-warm-500">
-                <MapPin className="w-4 h-4" />
-                <span>호텔</span>
-              </div>
-              <div className="text-right">
-                <p className="text-warm-900">{hotelName}</p>
-                <p className="text-warm-500 text-sm">{roomName}</p>
+        {/* Hotel & Room hero card */}
+        <div className="bg-white border border-warm-200/50 rounded-lg overflow-hidden mb-3">
+          <div className="flex">
+            {/* Room image */}
+            {roomImage && (
+              <div
+                className="w-[140px] md:w-[180px] flex-shrink-0 bg-warm-200 bg-cover bg-center"
+                style={{ backgroundImage: `url(${roomImage})` }}
+              />
+            )}
+            {/* Hotel & schedule info */}
+            <div className="flex-1 px-5 py-5 md:px-6 md:py-5">
+              <p className="font-serif text-lg text-warm-900 mb-1">
+                {hotelName}
+              </p>
+              <p className="text-warm-400 text-sm mb-3">
+                {formatDate(checkIn)} ~ {formatDate(checkOut)} / {nights}박
+              </p>
+              <div className="flex items-center gap-4 text-sm text-warm-500">
+                <span>객실 {1}</span>
+                <span className="text-warm-200">|</span>
+                <span>
+                  대인 {guests} / 소인 0
+                </span>
               </div>
             </div>
-
-            <div className="flex items-center justify-between py-3 border-b border-warm-100">
-              <div className="flex items-center gap-3 text-warm-500">
-                <CalendarDays className="w-4 h-4" />
-                <span>일정</span>
-              </div>
-              <span className="text-warm-900">
-                {checkIn} ~ {checkOut}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between py-3 border-b border-warm-100">
-              <div className="flex items-center gap-3 text-warm-500">
-                <Users className="w-4 h-4" />
-                <span>투숙객</span>
-              </div>
-              <span className="text-warm-900">
-                {guestName} ({guests}명)
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between pt-4">
-              <span className="text-warm-900 font-medium text-lg">
-                총 결제금액
-              </span>
-              <span className="text-brand-700 text-2xl font-serif">
-                {Number(totalPrice).toLocaleString()}원
-              </span>
+            {/* Guest info */}
+            <div className="hidden md:flex flex-col justify-center px-6 py-5 border-l border-warm-100">
+              <p className="text-warm-400 text-xs mb-1">이용자</p>
+              <p className="text-warm-900 text-sm font-medium">{guestName}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center gap-4 justify-center">
+        {/* Room type label */}
+        <div className="bg-white border border-warm-200/50 rounded-lg px-5 py-3.5 mb-3">
+          <p className="text-warm-600 text-sm">
+            <span className="text-warm-400 mr-2">·</span>
+            {roomName}
+          </p>
+        </div>
+
+        {/* Mobile guest info */}
+        <div className="md:hidden bg-white border border-warm-200/50 rounded-lg px-5 py-3.5 mb-3">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-warm-400">이용자</span>
+            <span className="text-warm-900">{guestName}</span>
+          </div>
+        </div>
+
+        {/* Payment summary */}
+        <div className="bg-white border border-warm-200/50 rounded-lg px-5 py-4 mb-8">
+          <div className="flex items-center justify-between py-1 text-sm">
+            <span className="text-warm-500">객실요금</span>
+            <span className="text-warm-900">
+              {Number(totalPrice).toLocaleString()}
+            </span>
+          </div>
+          <div className="flex items-center justify-between pt-3 mt-3 border-t border-warm-100 text-sm">
+            <span className="text-warm-900 font-medium">총 결제금액</span>
+            <span className="text-brand-600 font-medium">
+              &#8361; {Number(totalPrice).toLocaleString()}
+            </span>
+          </div>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex items-center gap-3 justify-center mb-10">
           <Link
             href="/"
-            className="flex items-center gap-2 px-8 py-3 border border-warm-200 rounded-sm text-warm-600 hover:border-brand-500 hover:text-warm-900 transition-all"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 border border-warm-200 rounded-lg text-warm-600 hover:border-warm-300 hover:text-warm-900 transition-colors text-sm"
           >
             <Home className="w-4 h-4" />
             홈으로
           </Link>
-          <button className="flex items-center gap-2 px-8 py-3 bg-brand-500 text-warm-900 font-semibold rounded-sm hover:bg-brand-400 transition-all hover:shadow-[0_4px_16px_rgba(255,198,0,0.35)]">
+          <button className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-warm-800 text-white rounded-lg hover:bg-warm-900 transition-colors text-sm font-medium">
             <Download className="w-4 h-4" />
-            예약 확인서 다운로드
+            예약내역 확인
           </button>
+        </div>
+
+        {/* Info cards */}
+        <div className="grid grid-cols-3 gap-3">
+          <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
+            <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
+              <Clock className="w-4 h-4 text-warm-500" />
+            </div>
+            <p className="text-warm-900 text-xs font-medium">체크인</p>
+            <p className="text-warm-400 text-xs mt-0.5">15:00 부터</p>
+          </div>
+          <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
+            <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
+              <Sparkles className="w-4 h-4 text-warm-500" />
+            </div>
+            <p className="text-warm-900 text-xs font-medium">무료 취소</p>
+            <p className="text-warm-400 text-xs mt-0.5">3일 전까지</p>
+          </div>
+          <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
+            <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
+              <Phone className="w-4 h-4 text-warm-500" />
+            </div>
+            <p className="text-warm-900 text-xs font-medium">고객센터</p>
+            <p className="text-warm-400 text-xs mt-0.5">1588-0000</p>
+          </div>
         </div>
       </div>
     </section>
@@ -107,9 +174,7 @@ export default function BookingCompletePage() {
   return (
     <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
       <Header navItems={[{ label: "호텔", href: "/hotels" }]} />
-      <div className="pt-14 md:pt-16">
-        <StepIndicator currentStep={4} />
-      </div>
+      <div className="pt-14 md:pt-16" />
       <Suspense
         fallback={
           <div className="pt-32 pb-20 text-center text-warm-500 flex-1">
@@ -119,7 +184,6 @@ export default function BookingCompletePage() {
       >
         <BookingCompleteContent />
       </Suspense>
-      <div className="flex-1" />
       <Footer />
     </main>
   );

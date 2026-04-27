@@ -40,6 +40,7 @@ export default function BookingConfirmClient({
     const params = new URLSearchParams({
       hotelName: hotel.name,
       roomName: room.name,
+      roomImage: room.images[0],
       checkIn,
       checkOut,
       guests: guests.toString(),
