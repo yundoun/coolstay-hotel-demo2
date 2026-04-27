@@ -1,19 +1,113 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { Hotel } from "@/domain/entities";
 import Link from "next/link";
 import { Star, MapPin, ArrowRight } from "lucide-react";
+
+const REGIONS = [
+  { id: "", label: "전체" },
+  { id: "서울", label: "서울" },
+  { id: "제주", label: "제주" },
+  { id: "부산", label: "부산" },
+  { id: "경주", label: "경주" },
+  { id: "강원", label: "강원" },
+  { id: "경기", label: "경기" },
+  { id: "전라", label: "전라" },
+  { id: "충청", label: "충청" },
+];
+
+const PAGE_SIZE = 12;
 
 interface Props {
   hotels: Hotel[];
 }
 
 export default function HotelListClient({ hotels }: Props) {
+  const [activeRegion, setActiveRegion] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+
+  const filtered = useMemo(() => {
+    if (!activeRegion) return hotels;
+    return hotels.filter((h) => h.location.includes(activeRegion));
+  }, [hotels, activeRegion]);
+
+  // 지역 변경 시 보이는 개수 리셋
+  const handleRegionChange = (regionId: string) => {
+    setActiveRegion(regionId);
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const visible = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  // 지역별 호텔 수 계산
+  const regionCounts = useMemo(() => {
+    const counts: Record<string, number> = { "": hotels.length };
+    REGIONS.forEach((r) => {
+      if (r.id) {
+        counts[r.id] = hotels.filter((h) => h.location.includes(r.id)).length;
+      }
+    });
+    return counts;
+  }, [hotels]);
+
   return (
     <section className="py-12 md:py-20 bg-[var(--warm-50)]">
       <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
+
+        {/* Region Filter Chips */}
+        <div className="mb-8 md:mb-10">
+          <div className="flex flex-wrap gap-2 md:gap-2.5">
+            {REGIONS.map((region) => {
+              const isActive = activeRegion === region.id;
+              const count = regionCounts[region.id] ?? 0;
+              return (
+                <button
+                  key={region.id || "all"}
+                  onClick={() => handleRegionChange(region.id)}
+                  className={`
+                    inline-flex items-center gap-1.5 px-4 py-2 md:px-5 md:py-2.5
+                    rounded-full text-sm md:text-[15px] font-medium
+                    transition-all duration-300 cursor-pointer
+                    ${isActive
+                      ? "bg-warm-900 text-white shadow-[0_2px_12px_rgba(0,0,0,0.15)]"
+                      : "bg-white text-warm-500 border border-warm-200/70 hover:border-warm-300 hover:text-warm-700"
+                    }
+                  `}
+                >
+                  <span>{region.label}</span>
+                  <span className={`
+                    text-xs tabular-nums
+                    ${isActive ? "text-white/60" : "text-warm-300"}
+                  `}>
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Result Count */}
+          <p className="mt-4 md:mt-5 text-warm-400 text-sm">
+            {activeRegion ? (
+              <>
+                <span className="text-warm-700 font-medium">{activeRegion}</span>
+                {" "}지역{" "}
+                <span className="text-brand-700 font-medium">{filtered.length}</span>개 제휴 호텔
+              </>
+            ) : (
+              <>
+                전체{" "}
+                <span className="text-brand-700 font-medium">{filtered.length}</span>개 제휴 호텔
+              </>
+            )}
+          </p>
+        </div>
+
+        {/* Hotel Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-7">
-          {hotels.map((hotel) => (
+          {visible.map((hotel) => (
             <Link
               key={hotel.id}
               href={`/hotels/${hotel.id}`}
@@ -72,6 +166,27 @@ export default function HotelListClient({ hotels }: Props) {
             </Link>
           ))}
         </div>
+
+        {/* Load More */}
+        {hasMore && (
+          <div className="mt-10 md:mt-14 flex justify-center">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+              className="
+                px-8 py-3.5 text-sm font-medium tracking-wide
+                text-warm-600 bg-white border border-warm-200
+                rounded-sm hover:border-warm-400 hover:text-warm-900
+                transition-all duration-300 cursor-pointer
+                hover:shadow-[0_4px_20px_rgba(0,0,0,0.04)]
+              "
+            >
+              더 보기
+              <span className="ml-2 text-warm-300 text-xs">
+                {visibleCount} / {filtered.length}
+              </span>
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

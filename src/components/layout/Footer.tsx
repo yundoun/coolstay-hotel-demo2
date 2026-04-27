@@ -18,18 +18,18 @@ export default function Footer() {
               />
               <span className="font-serif text-brand-500/70 italic text-xs">Hotel</span>
             </div>
-            <div className="hidden md:flex items-center gap-5 text-warm-600 text-xs">
-              <Link href="/hotels" className="hover:text-warm-400 transition-colors">호텔</Link>
-              <Link href="/booking" className="hover:text-warm-400 transition-colors">예약</Link>
-              <span className="text-warm-700">1588-0000</span>
+            <div className="hidden md:flex items-center gap-5 text-warm-400 text-xs">
+              <Link href="/hotels" className="hover:text-warm-200 transition-colors">호텔</Link>
+              <Link href="/booking" className="hover:text-warm-200 transition-colors">예약</Link>
+              <span className="text-warm-500">1588-0000</span>
             </div>
           </div>
 
           {/* Right: Legal */}
-          <div className="flex items-center gap-4 text-warm-700 text-[11px]">
-            <span className="cursor-pointer hover:text-warm-500 transition-colors">이용약관</span>
-            <span className="cursor-pointer hover:text-warm-500 transition-colors">개인정보처리방침</span>
-            <span className="text-warm-800">&copy; 2024 CoolStay</span>
+          <div className="flex items-center gap-4 text-warm-500 text-[11px]">
+            <span className="cursor-pointer hover:text-warm-300 transition-colors">이용약관</span>
+            <span className="cursor-pointer hover:text-warm-300 transition-colors">개인정보처리방침</span>
+            <span className="text-warm-500">&copy; 2024 CoolStay</span>
           </div>
         </div>
       </div>

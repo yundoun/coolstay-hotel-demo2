@@ -33,7 +33,7 @@ export default async function HotelsPage() {
             호텔 컬렉션
           </h1>
           <p className="text-white/50 text-base font-light">
-            꿀스테이가 엄선한 프리미엄 호텔을 만나보세요
+            전국 {hotels.length}개 제휴 호텔에서 특별한 경험을 만나보세요
           </p>
         </div>
       </section>
