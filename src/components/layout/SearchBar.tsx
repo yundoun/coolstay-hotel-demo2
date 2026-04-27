@@ -146,7 +146,7 @@ export default function SearchBar({
       <div className="bg-black/25 backdrop-blur-2xl border-t border-white/15">
         <div ref={barRef} className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 relative">
           {/* ── Desktop ── */}
-          <div className="hidden md:flex items-center justify-center h-[72px] gap-6">
+          <div className="hidden md:flex items-center justify-between h-[72px]">
             {/* Region / Hotel */}
             {isBookingMode ? (
               <div className="flex items-center gap-3 shrink-0">
@@ -400,7 +400,7 @@ function InlineSearchBar({
     <div className="w-full bg-warm-100/60 border-y border-warm-200/40">
       <div ref={barRef} className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 relative">
         {/* Desktop */}
-        <div className="hidden md:flex items-center justify-center h-[56px] gap-5">
+        <div className="hidden md:flex items-center justify-between h-[56px]">
           {/* Region */}
           {isBookingMode ? (
             <div className="flex items-center gap-2.5 shrink-0">
