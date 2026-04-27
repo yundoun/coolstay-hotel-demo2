@@ -1,5 +1,4 @@
 import Header from "@/components/layout/Header";
-import SearchBar from "@/components/layout/SearchBar";
 import Footer from "@/components/layout/Footer";
 import { hotelRepository } from "@/providers/repositories";
 import HotelListClient from "./HotelListClient";
@@ -8,7 +7,7 @@ export default async function HotelsPage() {
   const hotels = await hotelRepository.getAll();
 
   return (
-    <main className="min-h-screen bg-[var(--warm-50)] pb-[72px]">
+    <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
       <Header
         transparent
         navItems={[
@@ -42,7 +41,6 @@ export default async function HotelsPage() {
       <HotelListClient hotels={hotels} />
 
       <Footer />
-      <SearchBar />
     </main>
   );
 }

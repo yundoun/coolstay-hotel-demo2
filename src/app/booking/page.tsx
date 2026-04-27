@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import SearchBar from "@/components/layout/SearchBar";
 import Footer from "@/components/layout/Footer";
+import StepIndicator from "@/components/booking/StepIndicator";
 import { hotelRepository } from "@/providers/repositories";
 import BookingSearchClient from "./BookingSearchClient";
 
@@ -33,9 +34,13 @@ export default async function BookingPage({ searchParams }: Props) {
         navItems={[{ label: "호텔", href: "/hotels" }]}
       />
 
+      <div className="pt-14 md:pt-16">
+        <StepIndicator currentStep={1} />
+      </div>
+
       {/* Hero Section with title + inline search */}
-      <section className="pt-8 md:pt-10">
-        <div className="text-center py-10 md:py-14">
+      <section>
+        <div className="text-center py-8 md:py-10">
           <h1 className="text-3xl md:text-4xl font-medium text-warm-900 tracking-tight">
             객실 예약
           </h1>

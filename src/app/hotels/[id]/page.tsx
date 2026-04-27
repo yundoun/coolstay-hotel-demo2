@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import Header from "@/components/layout/Header";
-import SearchBar from "@/components/layout/SearchBar";
 import Footer from "@/components/layout/Footer";
 import HotelDetailClient from "./HotelDetailClient";
 import { hotelRepository, roomRepository } from "@/providers/repositories";
@@ -18,14 +17,16 @@ export default async function HotelDetailPage({ params }: Props) {
   if (!hotel) return notFound();
 
   return (
-    <main className="min-h-screen bg-[var(--warm-50)] pb-[72px]">
+    <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
       <Header
         transparent
-        navItems={[{ label: "예약", href: `/hotels/${hotel.id}#rooms`, variant: "button" }]}
+        navItems={[
+          { label: "예약", href: "/booking", variant: "button" },
+        ]}
       />
       <HotelDetailClient hotel={hotel} rooms={rooms} />
+      <div className="flex-1" />
       <Footer />
-      <SearchBar mode="booking" hotelId={hotel.id} hotelName={hotel.name} />
     </main>
   );
 }

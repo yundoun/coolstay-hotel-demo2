@@ -10,10 +10,11 @@ interface Props {
     checkIn?: string;
     checkOut?: string;
     guests?: string;
+    rooms?: string;
   };
 }
 
-export default function BookingSearchClient({ hotels }: Props) {
+export default function BookingSearchClient({ hotels, searchParams }: Props) {
   return (
     <section className="py-12 bg-[var(--warm-50)]">
       <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
@@ -22,10 +23,19 @@ export default function BookingSearchClient({ hotels }: Props) {
         </p>
 
         <div className="space-y-5">
-          {hotels.map((hotel) => (
+          {hotels.map((hotel) => {
+            const selectParams = new URLSearchParams({
+              hotelId: hotel.id,
+              ...(searchParams.checkIn && { checkIn: searchParams.checkIn }),
+              ...(searchParams.checkOut && { checkOut: searchParams.checkOut }),
+              ...(searchParams.guests && { guests: searchParams.guests }),
+              ...(searchParams.rooms && { rooms: searchParams.rooms }),
+            });
+
+            return (
             <Link
               key={hotel.id}
-              href={`/hotels/${hotel.id}`}
+              href={`/booking/select?${selectParams.toString()}`}
               className="group block"
             >
               <div className="flex flex-col md:flex-row bg-white border border-warm-200/50 rounded-sm overflow-hidden hover:shadow-[0_8px_40px_rgba(0,0,0,0.06)] transition-all duration-500">
@@ -75,7 +85,8 @@ export default function BookingSearchClient({ hotels }: Props) {
                 </div>
               </div>
             </Link>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

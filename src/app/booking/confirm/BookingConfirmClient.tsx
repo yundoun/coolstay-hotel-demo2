@@ -52,7 +52,7 @@ export default function BookingConfirmClient({
   };
 
   return (
-    <section className="pt-24 md:pt-32 pb-20 bg-[var(--warm-50)]">
+    <section className="pt-8 md:pt-12 pb-20 bg-[var(--warm-50)]">
       <div className="max-w-5xl mx-auto px-5 md:px-8 lg:px-12">
         <div className="mb-8 md:mb-12">
           <div className="flex items-center gap-3 md:gap-4 mb-3 md:mb-5">

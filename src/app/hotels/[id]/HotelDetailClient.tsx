@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Hotel, Room } from "@/domain/entities";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   Star,
   MapPin,
@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Check,
+  CalendarDays,
 } from "lucide-react";
 
 interface Props {
@@ -20,19 +21,7 @@ interface Props {
 }
 
 export default function HotelDetailClient({ hotel, rooms }: Props) {
-  const router = useRouter();
   const [currentImage, setCurrentImage] = useState(0);
-
-  const handleBookRoom = (room: Room) => {
-    const params = new URLSearchParams({
-      hotelId: hotel.id,
-      roomId: room.id,
-      checkIn: new Date(Date.now() + 7 * 86400000).toISOString().split("T")[0],
-      checkOut: new Date(Date.now() + 8 * 86400000).toISOString().split("T")[0],
-      guests: "2",
-    });
-    router.push(`/booking/confirm?${params.toString()}`);
-  };
 
   return (
     <>
@@ -71,23 +60,32 @@ export default function HotelDetailClient({ hotel, rooms }: Props) {
         </div>
       </section>
 
-      {/* Hotel Title - separated from image */}
+      {/* Hotel Title */}
       <section className="bg-white border-b border-warm-200/50">
         <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 py-6 md:py-8">
-          <div className="flex items-center gap-0.5 mb-2">
-            {Array.from({ length: hotel.starRating }).map((_, i) => (
-              <Star
-                key={i}
-                className="w-3.5 h-3.5 fill-brand-500 text-brand-500"
-              />
-            ))}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <div className="flex items-center gap-0.5 mb-2">
+                {Array.from({ length: hotel.starRating }).map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-3.5 h-3.5 fill-brand-500 text-brand-500"
+                  />
+                ))}
+              </div>
+              <h1 className="font-serif text-2xl md:text-3xl text-warm-900 mb-1">
+                {hotel.name}
+              </h1>
+              <p className="text-warm-400 text-sm">{hotel.nameEn}</p>
+            </div>
+            <Link
+              href="/booking"
+              className="inline-flex items-center gap-2 px-8 py-3 bg-brand-500 text-warm-900 font-semibold rounded-sm hover:bg-brand-400 transition-all duration-300 hover:shadow-[0_4px_16px_rgba(255,198,0,0.35)] active:scale-[0.98] text-sm tracking-wide shrink-0"
+            >
+              <CalendarDays className="w-4 h-4" />
+              이 호텔 예약하기
+            </Link>
           </div>
-          <h1 className="font-serif text-2xl md:text-3xl text-warm-900 mb-1">
-            {hotel.name}
-          </h1>
-          <p className="text-warm-400 text-sm">
-            {hotel.nameEn}
-          </p>
         </div>
       </section>
 
@@ -144,13 +142,13 @@ export default function HotelDetailClient({ hotel, rooms }: Props) {
         </div>
       </section>
 
-      {/* Room List */}
+      {/* Room List - Showcase style (no booking action) */}
       <section className="py-12 md:py-20 bg-warm-100">
         <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
           <div className="mb-6 md:mb-10" id="rooms">
             <p className="text-warm-400 text-xs tracking-wider mb-1.5">Rooms</p>
             <h2 className="font-serif text-2xl md:text-[2rem] text-warm-900">
-              객실 선택
+              객실 안내
             </h2>
           </div>
 
@@ -213,12 +211,12 @@ export default function HotelDetailClient({ hotel, rooms }: Props) {
                         </span>
                       </p>
                     </div>
-                    <button
-                      onClick={() => handleBookRoom(room)}
-                      className="px-8 py-3 bg-brand-500 text-warm-900 font-semibold rounded-sm hover:bg-brand-400 transition-all duration-300 hover:shadow-[0_4px_16px_rgba(255,198,0,0.35)] active:scale-[0.98] text-sm tracking-wide"
+                    <Link
+                      href="/booking"
+                      className="px-6 py-2.5 border border-warm-200 text-warm-600 font-medium rounded-sm hover:border-brand-500 hover:text-warm-900 transition-all duration-300 text-sm tracking-wide"
                     >
-                      예약하기
-                    </button>
+                      예약하러 가기
+                    </Link>
                   </div>
                 </div>
               </div>

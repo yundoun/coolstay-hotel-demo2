@@ -2,6 +2,7 @@
 
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import StepIndicator from "@/components/booking/StepIndicator";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -19,7 +20,7 @@ function BookingCompleteContent() {
   const guestName = params.get("guestName") || "";
 
   return (
-    <section className="pt-32 pb-20 bg-[var(--warm-50)]">
+    <section className="pt-12 pb-20 bg-[var(--warm-50)]">
       <div className="max-w-2xl mx-auto px-8 lg:px-12 text-center">
         <div className="mb-10">
           <div className="w-20 h-20 rounded-full bg-brand-500 mx-auto flex items-center justify-center mb-7">
@@ -105,7 +106,10 @@ function BookingCompleteContent() {
 export default function BookingCompletePage() {
   return (
     <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
-      <Header />
+      <Header navItems={[{ label: "호텔", href: "/hotels" }]} />
+      <div className="pt-14 md:pt-16">
+        <StepIndicator currentStep={4} />
+      </div>
       <Suspense
         fallback={
           <div className="pt-32 pb-20 text-center text-warm-500 flex-1">

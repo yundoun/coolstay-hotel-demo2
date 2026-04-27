@@ -1,5 +1,6 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import StepIndicator from "@/components/booking/StepIndicator";
 import { hotelRepository, roomRepository } from "@/providers/repositories";
 import { notFound } from "next/navigation";
 import BookingConfirmClient from "./BookingConfirmClient";
@@ -32,7 +33,10 @@ export default async function BookingConfirmPage({ searchParams }: Props) {
 
   return (
     <main className="min-h-screen bg-background flex flex-col">
-      <Header />
+      <Header navItems={[{ label: "호텔", href: "/hotels" }]} />
+      <div className="pt-14 md:pt-16">
+        <StepIndicator currentStep={3} />
+      </div>
       <BookingConfirmClient
         hotel={hotel}
         room={room}
