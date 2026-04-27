@@ -186,10 +186,17 @@ export default function SearchBar({
                   {formatDateShort(checkIn)}
                 </p>
               </div>
-              {nights > 0 && (
-                <span className="text-brand-400 text-[11px] font-semibold shrink-0">{nights}박</span>
-              )}
             </button>
+
+            {/* Nights Badge */}
+            {nights > 0 && (
+              <button
+                onClick={() => toggleDropdown("calendar")}
+                className="flex items-center justify-center shrink-0 cursor-pointer mx-1"
+              >
+                <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[13px] font-bold px-3 py-1 rounded-full">{nights}박</span>
+              </button>
+            )}
 
             <div className="w-px bg-white/10 my-4 shrink-0" />
 
@@ -284,7 +291,7 @@ export default function SearchBar({
                 <CalendarDays className="w-4 h-4 text-brand-400 shrink-0" />
                 <span className="text-white text-xs font-medium">{formatDateShort(checkIn)}</span>
                 {nights > 0 && (
-                  <span className="text-brand-400 text-[10px] font-semibold shrink-0">{nights}박</span>
+                  <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights}박</span>
                 )}
                 <ArrowRight className="w-3 h-3 text-white/25 shrink-0" />
                 <span className="text-white text-xs font-medium">{formatDateShort(checkOut)}</span>
@@ -435,10 +442,17 @@ function InlineSearchBar({
               <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크인</p>
               <p className="text-warm-900 text-[13px] font-medium group-hover:text-warm-600 transition-colors">{formatDateShort(checkIn)}</p>
             </div>
-            {nights > 0 && (
-              <span className="text-brand-700 text-[10px] font-semibold bg-brand-500/10 px-1.5 py-px rounded-full shrink-0">{nights}박</span>
-            )}
           </button>
+
+          {/* Nights Badge */}
+          {nights > 0 && (
+            <button
+              onClick={() => toggleDropdown("calendar")}
+              className="flex items-center justify-center shrink-0 cursor-pointer mx-1"
+            >
+              <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">{nights}박</span>
+            </button>
+          )}
 
           <div className="w-px bg-warm-200/60 my-3 shrink-0" />
 
@@ -516,7 +530,7 @@ function InlineSearchBar({
               <CalendarDays className="w-3.5 h-3.5 text-brand-600 shrink-0" />
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkIn)}</span>
               {nights > 0 && (
-                <span className="text-brand-700 text-[9px] font-semibold bg-brand-500/10 px-1.5 py-px rounded-full ml-auto shrink-0">{nights}박</span>
+                <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights}박</span>
               )}
               <ArrowRight className="w-3 h-3 text-warm-300 shrink-0" />
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkOut)}</span>

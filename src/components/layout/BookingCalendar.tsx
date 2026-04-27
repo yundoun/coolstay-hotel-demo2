@@ -129,17 +129,24 @@ export default function BookingCalendar({
                     onClick={() => !disabled && handleDayClick(day)}
                     disabled={disabled}
                     className={`
-                      w-full aspect-square flex items-center justify-center text-sm rounded-full transition-all
+                      w-full aspect-square flex flex-col items-center justify-center text-sm rounded-full transition-all
                       ${disabled ? "text-warm-200 cursor-default" : "cursor-pointer hover:bg-warm-100"}
                       ${!outside && (rangeStart || rangeEnd) ? "bg-brand-500 text-warm-900 font-semibold hover:bg-brand-400" : ""}
                       ${inRange && !rangeStart && !rangeEnd ? "text-warm-700" : ""}
                       ${!disabled && !inRange && !rangeStart && !rangeEnd ? "text-warm-700" : ""}
-                      ${todayMark && !rangeStart && !rangeEnd ? "font-bold text-brand-700" : ""}
+                      ${todayMark && !rangeStart && !rangeEnd ? "ring-2 ring-brand-500 ring-inset font-bold text-brand-700" : ""}
                       ${di === 0 && !disabled && !rangeStart && !rangeEnd && !inRange ? "text-red-400" : ""}
                       ${di === 6 && !disabled && !rangeStart && !rangeEnd && !inRange ? "text-blue-400" : ""}
                     `}
                   >
-                    {outside ? "" : format(day, "d")}
+                    {outside ? "" : (
+                      <>
+                        <span>{format(day, "d")}</span>
+                        {todayMark && !rangeStart && !rangeEnd && (
+                          <span className="text-[8px] text-brand-600 leading-none -mt-0.5">오늘</span>
+                        )}
+                      </>
+                    )}
                   </button>
                 </div>
               );
