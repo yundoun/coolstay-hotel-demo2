@@ -172,43 +172,41 @@ export default function SearchBar({
               </button>
             )}
 
-            {/* Check-in */}
-            <button
-              onClick={() => toggleDropdown("calendar")}
-              className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
-            >
-              <CalendarDays className="w-[18px] h-[18px] text-brand-400 shrink-0" />
-              <div>
-                <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">체크인</p>
-                <p className="text-white text-[15px] font-medium">
-                  {formatDateShort(checkIn)}
-                </p>
-              </div>
-            </button>
+            {/* Check-in / Nights / Check-out Group */}
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                onClick={() => toggleDropdown("calendar")}
+                className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
+              >
+                <CalendarDays className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+                <div>
+                  <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">체크인</p>
+                  <p className="text-white text-[15px] font-medium">
+                    {formatDateShort(checkIn)}
+                  </p>
+                </div>
+              </button>
 
-            {/* Nights Badge */}
-            {nights > 0 && (
               <button
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center justify-center shrink-0 cursor-pointer"
               >
-                <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[13px] font-bold px-3 py-1 rounded-full">{nights}박</span>
+                <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[13px] font-bold px-3 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
               </button>
-            )}
 
-            {/* Check-out */}
-            <button
-              onClick={() => toggleDropdown("calendar")}
-              className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
-            >
-              <CalendarDays className="w-[18px] h-[18px] text-brand-400 shrink-0" />
-              <div>
-                <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">체크아웃</p>
-                <p className="text-white text-[15px] font-medium">
-                  {formatDateShort(checkOut)}
-                </p>
-              </div>
-            </button>
+              <button
+                onClick={() => toggleDropdown("calendar")}
+                className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
+              >
+                <CalendarDays className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+                <div>
+                  <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">체크아웃</p>
+                  <p className="text-white text-[15px] font-medium">
+                    {formatDateShort(checkOut)}
+                  </p>
+                </div>
+              </button>
+            </div>
 
             {/* Guest & Room */}
             <button
@@ -280,10 +278,7 @@ export default function SearchBar({
               >
                 <CalendarDays className="w-4 h-4 text-brand-400 shrink-0" />
                 <span className="text-white text-xs font-medium">{formatDateShort(checkIn)}</span>
-                {nights > 0 && (
-                  <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights}박</span>
-                )}
-                <ArrowRight className="w-3 h-3 text-white/25 shrink-0" />
+                <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
                 <span className="text-white text-xs font-medium">{formatDateShort(checkOut)}</span>
               </button>
 
@@ -420,39 +415,37 @@ function InlineSearchBar({
             </button>
           )}
 
-          {/* Check-in */}
-          <button
-            onClick={() => toggleDropdown("calendar")}
-            className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
-          >
-            <CalendarDays className="w-4 h-4 text-brand-600 shrink-0" />
-            <div>
-              <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크인</p>
-              <p className="text-warm-900 text-[13px] font-medium">{formatDateShort(checkIn)}</p>
-            </div>
-          </button>
+          {/* Check-in / Nights / Check-out Group */}
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => toggleDropdown("calendar")}
+              className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
+            >
+              <CalendarDays className="w-4 h-4 text-brand-600 shrink-0" />
+              <div>
+                <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크인</p>
+                <p className="text-warm-900 text-[13px] font-medium">{formatDateShort(checkIn)}</p>
+              </div>
+            </button>
 
-          {/* Nights Badge */}
-          {nights > 0 && (
             <button
               onClick={() => toggleDropdown("calendar")}
               className="flex items-center justify-center shrink-0 cursor-pointer"
             >
-              <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">{nights}박</span>
+              <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
             </button>
-          )}
 
-          {/* Check-out */}
-          <button
-            onClick={() => toggleDropdown("calendar")}
-            className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
-          >
-            <CalendarDays className="w-4 h-4 text-brand-600 shrink-0" />
-            <div>
-              <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크아웃</p>
-              <p className="text-warm-900 text-[13px] font-medium">{formatDateShort(checkOut)}</p>
-            </div>
-          </button>
+            <button
+              onClick={() => toggleDropdown("calendar")}
+              className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
+            >
+              <CalendarDays className="w-4 h-4 text-brand-600 shrink-0" />
+              <div>
+                <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크아웃</p>
+                <p className="text-warm-900 text-[13px] font-medium">{formatDateShort(checkOut)}</p>
+              </div>
+            </button>
+          </div>
 
           {/* Guests */}
           <button
@@ -511,10 +504,7 @@ function InlineSearchBar({
             >
               <CalendarDays className="w-3.5 h-3.5 text-brand-600 shrink-0" />
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkIn)}</span>
-              {nights > 0 && (
-                <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights}박</span>
-              )}
-              <ArrowRight className="w-3 h-3 text-warm-300 shrink-0" />
+              <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkOut)}</span>
             </button>
 
