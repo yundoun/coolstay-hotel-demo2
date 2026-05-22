@@ -1,3 +1,7 @@
+"use client";
+
+import { useRef, useState, useEffect, useCallback } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { HotelConfig } from "@/config/hotel";
 
 interface Props {
@@ -5,6 +9,36 @@ interface Props {
 }
 
 export default function AboutSection({ about }: Props) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 10);
+    setCanScrollRight(el.scrollLeft < el.scrollWidth - el.clientWidth - 10);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    checkScroll();
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [checkScroll]);
+
+  const scroll = (direction: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const amount = el.clientWidth * 0.6;
+    el.scrollBy({ left: direction === "left" ? -amount : amount, behavior: "smooth" });
+  };
+
   return (
     <section
       id="about"
@@ -36,21 +70,43 @@ export default function AboutSection({ about }: Props) {
           </p>
         </div>
 
-        {/* Image Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-          {about.images.map((img, i) => (
-            <div
-              key={i}
-              className={`relative overflow-hidden rounded-sm ${
-                i === 0 ? "col-span-2 row-span-2 aspect-[4/3]" : "aspect-square"
-              }`}
-            >
+        {/* Horizontal Scroll Gallery */}
+        <div className="relative -mx-5 md:-mx-8 lg:-mx-12">
+          <div
+            ref={scrollRef}
+            className="flex gap-4 md:gap-5 overflow-x-auto px-5 md:px-8 lg:px-12 pb-4 snap-x snap-mandatory scrollbar-hide"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {about.images.map((img, i) => (
               <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url(${img})` }}
-              />
-            </div>
-          ))}
+                key={i}
+                className="relative shrink-0 w-[75vw] md:w-[45vw] lg:w-[35vw] aspect-[3/2] overflow-hidden rounded-sm snap-start"
+              >
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out hover:scale-105"
+                  style={{ backgroundImage: `url(${img})` }}
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Arrow buttons — md 이상에서만 표시 */}
+          <button
+            onClick={() => scroll("left")}
+            className={`hidden md:flex absolute left-4 lg:left-6 top-1/2 -translate-y-1/2 w-11 h-11 items-center justify-center rounded-full bg-warm-900/70 border border-white/15 backdrop-blur-sm text-white hover:bg-warm-900/90 transition-all duration-300 cursor-pointer ${
+              canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={() => scroll("right")}
+            className={`hidden md:flex absolute right-4 lg:right-6 top-1/2 -translate-y-1/2 w-11 h-11 items-center justify-center rounded-full bg-warm-900/70 border border-white/15 backdrop-blur-sm text-white hover:bg-warm-900/90 transition-all duration-300 cursor-pointer ${
+              canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
         </div>
       </div>
     </section>
