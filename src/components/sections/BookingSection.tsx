@@ -10,11 +10,12 @@ import {
   BedDouble,
   Check,
   Maximize,
-  CreditCard,
-  Shield,
   ChevronDown,
   ArrowRight,
   ArrowLeft,
+  Phone,
+  ShieldCheck,
+  Banknote,
 } from "lucide-react";
 import { addDays, format, differenceInDays } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -56,8 +57,10 @@ export default function BookingSection({ hotelConfig, preselectedRoomId }: Props
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
 
   // Form state
-  const [form, setForm] = useState({ guestName: "", guestPhone: "", guestEmail: "" });
+  const [form, setForm] = useState({ guestName: "", guestPhone: "", verifyCode: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [verifyState, setVerifyState] = useState<"idle" | "sent" | "verified">("idle");
+  const [verifyTimer, setVerifyTimer] = useState(0);
 
   const totalGuests = adults + children;
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
@@ -69,6 +72,33 @@ export default function BookingSection({ hotelConfig, preselectedRoomId }: Props
       if (room) setSelectedRoom(room);
     }
   }, [preselectedRoomId, hotelConfig.rooms]);
+
+  // Verification timer countdown
+  useEffect(() => {
+    if (verifyTimer <= 0) return;
+    const id = setInterval(() => setVerifyTimer((t) => t - 1), 1000);
+    return () => clearInterval(id);
+  }, [verifyTimer]);
+
+  const handleSendCode = () => {
+    if (!form.guestPhone || form.guestPhone.length < 10) return;
+    setVerifyState("sent");
+    setVerifyTimer(180); // 3 minutes
+    setForm({ ...form, verifyCode: "" });
+  };
+
+  const handleVerifyCode = () => {
+    if (form.verifyCode.length < 4) return;
+    // Demo: any 4+ digit code passes
+    setVerifyState("verified");
+    setVerifyTimer(0);
+  };
+
+  const formatTimer = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return `${m}:${sec.toString().padStart(2, "0")}`;
+  };
 
   const toggleDropdown = useCallback((type: DropdownType) => {
     setActiveDropdown((prev) => (prev === type ? null : type));
@@ -272,6 +302,11 @@ export default function BookingSection({ hotelConfig, preselectedRoomId }: Props
             onSubmit={handleSubmit}
             onBack={handleBack}
             formatDateShort={formatDateShort}
+            verifyState={verifyState}
+            verifyTimer={verifyTimer}
+            formatTimer={formatTimer}
+            onSendCode={handleSendCode}
+            onVerifyCode={handleVerifyCode}
           />
         )}
       </div>
@@ -378,6 +413,11 @@ function ConfirmStep({
   onSubmit,
   onBack,
   formatDateShort,
+  verifyState,
+  verifyTimer,
+  formatTimer,
+  onSendCode,
+  onVerifyCode,
 }: {
   hotel: HotelConfig;
   room: Room;
@@ -385,12 +425,17 @@ function ConfirmStep({
   checkOut: Date | undefined;
   nights: number;
   guests: number;
-  form: { guestName: string; guestPhone: string; guestEmail: string };
-  setForm: (f: { guestName: string; guestPhone: string; guestEmail: string }) => void;
+  form: { guestName: string; guestPhone: string; verifyCode: string };
+  setForm: (f: { guestName: string; guestPhone: string; verifyCode: string }) => void;
   isSubmitting: boolean;
   onSubmit: (e: React.FormEvent) => void;
   onBack: () => void;
   formatDateShort: (d: Date | undefined) => string;
+  verifyState: "idle" | "sent" | "verified";
+  verifyTimer: number;
+  formatTimer: (s: number) => string;
+  onSendCode: () => void;
+  onVerifyCode: () => void;
 }) {
   const totalPrice = room.price * nights;
 
@@ -437,8 +482,9 @@ function ConfirmStep({
 
             {/* Guest info */}
             <div className="bg-white border border-warm-200/50 rounded-sm p-5 md:p-7">
-              <h3 className="text-warm-900 text-lg font-medium mb-5">투숙객 정보</h3>
+              <h3 className="text-warm-900 text-lg font-medium mb-5">예약자 정보</h3>
               <div className="space-y-4">
+                {/* Name */}
                 <div>
                   <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">이름</label>
                   <input
@@ -450,81 +496,121 @@ function ConfirmStep({
                     placeholder="홍길동"
                   />
                 </div>
+
+                {/* Phone + Send code */}
                 <div>
-                  <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">연락처</label>
-                  <input
-                    type="tel"
-                    required
-                    value={form.guestPhone}
-                    onChange={(e) => setForm({ ...form, guestPhone: e.target.value })}
-                    className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors"
-                    placeholder="010-1234-5678"
-                  />
+                  <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">휴대폰 번호</label>
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Phone className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400" />
+                      <input
+                        type="tel"
+                        required
+                        value={form.guestPhone}
+                        onChange={(e) => {
+                          setForm({ ...form, guestPhone: e.target.value });
+                          if (verifyState === "verified") return; // keep verified
+                        }}
+                        disabled={verifyState === "verified"}
+                        className="w-full bg-warm-50 border border-warm-200 rounded-sm pl-10 pr-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                        placeholder="01012345678"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={onSendCode}
+                      disabled={verifyState === "verified" || !form.guestPhone || form.guestPhone.length < 10}
+                      className="shrink-0 px-5 py-3 bg-warm-800 text-white text-sm font-medium rounded-sm hover:bg-warm-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      {verifyState === "idle" && "인증번호 발송"}
+                      {verifyState === "sent" && (verifyTimer > 0 ? "재발송" : "재발송")}
+                      {verifyState === "verified" && "인증완료"}
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">이메일</label>
-                  <input
-                    type="email"
-                    required
-                    value={form.guestEmail}
-                    onChange={(e) => setForm({ ...form, guestEmail: e.target.value })}
-                    className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors"
-                    placeholder="email@example.com"
-                  />
-                </div>
+
+                {/* Verification code input */}
+                {verifyState === "sent" && (
+                  <div className="animate-fade-in">
+                    <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">인증번호</label>
+                    <div className="flex gap-2">
+                      <div className="relative flex-1">
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          maxLength={6}
+                          value={form.verifyCode}
+                          onChange={(e) => setForm({ ...form, verifyCode: e.target.value.replace(/\D/g, "") })}
+                          className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors tracking-[0.3em] text-center font-medium"
+                          placeholder="인증번호 6자리"
+                        />
+                        {verifyTimer > 0 && (
+                          <span className="absolute right-3.5 top-1/2 -translate-y-1/2 text-red-500 text-sm font-medium tabular-nums">
+                            {formatTimer(verifyTimer)}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={onVerifyCode}
+                        disabled={form.verifyCode.length < 4}
+                        className="shrink-0 px-5 py-3 bg-sig-500 text-warm-900 text-sm font-semibold rounded-sm hover:bg-sig-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        확인
+                      </button>
+                    </div>
+                    <p className="text-warm-400 text-xs mt-2">
+                      입력하신 휴대폰 번호로 인증번호가 발송되었습니다.
+                    </p>
+                  </div>
+                )}
+
+                {/* Verified badge */}
+                {verifyState === "verified" && (
+                  <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200/60 rounded-sm px-4 py-3 animate-fade-in">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <span className="text-emerald-700 text-sm font-medium">휴대폰 인증이 완료되었습니다</span>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Payment */}
+            {/* Payment method — On-site payment */}
             <div className="bg-white border border-warm-200/50 rounded-sm p-5 md:p-7">
               <h3 className="text-warm-900 text-lg font-medium mb-5 flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-warm-500" />
-                결제 정보
+                <Banknote className="w-5 h-5 text-warm-500" />
+                결제 방법
               </h3>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">카드 번호</label>
-                  <input
-                    type="text"
-                    className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors"
-                    placeholder="0000 0000 0000 0000"
-                    defaultValue="4242 4242 4242 4242"
-                  />
+              <div className="border-2 border-sig-500 bg-sig-500/5 rounded-sm p-4 flex items-center gap-4">
+                <div className="w-5 h-5 rounded-full border-2 border-sig-500 flex items-center justify-center shrink-0">
+                  <div className="w-2.5 h-2.5 rounded-full bg-sig-500" />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">유효기간</label>
-                    <input
-                      type="text"
-                      className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors"
-                      placeholder="MM/YY"
-                      defaultValue="12/28"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">CVC</label>
-                    <input
-                      type="text"
-                      className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors"
-                      placeholder="000"
-                      defaultValue="123"
-                    />
-                  </div>
+                <div className="flex-1">
+                  <p className="text-warm-900 font-medium text-sm">현장결제</p>
+                  <p className="text-warm-500 text-xs mt-0.5">체크인 시 프론트에서 결제해 주세요</p>
                 </div>
+                <span className="shrink-0 bg-sig-500/15 border border-sig-500/30 text-sig-700 text-[11px] font-bold px-3 py-1 rounded-full">
+                  현장결제
+                </span>
               </div>
-              <div className="flex items-center gap-2 mt-4 text-warm-400 text-xs">
-                <Shield className="w-4 h-4 text-warm-500" />
-                <span>모든 결제 정보는 SSL로 암호화되어 안전하게 처리됩니다 (데모)</span>
-              </div>
+              <p className="text-warm-400 text-xs mt-3 leading-relaxed">
+                예약 확정 후 체크인 당일 현장에서 카드 또는 현금으로 결제하실 수 있습니다.
+              </p>
             </div>
 
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || verifyState !== "verified" || !form.guestName}
               className="w-full py-4 bg-sig-500 text-warm-900 font-bold text-lg rounded-sm hover:bg-sig-400 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(255,198,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed tracking-wide"
             >
-              {isSubmitting ? "예약 처리 중..." : `${totalPrice.toLocaleString()}원 결제하기`}
+              {isSubmitting ? "예약 처리 중..." : "예약하기"}
             </button>
+
+            {verifyState !== "verified" && (
+              <p className="text-center text-warm-400 text-xs -mt-2">
+                휴대폰 인증을 완료해야 예약할 수 있습니다.
+              </p>
+            )}
           </form>
         </div>
 
@@ -579,10 +665,14 @@ function ConfirmStep({
               </div>
               <div className="h-px bg-warm-100" />
               <div className="flex justify-between items-center">
-                <span className="text-warm-900 font-medium">총 결제금액</span>
+                <span className="text-warm-900 font-medium">현장결제 금액</span>
                 <span className="text-warm-900 text-2xl font-bold">
                   {totalPrice.toLocaleString()}원
                 </span>
+              </div>
+              <div className="flex items-center gap-2 bg-warm-50 rounded-sm px-3 py-2">
+                <Banknote className="w-4 h-4 text-warm-500 shrink-0" />
+                <span className="text-warm-500 text-xs">체크인 시 현장결제</span>
               </div>
             </div>
           </div>
