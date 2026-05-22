@@ -17,8 +17,11 @@ interface HeaderProps {
 }
 
 const DEFAULT_NAV: NavItem[] = [
-  { label: "호텔", href: "/hotels" },
-  { label: "예약", href: "/booking", variant: "button" },
+  { label: "인사말", href: "#greeting" },
+  { label: "호텔 소개", href: "#about" },
+  { label: "객실", href: "#rooms" },
+  { label: "예약", href: "#booking", variant: "button" },
+  { label: "오시는 길", href: "#location" },
 ];
 
 export default function Header({
@@ -26,8 +29,8 @@ export default function Header({
   navItems = DEFAULT_NAV,
 }: HeaderProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
@@ -37,12 +40,27 @@ export default function Header({
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
-  const showLight = !transparent;
+  useEffect(() => {
+    if (!transparent) return;
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [transparent]);
+
+  const showLight = !transparent || scrolled;
+
+  const handleNavClick = (href: string) => {
+    setMobileOpen(false);
+    if (href.startsWith("#")) {
+      const el = document.getElementById(href.slice(1));
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
       <header
-        className={`${transparent ? "absolute" : "relative"} top-0 left-0 right-0 z-50 transition-all duration-700 ease-out ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
           showLight
             ? "bg-white/90 backdrop-blur-2xl shadow-[0_1px_0_rgba(0,0,0,0.04)]"
             : "bg-transparent"
@@ -58,35 +76,41 @@ export default function Header({
                   alt="꿀스테이"
                   width={110}
                   height={28}
-                  className="h-5 md:h-6 w-auto transition-opacity duration-300 group-hover:opacity-80"
+                  className={`h-5 md:h-6 w-auto transition-all duration-500 group-hover:opacity-80 ${
+                    !showLight ? "brightness-0 invert" : ""
+                  }`}
                 />
-                <span className="font-serif text-sm italic text-brand-700">
+                <span className={`text-xs font-medium tracking-widest uppercase transition-colors duration-500 ${
+                  showLight ? "text-warm-500" : "text-white/60"
+                }`}>
                   Hotel
                 </span>
               </Link>
             </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-7">
               {navItems.map((item) =>
                 item.variant === "button" ? (
-                  <Link
+                  <a
                     key={item.href}
                     href={item.href}
-                    className="text-xs tracking-wider px-5 py-2 bg-brand-500 text-warm-900 font-medium rounded-lg hover:bg-brand-400 transition-all duration-300"
+                    onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
+                    className="text-xs tracking-wider px-5 py-2 bg-sig-500 text-warm-900 font-medium rounded-lg hover:bg-sig-400 transition-all duration-300"
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 ) : (
-                  <Link
+                  <a
                     key={item.href}
                     href={item.href}
-                    className={`text-sm transition-colors duration-500 hover:text-brand-600 ${
-                      showLight ? "text-warm-500" : "text-white/80"
+                    onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
+                    className={`text-sm transition-colors duration-500 hover:text-warm-500 ${
+                      showLight ? "text-warm-500" : "text-white/70"
                     }`}
                   >
                     {item.label}
-                  </Link>
+                  </a>
                 )
               )}
             </div>
@@ -98,11 +122,7 @@ export default function Header({
                 mobileOpen ? "text-warm-700" : showLight ? "text-warm-700" : "text-white"
               }`}
             >
-              {mobileOpen ? (
-                <X className="w-5 h-5" />
-              ) : (
-                <Menu className="w-5 h-5" />
-              )}
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </nav>
@@ -116,30 +136,28 @@ export default function Header({
         onClick={() => setMobileOpen(false)}
       />
 
-      {/* Mobile Menu Panel — 70% width, slides from right */}
+      {/* Mobile Menu Panel */}
       <div
         className={`fixed top-0 right-0 bottom-0 z-[49] w-[70%] max-w-[300px] bg-white md:hidden transition-transform duration-300 ease-out ${
           mobileOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
         <div className="flex flex-col h-full pt-16 px-6 pb-8">
-          {/* Nav Links */}
           <div className="flex flex-col gap-1 flex-1">
             {navItems.map((item, i) => (
-              <Link
+              <a
                 key={item.href}
                 href={item.href}
-                onClick={() => setMobileOpen(false)}
+                onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
                 className="flex items-center justify-between py-4 text-warm-800 text-[15px] font-medium border-b border-warm-100/80 group"
                 style={{ transitionDelay: mobileOpen ? `${(i + 1) * 50}ms` : "0ms" }}
               >
-                <span className="group-hover:text-brand-600 transition-colors">{item.label}</span>
-                <ArrowRight className="w-4 h-4 text-warm-300 group-hover:text-brand-500 group-hover:translate-x-0.5 transition-all" />
-              </Link>
+                <span className="group-hover:text-warm-500 transition-colors">{item.label}</span>
+                <ArrowRight className="w-4 h-4 text-warm-300 group-hover:text-sig-500 group-hover:translate-x-0.5 transition-all" />
+              </a>
             ))}
           </div>
 
-          {/* Brand footer */}
           <div className="mt-6 pt-4 border-t border-warm-100">
             <p className="text-warm-400 text-[11px]">1588-0000</p>
             <p className="text-warm-300 text-[10px] mt-1">&copy; 2024 CoolStay Hotel</p>

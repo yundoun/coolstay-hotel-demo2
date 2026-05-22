@@ -150,7 +150,7 @@ export default function SearchBar({
             {/* Region / Hotel */}
             {isBookingMode ? (
               <div className="flex items-center gap-3 shrink-0">
-                <MapPin className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+                <MapPin className="w-[18px] h-[18px] text-white/60 shrink-0" />
                 <div>
                   <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">호텔</p>
                   <p className="text-white text-[15px] font-medium truncate">{hotelName || "선택된 호텔"}</p>
@@ -161,7 +161,7 @@ export default function SearchBar({
                 onClick={() => toggleDropdown("region")}
                 className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
               >
-                <MapPin className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+                <MapPin className="w-[18px] h-[18px] text-white/60 shrink-0" />
                 <div>
                   <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">지역</p>
                   <p className="text-white text-[15px] font-medium">
@@ -178,7 +178,7 @@ export default function SearchBar({
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
               >
-                <CalendarDays className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+                <CalendarDays className="w-[18px] h-[18px] text-white/60 shrink-0" />
                 <div>
                   <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">체크인</p>
                   <p className="text-white text-[15px] font-medium">
@@ -191,14 +191,14 @@ export default function SearchBar({
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center justify-center shrink-0 cursor-pointer"
               >
-                <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[13px] font-bold px-3 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
+                <span className="bg-sig-500/20 border border-sig-500/30 text-white/60 text-[13px] font-bold px-3 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
               </button>
 
               <button
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
               >
-                <CalendarDays className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+                <CalendarDays className="w-[18px] h-[18px] text-white/60 shrink-0" />
                 <div>
                   <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">체크아웃</p>
                   <p className="text-white text-[15px] font-medium">
@@ -213,7 +213,7 @@ export default function SearchBar({
               onClick={() => toggleDropdown("guest")}
               className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
             >
-              <Users className="w-[18px] h-[18px] text-brand-400 shrink-0" />
+              <Users className="w-[18px] h-[18px] text-white/60 shrink-0" />
               <div>
                 <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">객실 · 인원</p>
                 <p className="text-white text-[15px] font-medium">
@@ -225,7 +225,7 @@ export default function SearchBar({
             {/* Search Button */}
             <button
               onClick={handleSearch}
-              className="flex items-center gap-2.5 h-11 px-8 bg-brand-500 text-warm-900 font-semibold rounded-full active:scale-[0.97] text-sm tracking-wide whitespace-nowrap shrink-0"
+              className="flex items-center gap-2.5 h-11 px-8 bg-sig-500 text-warm-900 font-semibold rounded-full active:scale-[0.97] text-sm tracking-wide whitespace-nowrap shrink-0"
             >
               <Search className="w-4 h-4" />
               <span>{isBookingMode ? "객실 보기" : "검색"}</span>
@@ -238,7 +238,7 @@ export default function SearchBar({
             <div className="flex items-center">
               {isBookingMode ? (
                 <div className="flex items-center gap-2 flex-1 min-w-0">
-                  <MapPin className="w-4 h-4 text-brand-400 shrink-0" />
+                  <MapPin className="w-4 h-4 text-white/60 shrink-0" />
                   <div className="min-w-0">
                     <p className="text-[9px] text-white/40 tracking-wider uppercase leading-none mb-0.5">호텔</p>
                     <p className="text-white text-xs font-medium truncate">{hotelName || "선택된 호텔"}</p>
@@ -249,7 +249,7 @@ export default function SearchBar({
                   onClick={() => toggleDropdown("region")}
                   className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer text-left"
                 >
-                  <MapPin className="w-4 h-4 text-brand-400 shrink-0" />
+                  <MapPin className="w-4 h-4 text-white/60 shrink-0" />
                   <div className="min-w-0 flex-1">
                     <p className="text-[9px] text-white/40 tracking-wider uppercase leading-none mb-0.5">지역</p>
                     <p className="text-white text-xs font-medium truncate">{selectedRegion.name}</p>
@@ -262,7 +262,7 @@ export default function SearchBar({
                 onClick={() => toggleDropdown("guest")}
                 className="flex items-center gap-2 cursor-pointer shrink-0"
               >
-                <Users className="w-4 h-4 text-brand-400 shrink-0" />
+                <Users className="w-4 h-4 text-white/60 shrink-0" />
                 <div>
                   <p className="text-[9px] text-white/40 tracking-wider uppercase leading-none mb-0.5">객실 · 인원</p>
                   <p className="text-white text-xs font-medium">{rooms}실 · {totalGuests}명</p>
@@ -276,15 +276,15 @@ export default function SearchBar({
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center gap-2 flex-1 min-w-0 cursor-pointer"
               >
-                <CalendarDays className="w-4 h-4 text-brand-400 shrink-0" />
+                <CalendarDays className="w-4 h-4 text-white/60 shrink-0" />
                 <span className="text-white text-xs font-medium">{formatDateShort(checkIn)}</span>
-                <span className="bg-brand-500/20 border border-brand-400/30 text-brand-400 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
+                <span className="bg-sig-500/20 border border-sig-500/30 text-white/60 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
                 <span className="text-white text-xs font-medium">{formatDateShort(checkOut)}</span>
               </button>
 
               <button
                 onClick={handleSearch}
-                className="flex items-center justify-center gap-1.5 h-9 px-5 bg-brand-500 text-warm-900 font-semibold rounded-full text-xs tracking-wide active:scale-[0.97] shrink-0"
+                className="flex items-center justify-center gap-1.5 h-9 px-5 bg-sig-500 text-warm-900 font-semibold rounded-full text-xs tracking-wide active:scale-[0.97] shrink-0"
               >
                 <Search className="w-3.5 h-3.5" />
                 <span>{isBookingMode ? "객실 보기" : "검색"}</span>
@@ -304,7 +304,7 @@ export default function SearchBar({
                   }`}
                 >
                   <span className="text-sm text-white/90">{region.name}</span>
-                  {selectedRegion.id === region.id && <Check className="w-4 h-4 text-brand-400 shrink-0" />}
+                  {selectedRegion.id === region.id && <Check className="w-4 h-4 text-white/60 shrink-0" />}
                 </button>
               ))}
             </div>
@@ -332,7 +332,7 @@ export default function SearchBar({
                 <p className="text-warm-400 text-[11px] leading-relaxed pt-1">기준인원 초과 시 추가 요금이 발생할 수 있습니다.</p>
               </div>
               <div className="border-t border-warm-100 px-5 py-3">
-                <button onClick={closeDropdown} className="w-full py-2.5 bg-brand-500 text-warm-900 font-semibold rounded-lg text-sm hover:bg-brand-400 transition-colors">
+                <button onClick={closeDropdown} className="w-full py-2.5 bg-sig-500 text-warm-900 font-semibold rounded-lg text-sm hover:bg-sig-400 transition-colors">
                   적용
                 </button>
               </div>
@@ -399,7 +399,7 @@ function InlineSearchBar({
           {/* Region */}
           {isBookingMode ? (
             <div className="flex items-center gap-2.5 shrink-0">
-              <MapPin className="w-4 h-4 text-brand-600 shrink-0" />
+              <MapPin className="w-4 h-4 text-warm-500 shrink-0" />
               <span className="text-warm-900 text-[13px] font-medium truncate">{hotelName || "선택된 호텔"}</span>
             </div>
           ) : (
@@ -407,7 +407,7 @@ function InlineSearchBar({
               onClick={() => toggleDropdown("region")}
               className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
             >
-              <MapPin className="w-4 h-4 text-brand-600 shrink-0" />
+              <MapPin className="w-4 h-4 text-warm-500 shrink-0" />
               <span className="text-warm-900 text-[13px] font-medium">
                 {selectedRegion.name}
               </span>
@@ -421,7 +421,7 @@ function InlineSearchBar({
               onClick={() => toggleDropdown("calendar")}
               className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
             >
-              <CalendarDays className="w-4 h-4 text-brand-600 shrink-0" />
+              <CalendarDays className="w-4 h-4 text-warm-500 shrink-0" />
               <div>
                 <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크인</p>
                 <p className="text-warm-900 text-[13px] font-medium">{formatDateShort(checkIn)}</p>
@@ -432,14 +432,14 @@ function InlineSearchBar({
               onClick={() => toggleDropdown("calendar")}
               className="flex items-center justify-center shrink-0 cursor-pointer"
             >
-              <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
+              <span className="bg-sig-500/15 border border-sig-500/20 text-warm-700 text-xs font-bold px-2.5 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
             </button>
 
             <button
               onClick={() => toggleDropdown("calendar")}
               className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
             >
-              <CalendarDays className="w-4 h-4 text-brand-600 shrink-0" />
+              <CalendarDays className="w-4 h-4 text-warm-500 shrink-0" />
               <div>
                 <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">체크아웃</p>
                 <p className="text-warm-900 text-[13px] font-medium">{formatDateShort(checkOut)}</p>
@@ -452,7 +452,7 @@ function InlineSearchBar({
             onClick={() => toggleDropdown("guest")}
             className="flex items-center gap-2.5 shrink-0 cursor-pointer text-left"
           >
-            <Users className="w-4 h-4 text-brand-600 shrink-0" />
+            <Users className="w-4 h-4 text-warm-500 shrink-0" />
             <div>
               <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">객실 · 인원</p>
               <p className="text-warm-900 text-[13px] font-medium">{rooms}실 · {totalGuests}명</p>
@@ -462,7 +462,7 @@ function InlineSearchBar({
           {/* Search */}
           <button
             onClick={handleSearch}
-            className="flex items-center gap-1.5 h-9 px-6 bg-brand-500 text-warm-900 font-semibold rounded-full active:scale-[0.97] text-[13px] tracking-wide shrink-0"
+            className="flex items-center gap-1.5 h-9 px-6 bg-sig-500 text-warm-900 font-semibold rounded-full active:scale-[0.97] text-[13px] tracking-wide shrink-0"
           >
             <Search className="w-3.5 h-3.5" />
             <span>{isBookingMode ? "객실 보기" : "검색"}</span>
@@ -474,7 +474,7 @@ function InlineSearchBar({
           <div className="flex gap-2">
             {isBookingMode ? (
               <div className="flex-1 flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-warm-200/60">
-                <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-warm-500 shrink-0" />
                 <span className="text-warm-900 text-xs font-medium truncate">{hotelName || "선택된 호텔"}</span>
               </div>
             ) : (
@@ -482,7 +482,7 @@ function InlineSearchBar({
                 onClick={() => toggleDropdown("region")}
                 className="flex-1 flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-warm-200/60 cursor-pointer text-left"
               >
-                <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+                <MapPin className="w-3.5 h-3.5 text-warm-500 shrink-0" />
                 <span className="text-warm-900 text-xs font-medium truncate">{selectedRegion.name}</span>
                 <ChevronDown className="w-3 h-3 text-warm-400 shrink-0 ml-auto" />
               </button>
@@ -492,7 +492,7 @@ function InlineSearchBar({
               onClick={() => toggleDropdown("guest")}
               className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-warm-200/60 cursor-pointer"
             >
-              <Users className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+              <Users className="w-3.5 h-3.5 text-warm-500 shrink-0" />
               <span className="text-warm-900 text-xs font-medium">{rooms}실 · {totalGuests}명</span>
             </button>
           </div>
@@ -502,15 +502,15 @@ function InlineSearchBar({
               onClick={() => toggleDropdown("calendar")}
               className="flex-1 flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-warm-200/60 cursor-pointer"
             >
-              <CalendarDays className="w-3.5 h-3.5 text-brand-600 shrink-0" />
+              <CalendarDays className="w-3.5 h-3.5 text-warm-500 shrink-0" />
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkIn)}</span>
-              <span className="bg-brand-500/15 border border-brand-500/20 text-brand-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
+              <span className="bg-sig-500/15 border border-sig-500/20 text-warm-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkOut)}</span>
             </button>
 
             <button
               onClick={handleSearch}
-              className="flex items-center justify-center gap-1.5 px-4 py-2 bg-brand-500 text-warm-900 font-semibold rounded-lg text-xs tracking-wide active:scale-[0.97] whitespace-nowrap"
+              className="flex items-center justify-center gap-1.5 px-4 py-2 bg-sig-500 text-warm-900 font-semibold rounded-lg text-xs tracking-wide active:scale-[0.97] whitespace-nowrap"
             >
               <Search className="w-3.5 h-3.5" />
               <span>{isBookingMode ? "객실 보기" : "검색"}</span>
@@ -526,11 +526,11 @@ function InlineSearchBar({
                 key={region.id || "all"}
                 onClick={() => { setSelectedRegion(region); closeDropdown(); }}
                 className={`w-full flex items-center justify-between px-4 py-2 text-left hover:bg-warm-50 transition-colors ${
-                  selectedRegion.id === region.id ? "bg-brand-500/5" : ""
+                  selectedRegion.id === region.id ? "bg-sig-500/5" : ""
                 }`}
               >
                 <span className="text-sm text-warm-900">{region.name}</span>
-                {selectedRegion.id === region.id && <Check className="w-4 h-4 text-brand-600 shrink-0" />}
+                {selectedRegion.id === region.id && <Check className="w-4 h-4 text-warm-500 shrink-0" />}
               </button>
             ))}
           </div>
@@ -558,7 +558,7 @@ function InlineSearchBar({
               <p className="text-warm-400 text-[11px] leading-relaxed pt-1">기준인원 초과 시 추가 요금이 발생할 수 있습니다.</p>
             </div>
             <div className="border-t border-warm-100 px-5 py-3">
-              <button onClick={closeDropdown} className="w-full py-2.5 bg-brand-500 text-warm-900 font-semibold rounded-lg text-sm hover:bg-brand-400 transition-colors">
+              <button onClick={closeDropdown} className="w-full py-2.5 bg-sig-500 text-warm-900 font-semibold rounded-lg text-sm hover:bg-sig-400 transition-colors">
                 적용
               </button>
             </div>
@@ -588,7 +588,7 @@ function GuestCounter({
         <button
           onClick={() => onChange(Math.max(min, value - 1))}
           disabled={value <= min}
-          className="w-8 h-8 rounded-full border border-warm-200 flex items-center justify-center text-warm-500 hover:border-brand-500 hover:text-brand-700 transition-colors disabled:opacity-30"
+          className="w-8 h-8 rounded-full border border-warm-200 flex items-center justify-center text-warm-500 hover:border-warm-400 hover:text-warm-700 transition-colors disabled:opacity-30"
         >
           <Minus className="w-3.5 h-3.5" />
         </button>
@@ -596,7 +596,7 @@ function GuestCounter({
         <button
           onClick={() => onChange(Math.min(max, value + 1))}
           disabled={value >= max}
-          className="w-8 h-8 rounded-full border border-warm-200 flex items-center justify-center text-warm-500 hover:border-brand-500 hover:text-brand-700 transition-colors disabled:opacity-30"
+          className="w-8 h-8 rounded-full border border-warm-200 flex items-center justify-center text-warm-500 hover:border-warm-400 hover:text-warm-700 transition-colors disabled:opacity-30"
         >
           <Plus className="w-3.5 h-3.5" />
         </button>

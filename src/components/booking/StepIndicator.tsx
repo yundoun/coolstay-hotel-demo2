@@ -30,7 +30,7 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
                   <div
                     className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-semibold transition-all duration-300 ${
                       isCompleted
-                        ? "bg-brand-500 text-warm-900"
+                        ? "bg-sig-500 text-warm-900"
                         : isActive
                         ? "bg-warm-900 text-white"
                         : "bg-warm-100 text-warm-400 border border-warm-200"
@@ -45,7 +45,7 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
                   <span
                     className={`text-[10px] md:text-xs font-medium tracking-wide transition-colors duration-300 ${
                       isCompleted
-                        ? "text-brand-700"
+                        ? "text-warm-900"
                         : isActive
                         ? "text-warm-900"
                         : "text-warm-400"
@@ -60,7 +60,7 @@ export default function StepIndicator({ currentStep }: StepIndicatorProps) {
                   <div className="flex-1 mx-2 md:mx-4 mt-[-18px] md:mt-[-20px]">
                     <div
                       className={`h-px transition-colors duration-300 ${
-                        stepNum < currentStep ? "bg-brand-500" : "bg-warm-200"
+                        stepNum < currentStep ? "bg-sig-500" : "bg-warm-200"
                       }`}
                     />
                   </div>

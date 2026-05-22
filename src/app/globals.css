@@ -6,41 +6,41 @@
 
 @layer base {
   .theme {
-    --font-heading: var(--font-serif);
+    --font-heading: var(--font-sans);
     --font-sans: var(--font-sans);
   }
 
   :root {
     --background: #FFFFFF;
-    --foreground: #2C2825;
+    --foreground: #333333;
 
     --card: #FFFFFF;
-    --card-foreground: #2C2825;
+    --card-foreground: #333333;
 
     --popover: #FFFFFF;
-    --popover-foreground: #2C2825;
+    --popover-foreground: #333333;
 
     --primary: #FFC600;
     --primary-foreground: #2C2825;
 
-    --secondary: #F3F0EB;
-    --secondary-foreground: #2C2825;
+    --secondary: #F5F2EE;
+    --secondary-foreground: #333333;
 
-    --muted: #F5F2ED;
-    --muted-foreground: #8C857D;
+    --muted: #F5F2EE;
+    --muted-foreground: #999999;
 
     --accent: #FFC600;
     --accent-foreground: #2C2825;
 
     --destructive: #ef4444;
-    --border: rgba(44, 40, 37, 0.08);
-    --input: rgba(44, 40, 37, 0.06);
+    --border: rgba(0, 0, 0, 0.08);
+    --input: rgba(0, 0, 0, 0.05);
     --ring: #E6B200;
 
-    --radius: 0.5rem;
+    --radius: 0.25rem;
 
-    --warm-50: #FFFFFF;
-    --warm-100: #F5F2ED;
+    --warm-50: #FAFAF8;
+    --warm-100: #F5F2EE;
     --warm-200: #EBE7E0;
     --warm-800: #3D3833;
     --warm-900: #2C2825;
@@ -51,7 +51,8 @@
   }
 
   body {
-    @apply bg-[var(--warm-50)] text-[var(--warm-900)] antialiased;
+    @apply bg-[var(--warm-50)] text-[#333] antialiased;
+    word-break: keep-all;
   }
 
   html {
@@ -61,10 +62,6 @@
 }
 
 @layer utilities {
-  .font-display {
-    font-family: var(--font-serif), Georgia, serif;
-  }
-
   .text-balance {
     text-wrap: balance;
   }
@@ -77,22 +74,10 @@
     @apply bg-black/50 backdrop-blur-2xl border border-white/10;
   }
 
-  .gradient-gold {
-    background: linear-gradient(135deg, #FFC600 0%, #FFD84D 50%, #FFC600 100%);
-  }
-
-  .text-gradient-gold {
-    background: linear-gradient(135deg, #A37F00 0%, #E6B200 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* Editorial fade-in animation */
   @keyframes fadeInUp {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(16px);
     }
     to {
       opacity: 1;
@@ -106,11 +91,11 @@
   }
 
   .animate-fade-in-up {
-    animation: fadeInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    animation: fadeInUp 0.6s ease-out forwards;
   }
 
   .animate-fade-in {
-    animation: fadeIn 0.6s ease forwards;
+    animation: fadeIn 0.5s ease forwards;
   }
 
   .animation-delay-100 { animation-delay: 100ms; }
@@ -118,19 +103,4 @@
   .animation-delay-300 { animation-delay: 300ms; }
   .animation-delay-400 { animation-delay: 400ms; }
   .animation-delay-500 { animation-delay: 500ms; }
-  .animation-delay-600 { animation-delay: 600ms; }
-  .animation-delay-700 { animation-delay: 700ms; }
-  .animation-delay-800 { animation-delay: 800ms; }
-  .animation-delay-900 { animation-delay: 900ms; }
-  .animation-delay-1000 { animation-delay: 1000ms; }
-
-  /* Subtle noise texture overlay */
-  .noise::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    opacity: 0.02;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    pointer-events: none;
-  }
 }

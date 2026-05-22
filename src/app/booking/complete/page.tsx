@@ -7,19 +7,22 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import {
   Check,
-  CalendarDays,
-  Users,
   Download,
   Home,
   Phone,
   Clock,
   Sparkles,
 } from "lucide-react";
+import hotelConfig from "@/config/hotel";
+
+const HEADER_NAV = [
+  { label: "홈으로", href: "/" as const },
+];
 
 function BookingCompleteContent() {
   const params = useSearchParams();
   const bookingId = params.get("bookingId") || "BK-000000";
-  const hotelName = params.get("hotelName") || "";
+  const hotelName = params.get("hotelName") || hotelConfig.name;
   const roomName = params.get("roomName") || "";
   const roomImage = params.get("roomImage") || "";
   const checkIn = params.get("checkIn") || "";
@@ -49,10 +52,10 @@ function BookingCompleteContent() {
       <div className="max-w-[640px] mx-auto px-5 md:px-8">
         {/* Success header */}
         <div className="text-center mb-10">
-          <div className="w-16 h-16 rounded-full bg-brand-500 mx-auto flex items-center justify-center mb-5">
-            <Check className="w-7 h-7 text-warm-900" strokeWidth={2.5} />
+          <div className="w-16 h-16 rounded-full bg-sig-500 mx-auto flex items-center justify-center mb-5">
+            <Check className="w-7 h-7 text-white" strokeWidth={2.5} />
           </div>
-          <h1 className="font-serif text-2xl md:text-3xl text-warm-900 mb-2">
+          <h1 className="text-2xl md:text-3xl text-warm-900 font-light tracking-tight mb-2">
             예약이 완료되었습니다
           </h1>
           <p className="text-warm-400 text-sm">
@@ -63,30 +66,23 @@ function BookingCompleteContent() {
         {/* Hotel & Room hero card */}
         <div className="bg-white border border-warm-200/50 rounded-lg overflow-hidden mb-3">
           <div className="flex">
-            {/* Room image */}
             {roomImage && (
               <div
                 className="w-[140px] md:w-[180px] flex-shrink-0 bg-warm-200 bg-cover bg-center"
                 style={{ backgroundImage: `url(${roomImage})` }}
               />
             )}
-            {/* Hotel & schedule info */}
             <div className="flex-1 px-5 py-5 md:px-6 md:py-5">
-              <p className="font-serif text-lg text-warm-900 mb-1">
-                {hotelName}
-              </p>
+              <p className="text-lg text-warm-900 font-medium mb-1">{hotelName}</p>
               <p className="text-warm-400 text-sm mb-3">
                 {formatDate(checkIn)} ~ {formatDate(checkOut)} / {nights}박
               </p>
               <div className="flex items-center gap-4 text-sm text-warm-500">
                 <span>객실 {1}</span>
                 <span className="text-warm-200">|</span>
-                <span>
-                  대인 {guests} / 소인 0
-                </span>
+                <span>대인 {guests} / 소인 0</span>
               </div>
             </div>
-            {/* Guest info */}
             <div className="hidden md:flex flex-col justify-center px-6 py-5 border-l border-warm-100">
               <p className="text-warm-400 text-xs mb-1">이용자</p>
               <p className="text-warm-900 text-sm font-medium">{guestName}</p>
@@ -94,10 +90,10 @@ function BookingCompleteContent() {
           </div>
         </div>
 
-        {/* Room type label */}
+        {/* Room type */}
         <div className="bg-white border border-warm-200/50 rounded-lg px-5 py-3.5 mb-3">
           <p className="text-warm-600 text-sm">
-            <span className="text-warm-400 mr-2">·</span>
+            <span className="text-warm-400 mr-2">&middot;</span>
             {roomName}
           </p>
         </div>
@@ -114,13 +110,11 @@ function BookingCompleteContent() {
         <div className="bg-white border border-warm-200/50 rounded-lg px-5 py-4 mb-8">
           <div className="flex items-center justify-between py-1 text-sm">
             <span className="text-warm-500">객실요금</span>
-            <span className="text-warm-900">
-              {Number(totalPrice).toLocaleString()}
-            </span>
+            <span className="text-warm-900">{Number(totalPrice).toLocaleString()}</span>
           </div>
           <div className="flex items-center justify-between pt-3 mt-3 border-t border-warm-100 text-sm">
             <span className="text-warm-900 font-medium">총 결제금액</span>
-            <span className="text-brand-600 font-medium">
+            <span className="text-sig-600 font-medium">
               &#8361; {Number(totalPrice).toLocaleString()}
             </span>
           </div>
@@ -148,7 +142,7 @@ function BookingCompleteContent() {
               <Clock className="w-4 h-4 text-warm-500" />
             </div>
             <p className="text-warm-900 text-xs font-medium">체크인</p>
-            <p className="text-warm-400 text-xs mt-0.5">15:00 부터</p>
+            <p className="text-warm-400 text-xs mt-0.5">{hotelConfig.checkInTime} 부터</p>
           </div>
           <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
             <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
@@ -162,7 +156,7 @@ function BookingCompleteContent() {
               <Phone className="w-4 h-4 text-warm-500" />
             </div>
             <p className="text-warm-900 text-xs font-medium">고객센터</p>
-            <p className="text-warm-400 text-xs mt-0.5">1588-0000</p>
+            <p className="text-warm-400 text-xs mt-0.5">{hotelConfig.phone}</p>
           </div>
         </div>
       </div>
@@ -173,7 +167,7 @@ function BookingCompleteContent() {
 export default function BookingCompletePage() {
   return (
     <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
-      <Header navItems={[{ label: "호텔", href: "/hotels" }]} />
+      <Header navItems={HEADER_NAV} />
       <div className="pt-14 md:pt-16" />
       <Suspense
         fallback={
@@ -184,7 +178,7 @@ export default function BookingCompletePage() {
       >
         <BookingCompleteContent />
       </Suspense>
-      <Footer />
+      <Footer hotelConfig={hotelConfig} />
     </main>
   );
 }

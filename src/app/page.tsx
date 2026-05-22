@@ -1,26 +1,24 @@
 import Header from "@/components/layout/Header";
-import SearchBar from "@/components/layout/SearchBar";
 import Footer from "@/components/layout/Footer";
-import HeroCarousel from "@/components/home/HeroCarousel";
-import FeaturedHotels from "@/components/home/FeaturedHotels";
-import EventCarousel from "@/components/home/EventCarousel";
-import { hotelRepository, contentRepository } from "@/providers/repositories";
+import HeroSection from "@/components/sections/HeroSection";
+import GreetingSection from "@/components/sections/GreetingSection";
+import AboutSection from "@/components/sections/AboutSection";
+import RoomsSection from "@/components/sections/RoomsSection";
+import BookingSection from "@/components/sections/BookingSection";
+import LocationSection from "@/components/sections/LocationSection";
+import hotelConfig from "@/config/hotel";
 
-export default async function HomePage() {
-  const [heroSlides, featuredHotels, events] = await Promise.all([
-    contentRepository.getHeroSlides(),
-    hotelRepository.getFeatured(),
-    contentRepository.getEvents(),
-  ]);
-
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-background pb-[72px]">
+    <main className="min-h-screen bg-background">
       <Header transparent />
-      <HeroCarousel slides={heroSlides} />
-      <FeaturedHotels hotels={featuredHotels} />
-      <EventCarousel events={events} />
-      <Footer />
-      <SearchBar />
+      <HeroSection hero={hotelConfig.hero} hotelName={hotelConfig.name} />
+      <GreetingSection greeting={hotelConfig.greeting} />
+      <AboutSection about={hotelConfig.about} />
+      <RoomsSection rooms={hotelConfig.rooms} />
+      <BookingSection hotelConfig={hotelConfig} />
+      <LocationSection location={hotelConfig.location} hotelName={hotelConfig.name} />
+      <Footer hotelConfig={hotelConfig} />
     </main>
   );
 }

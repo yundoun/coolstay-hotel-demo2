@@ -34,12 +34,11 @@ const config: Config = {
         border: "var(--border)",
         input: "var(--input)",
         ring: "var(--ring)",
-        brand: {
+        sig: {
           300: "#FFDB66",
           400: "#FFD033",
           500: "#FFC600",
           600: "#E6B200",
-          700: "#A37F00",
         },
         warm: {
           50: "#FAF8F5",
@@ -56,7 +55,6 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
     },
   },

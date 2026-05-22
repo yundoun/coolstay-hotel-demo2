@@ -119,10 +119,10 @@ export default function BookingCalendar({
                   key={di}
                   className={`relative ${
                     !outside && inRange && !rangeStart && !rangeEnd
-                      ? "bg-brand-500/10"
+                      ? "bg-sig-500/10"
                       : ""
-                  } ${!outside && rangeStart ? "rounded-l-full bg-brand-500/10" : ""} ${
-                    !outside && rangeEnd ? "rounded-r-full bg-brand-500/10" : ""
+                  } ${!outside && rangeStart ? "rounded-l-full bg-sig-500/10" : ""} ${
+                    !outside && rangeEnd ? "rounded-r-full bg-sig-500/10" : ""
                   }`}
                 >
                   <button
@@ -131,10 +131,10 @@ export default function BookingCalendar({
                     className={`
                       w-full aspect-square flex flex-col items-center justify-center text-sm rounded-full transition-all
                       ${disabled ? "text-warm-200 cursor-default" : "cursor-pointer hover:bg-warm-100"}
-                      ${!outside && (rangeStart || rangeEnd) ? "bg-brand-500 text-warm-900 font-semibold hover:bg-brand-400" : ""}
+                      ${!outside && (rangeStart || rangeEnd) ? "bg-sig-500 text-warm-900 font-semibold hover:bg-sig-400" : ""}
                       ${inRange && !rangeStart && !rangeEnd ? "text-warm-700" : ""}
                       ${!disabled && !inRange && !rangeStart && !rangeEnd ? "text-warm-700" : ""}
-                      ${todayMark && !rangeStart && !rangeEnd ? "ring-2 ring-brand-500 ring-inset font-bold text-brand-700" : ""}
+                      ${todayMark && !rangeStart && !rangeEnd ? "ring-2 ring-sig-500 ring-inset font-bold text-warm-900" : ""}
                       ${di === 0 && !disabled && !rangeStart && !rangeEnd && !inRange ? "text-red-400" : ""}
                       ${di === 6 && !disabled && !rangeStart && !rangeEnd && !inRange ? "text-blue-400" : ""}
                     `}
@@ -143,7 +143,7 @@ export default function BookingCalendar({
                       <>
                         <span>{format(day, "d")}</span>
                         {todayMark && !rangeStart && !rangeEnd && (
-                          <span className="text-[8px] text-brand-600 leading-none -mt-0.5">오늘</span>
+                          <span className="text-[8px] text-sig-600 leading-none -mt-0.5">오늘</span>
                         )}
                       </>
                     )}
