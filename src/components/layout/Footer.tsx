@@ -2,13 +2,21 @@
 
 import Image from "next/image";
 import { Phone, Mail } from "lucide-react";
-import type { HotelConfig } from "@/config/hotel";
 
-interface FooterProps {
-  hotelConfig?: HotelConfig;
+interface FooterData {
+  name: string;
+  phone: string;
+  email: string;
+  location: { address: string };
+  checkInTime: string;
+  checkOutTime: string;
 }
 
-export default function Footer({ hotelConfig }: FooterProps) {
+interface FooterProps {
+  footerData?: FooterData;
+}
+
+export default function Footer({ footerData }: FooterProps) {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -30,10 +38,10 @@ export default function Footer({ hotelConfig }: FooterProps) {
               />
               <span className="text-[10px] font-medium tracking-widest uppercase text-warm-500">Hotel</span>
             </div>
-            {hotelConfig && (
+            {footerData && (
               <p className="text-warm-500 text-xs leading-relaxed">
-                {hotelConfig.name}<br />
-                {hotelConfig.location.address}
+                {footerData.name}<br />
+                {footerData.location.address}
               </p>
             )}
           </div>
@@ -61,20 +69,24 @@ export default function Footer({ hotelConfig }: FooterProps) {
           </div>
 
           {/* Contact */}
-          {hotelConfig && (
+          {footerData && (
             <div>
               <p className="text-warm-400 text-[10px] tracking-[0.2em] uppercase mb-4">연락처</p>
               <div className="flex flex-col gap-3 text-warm-500 text-xs">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-warm-500" />
-                  <span>{hotelConfig.phone}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-warm-500" />
-                  <span>{hotelConfig.email}</span>
-                </div>
+                {footerData.phone && (
+                  <div className="flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-warm-500" />
+                    <span>{footerData.phone}</span>
+                  </div>
+                )}
+                {footerData.email && (
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-3.5 h-3.5 text-warm-500" />
+                    <span>{footerData.email}</span>
+                  </div>
+                )}
                 <p className="text-warm-600 mt-1">
-                  체크인 {hotelConfig.checkInTime} &middot; 체크아웃 {hotelConfig.checkOutTime}
+                  체크인 {footerData.checkInTime} &middot; 체크아웃 {footerData.checkOutTime}
                 </p>
               </div>
             </div>

@@ -5,13 +5,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { ChevronDown } from "lucide-react";
-import type { HotelConfig } from "@/config/hotel";
-
 import "swiper/css";
 import "swiper/css/effect-fade";
 
 interface Props {
-  hero: HotelConfig["hero"];
+  hero: {
+    slides: { image: string; title: string; subtitle: string }[];
+  };
   hotelName: string;
 }
 

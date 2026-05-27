@@ -1,7 +1,11 @@
-import type { HotelConfig } from "@/config/hotel";
-
 interface Props {
-  greeting: HotelConfig["greeting"];
+  greeting: {
+    ownerName: string;
+    title: string;
+    message: string;
+    signature: string;
+    image?: string;
+  };
 }
 
 export default function GreetingSection({ greeting }: Props) {

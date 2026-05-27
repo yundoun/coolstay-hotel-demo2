@@ -9,8 +9,8 @@ const notoSansKR = Noto_Sans_KR({
 });
 
 export const metadata: Metadata = {
-  title: "꿀스테이 제주 리조트 | 공식 예약 사이트",
-  description: "제주 중문 해안 프리미엄 리조트 — 오션뷰 객실, 인피니티 풀, 프라이빗 스파. 꿀스테이 제주 리조트 공식 온라인 예약.",
+  title: "꿀스테이 호텔 | 공식 예약 사이트",
+  description: "꿀스테이 호텔 공식 온라인 예약 사이트 — 실시간 객실 조회 및 현장결제 예약",
 };
 
 export default function RootLayout({

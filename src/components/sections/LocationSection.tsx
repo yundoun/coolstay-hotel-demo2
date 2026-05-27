@@ -1,5 +1,4 @@
 import { MapPin, Car, Bus, Clock } from "lucide-react";
-import type { HotelConfig } from "@/config/hotel";
 
 const METHOD_ICONS: Record<string, React.FC<{ className?: string }>> = {
   "자가용": Car,
@@ -8,7 +7,13 @@ const METHOD_ICONS: Record<string, React.FC<{ className?: string }>> = {
 };
 
 interface Props {
-  location: HotelConfig["location"];
+  location: {
+    address: string;
+    addressDetail?: string;
+    lat: number;
+    lng: number;
+    directions: { method: string; description: string }[];
+  };
   hotelName: string;
 }
 

@@ -13,7 +13,6 @@ import {
   Clock,
   Sparkles,
 } from "lucide-react";
-import hotelConfig from "@/config/hotel";
 
 const HEADER_NAV = [
   { label: "홈으로", href: "/" as const },
@@ -22,7 +21,7 @@ const HEADER_NAV = [
 function BookingCompleteContent() {
   const params = useSearchParams();
   const bookingId = params.get("bookingId") || "BK-000000";
-  const hotelName = params.get("hotelName") || hotelConfig.name;
+  const hotelName = params.get("hotelName") || "";
   const roomName = params.get("roomName") || "";
   const roomImage = params.get("roomImage") || "";
   const checkIn = params.get("checkIn") || "";
@@ -59,7 +58,7 @@ function BookingCompleteContent() {
             예약이 완료되었습니다
           </h1>
           <p className="text-warm-400 text-sm">
-            예약 상세 내용은 메일로 발송되었습니다.
+            예약번호: {bookingId}
           </p>
         </div>
 
@@ -113,7 +112,7 @@ function BookingCompleteContent() {
             <span className="text-warm-900">{Number(totalPrice).toLocaleString()}</span>
           </div>
           <div className="flex items-center justify-between pt-3 mt-3 border-t border-warm-100 text-sm">
-            <span className="text-warm-900 font-medium">총 결제금액</span>
+            <span className="text-warm-900 font-medium">현장결제 금액</span>
             <span className="text-sig-600 font-medium">
               &#8361; {Number(totalPrice).toLocaleString()}
             </span>
@@ -141,22 +140,22 @@ function BookingCompleteContent() {
             <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
               <Clock className="w-4 h-4 text-warm-500" />
             </div>
-            <p className="text-warm-900 text-xs font-medium">체크인</p>
-            <p className="text-warm-400 text-xs mt-0.5">{hotelConfig.checkInTime} 부터</p>
+            <p className="text-warm-900 text-xs font-medium">현장결제</p>
+            <p className="text-warm-400 text-xs mt-0.5">체크인 시</p>
           </div>
           <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
             <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
               <Sparkles className="w-4 h-4 text-warm-500" />
             </div>
             <p className="text-warm-900 text-xs font-medium">무료 취소</p>
-            <p className="text-warm-400 text-xs mt-0.5">3일 전까지</p>
+            <p className="text-warm-400 text-xs mt-0.5">환불규정 확인</p>
           </div>
           <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
             <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
               <Phone className="w-4 h-4 text-warm-500" />
             </div>
             <p className="text-warm-900 text-xs font-medium">고객센터</p>
-            <p className="text-warm-400 text-xs mt-0.5">{hotelConfig.phone}</p>
+            <p className="text-warm-400 text-xs mt-0.5">꿀스테이</p>
           </div>
         </div>
       </div>
@@ -178,7 +177,7 @@ export default function BookingCompletePage() {
       >
         <BookingCompleteContent />
       </Suspense>
-      <Footer hotelConfig={hotelConfig} />
+      <Footer />
     </main>
   );
 }

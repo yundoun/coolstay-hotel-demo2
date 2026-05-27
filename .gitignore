@@ -12,6 +12,8 @@ dist/
 # env files
 .env
 .env*.local
+.env.stg
+.env.prd
 
 # debug
 npm-debug.log*

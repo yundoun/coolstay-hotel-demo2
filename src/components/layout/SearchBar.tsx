@@ -8,11 +8,9 @@ import {
   Search,
   Minus,
   Plus,
-  BedDouble,
   MapPin,
   ChevronDown,
   Check,
-  ArrowRight,
 } from "lucide-react";
 import { addDays, format, differenceInDays } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -60,11 +58,9 @@ export default function SearchBar({
 }: SearchBarProps) {
   const router = useRouter();
   const [selectedRegion, setSelectedRegion] = useState(REGIONS[0]);
-  const [checkIn, setCheckIn] = useState<Date | undefined>(addDays(new Date(), 7));
-  const [checkOut, setCheckOut] = useState<Date | undefined>(addDays(new Date(), 8));
-  const [rooms, setRooms] = useState(1);
+  const [checkIn, setCheckIn] = useState<Date | undefined>(new Date());
+  const [checkOut, setCheckOut] = useState<Date | undefined>(addDays(new Date(), 1));
   const [adults, setAdults] = useState(2);
-  const [children, setChildren] = useState(0);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
 
   const barRef = useRef<HTMLDivElement>(null);
@@ -79,7 +75,6 @@ export default function SearchBar({
 
   useClickOutside(barRef, closeDropdown);
 
-  const totalGuests = adults + children;
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
 
   const handleDateSelect = (ci: Date | undefined, co: Date | undefined) => {
@@ -98,8 +93,7 @@ export default function SearchBar({
     const params = new URLSearchParams({
       checkIn: checkIn ? format(checkIn, "yyyy-MM-dd") : "",
       checkOut: checkOut ? format(checkOut, "yyyy-MM-dd") : "",
-      guests: totalGuests.toString(),
-      rooms: rooms.toString(),
+      guests: adults.toString(),
       ...(selectedRegion.id ? { region: selectedRegion.id } : {}),
     });
     router.push(`/booking?${params.toString()}`);
@@ -124,13 +118,8 @@ export default function SearchBar({
         checkOut={checkOut}
         handleDateSelect={handleDateSelect}
         nights={nights}
-        rooms={rooms}
-        setRooms={setRooms}
         adults={adults}
         setAdults={setAdults}
-        children={children}
-        setChildren={setChildren}
-        totalGuests={totalGuests}
         handleSearch={handleSearch}
         formatDateShort={formatDateShort}
         activeDropdown={activeDropdown}
@@ -191,7 +180,7 @@ export default function SearchBar({
                 onClick={() => toggleDropdown("calendar")}
                 className="flex items-center justify-center shrink-0 cursor-pointer"
               >
-                <span className="bg-sig-500/20 border border-sig-500/30 text-white/60 text-[13px] font-bold px-3 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
+                <span className="bg-sig-500/20 border border-sig-500/30 text-white/60 text-[13px] font-bold px-3 py-1 rounded-full min-w-[3rem] text-center">{nights > 0 ? `${nights}박` : "-"}</span>
               </button>
 
               <button
@@ -208,16 +197,16 @@ export default function SearchBar({
               </button>
             </div>
 
-            {/* Guest & Room */}
+            {/* Guest */}
             <button
               onClick={() => toggleDropdown("guest")}
               className="flex items-center gap-3 shrink-0 cursor-pointer text-left"
             >
               <Users className="w-[18px] h-[18px] text-white/60 shrink-0" />
               <div>
-                <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">객실 · 인원</p>
+                <p className="text-[10px] text-white/40 tracking-[0.15em] uppercase leading-none mb-1">인원</p>
                 <p className="text-white text-[15px] font-medium">
-                  {rooms}실 · {totalGuests}명
+                  성인 {adults}명
                 </p>
               </div>
             </button>
@@ -264,8 +253,8 @@ export default function SearchBar({
               >
                 <Users className="w-4 h-4 text-white/60 shrink-0" />
                 <div>
-                  <p className="text-[9px] text-white/40 tracking-wider uppercase leading-none mb-0.5">객실 · 인원</p>
-                  <p className="text-white text-xs font-medium">{rooms}실 · {totalGuests}명</p>
+                  <p className="text-[9px] text-white/40 tracking-wider uppercase leading-none mb-0.5">인원</p>
+                  <p className="text-white text-xs font-medium">성인 {adults}명</p>
                 </div>
               </button>
             </div>
@@ -278,7 +267,7 @@ export default function SearchBar({
               >
                 <CalendarDays className="w-4 h-4 text-white/60 shrink-0" />
                 <span className="text-white text-xs font-medium">{formatDateShort(checkIn)}</span>
-                <span className="bg-sig-500/20 border border-sig-500/30 text-white/60 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
+                <span className="bg-sig-500/20 border border-sig-500/30 text-white/60 text-[11px] font-bold px-2 py-0.5 rounded-full shrink-0 min-w-[2.5rem] text-center">{nights > 0 ? `${nights}박` : "-"}</span>
                 <span className="text-white text-xs font-medium">{formatDateShort(checkOut)}</span>
               </button>
 
@@ -324,11 +313,7 @@ export default function SearchBar({
           {activeDropdown === "guest" && (
             <div className="absolute bottom-full mb-3 right-5 md:right-8 lg:right-12 z-50 w-80 rounded-xl border border-warm-200 bg-white shadow-[0_12px_48px_rgba(0,0,0,0.15)] animate-fade-in">
               <div className="p-5 space-y-4">
-                <GuestCounter label="객실" icon={<BedDouble className="w-4 h-4 text-warm-400" />} value={rooms} min={1} max={5} onChange={setRooms} />
-                <div className="h-px bg-warm-100" />
-                <GuestCounter label="성인" description="만 13세 이상" value={adults} min={1} max={6} onChange={setAdults} />
-                <div className="h-px bg-warm-100" />
-                <GuestCounter label="아동" description="만 2~12세" value={children} min={0} max={4} onChange={setChildren} />
+                <GuestCounter label="성인" value={adults} min={1} max={6} onChange={setAdults} />
                 <p className="text-warm-400 text-[11px] leading-relaxed pt-1">기준인원 초과 시 추가 요금이 발생할 수 있습니다.</p>
               </div>
               <div className="border-t border-warm-100 px-5 py-3">
@@ -354,13 +339,8 @@ function InlineSearchBar({
   checkOut,
   handleDateSelect,
   nights,
-  rooms,
-  setRooms,
   adults,
   setAdults,
-  children,
-  setChildren,
-  totalGuests,
   handleSearch,
   formatDateShort,
   activeDropdown,
@@ -375,13 +355,8 @@ function InlineSearchBar({
   checkOut: Date | undefined;
   handleDateSelect: (ci: Date | undefined, co: Date | undefined) => void;
   nights: number;
-  rooms: number;
-  setRooms: (v: number) => void;
   adults: number;
   setAdults: (v: number) => void;
-  children: number;
-  setChildren: (v: number) => void;
-  totalGuests: number;
   handleSearch: () => void;
   formatDateShort: (d: Date | undefined) => string;
   activeDropdown: DropdownType;
@@ -432,7 +407,7 @@ function InlineSearchBar({
               onClick={() => toggleDropdown("calendar")}
               className="flex items-center justify-center shrink-0 cursor-pointer"
             >
-              <span className="bg-sig-500/15 border border-sig-500/20 text-warm-700 text-xs font-bold px-2.5 py-1 rounded-full">{nights > 0 ? `${nights}박` : "-"}</span>
+              <span className="bg-sig-500/15 border border-sig-500/20 text-warm-700 text-xs font-bold px-2.5 py-1 rounded-full min-w-[3rem] text-center">{nights > 0 ? `${nights}박` : "-"}</span>
             </button>
 
             <button
@@ -454,8 +429,8 @@ function InlineSearchBar({
           >
             <Users className="w-4 h-4 text-warm-500 shrink-0" />
             <div>
-              <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">객실 · 인원</p>
-              <p className="text-warm-900 text-[13px] font-medium">{rooms}실 · {totalGuests}명</p>
+              <p className="text-[10px] text-warm-400 tracking-[0.12em] uppercase leading-none mb-1">인원</p>
+              <p className="text-warm-900 text-[13px] font-medium">성인 {adults}명</p>
             </div>
           </button>
 
@@ -493,7 +468,7 @@ function InlineSearchBar({
               className="flex items-center gap-2 bg-white rounded-lg px-3 py-2 border border-warm-200/60 cursor-pointer"
             >
               <Users className="w-3.5 h-3.5 text-warm-500 shrink-0" />
-              <span className="text-warm-900 text-xs font-medium">{rooms}실 · {totalGuests}명</span>
+              <span className="text-warm-900 text-xs font-medium">성인 {adults}명</span>
             </button>
           </div>
 
@@ -504,7 +479,7 @@ function InlineSearchBar({
             >
               <CalendarDays className="w-3.5 h-3.5 text-warm-500 shrink-0" />
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkIn)}</span>
-              <span className="bg-sig-500/15 border border-sig-500/20 text-warm-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0">{nights > 0 ? `${nights}박` : "-"}</span>
+              <span className="bg-sig-500/15 border border-sig-500/20 text-warm-700 text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 min-w-[2.5rem] text-center">{nights > 0 ? `${nights}박` : "-"}</span>
               <span className="text-warm-900 text-xs font-medium">{formatDateShort(checkOut)}</span>
             </button>
 
@@ -550,11 +525,7 @@ function InlineSearchBar({
         {activeDropdown === "guest" && (
           <div className="absolute top-full mt-2 right-5 md:right-8 lg:right-12 z-50 w-80 rounded-xl border border-warm-200 bg-white shadow-[0_8px_40px_rgba(0,0,0,0.12)] animate-fade-in">
             <div className="p-5 space-y-4">
-              <GuestCounter label="객실" icon={<BedDouble className="w-4 h-4 text-warm-400" />} value={rooms} min={1} max={5} onChange={setRooms} />
-              <div className="h-px bg-warm-100" />
-              <GuestCounter label="성인" description="만 13세 이상" value={adults} min={1} max={6} onChange={setAdults} />
-              <div className="h-px bg-warm-100" />
-              <GuestCounter label="아동" description="만 2~12세" value={children} min={0} max={4} onChange={setChildren} />
+              <GuestCounter label="성인" value={adults} min={1} max={6} onChange={setAdults} />
               <p className="text-warm-400 text-[11px] leading-relaxed pt-1">기준인원 초과 시 추가 요금이 발생할 수 있습니다.</p>
             </div>
             <div className="border-t border-warm-100 px-5 py-3">

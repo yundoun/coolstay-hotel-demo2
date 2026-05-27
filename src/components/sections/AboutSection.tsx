@@ -2,10 +2,14 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { HotelConfig } from "@/config/hotel";
 
 interface Props {
-  about: HotelConfig["about"];
+  about: {
+    headline: string;
+    description: string;
+    features: { icon: string; title: string; description: string }[];
+    images: string[];
+  };
 }
 
 export default function AboutSection({ about }: Props) {
