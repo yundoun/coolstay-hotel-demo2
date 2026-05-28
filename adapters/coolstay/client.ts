@@ -200,8 +200,13 @@ export async function fetchStoreDetail(params: { checkIn?: string; checkOut?: st
     if (params.checkIn) qs.set("search_start", toCompactDate(params.checkIn));
     if (params.checkOut) qs.set("search_end", toCompactDate(params.checkOut));
 
-    const res = await fetch(`${getApiBase()}/api/v2/mobile/contents/details/list?${qs}`, { headers });
+    const url = `${getApiBase()}/api/v2/mobile/contents/details/list?${qs}`;
+    console.log("[fetchStoreDetail] url:", url);
+    const res = await fetch(url, { headers });
+    console.log("[fetchStoreDetail] status:", res.status);
     const data = await parseUpstream(res, "숙소 조회 실패");
+    console.log("[fetchStoreDetail] result keys:", Object.keys(data.result ?? {}));
+    console.log("[fetchStoreDetail] motel?:", !!data.result?.motel);
     return data.result.motel;
   });
 }
