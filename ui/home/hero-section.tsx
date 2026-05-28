@@ -9,13 +9,11 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 
 interface Props {
-  hero: {
-    slides: { image: string; title: string; subtitle: string }[];
-  };
+  images: string[];
   hotelName: string;
 }
 
-export default function HeroSection({ hero, hotelName }: Props) {
+export default function HeroSection({ images, hotelName }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
 
@@ -34,12 +32,12 @@ export default function HeroSection({ hero, hotelName }: Props) {
         loop
         className="h-full w-full"
       >
-        {hero.slides.map((slide, i) => (
+        {images.map((image, i) => (
           <SwiperSlide key={i}>
             <div className="relative h-full w-full">
               <div
                 className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[8000ms] ease-out"
-                style={{ backgroundImage: `url(${slide.image})` }}
+                style={{ backgroundImage: `url(${image})` }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
             </div>
@@ -47,31 +45,24 @@ export default function HeroSection({ hero, hotelName }: Props) {
         ))}
       </Swiper>
 
-      {/* Content overlay */}
+      {/* Content overlay — 공통 텍스트 */}
       <div className="absolute inset-0 z-10 flex items-end pointer-events-none">
         <div className="max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12 w-full pb-28 md:pb-32">
           <div className="max-w-lg md:max-w-xl pointer-events-auto">
-            <p className="text-white/40 text-[10px] md:text-[11px] tracking-[0.4em] uppercase mb-4 md:mb-5 opacity-0 animate-fade-in-up font-medium">
-              {hero.slides[activeIndex]?.subtitle}
+            <p className="text-white/40 text-[10px] md:text-[11px] tracking-[0.4em] uppercase mb-4 md:mb-5 font-medium">
+              WELCOME
             </p>
 
-            <h1
-              key={activeIndex}
-              className="text-[2rem] md:text-[3rem] lg:text-[3.5rem] text-white font-light leading-[1.15] mb-5 md:mb-7 whitespace-pre-line opacity-0 animate-fade-in-up animation-delay-100 tracking-tight"
-            >
-              {hero.slides[activeIndex]?.title}
-            </h1>
-
-            <p className="text-white/45 text-sm md:text-[15px] opacity-0 animate-fade-in-up animation-delay-200">
+            <h1 className="text-[2rem] md:text-[3rem] lg:text-[3.5rem] text-white font-light leading-[1.15] mb-5 md:mb-7 whitespace-pre-line tracking-tight">
               {hotelName}
-            </p>
+            </h1>
           </div>
         </div>
       </div>
 
       {/* Pagination */}
       <div className="absolute bottom-28 md:bottom-32 right-5 md:right-8 lg:right-12 z-10 flex items-center gap-1.5">
-        {hero.slides.map((_, i) => (
+        {images.map((_, i) => (
           <button
             key={i}
             onClick={() => swiperInstance?.slideTo(i + 1)}

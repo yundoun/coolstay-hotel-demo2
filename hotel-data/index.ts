@@ -1,2 +1,1 @@
-export { siteHotel, SITE_HOTEL_ID } from "./hotel";
-export { siteContent } from "./content";
+export { default as siteConfig } from "./gyeongju-palace";

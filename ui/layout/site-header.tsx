@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
+import { siteConfig } from "@/hotel-data";
 
 interface NavItem {
   label: string;
@@ -159,8 +160,8 @@ export default function Header({
           </div>
 
           <div className="mt-6 pt-4 border-t border-warm-100">
-            <p className="text-warm-400 text-[11px]">1588-0000</p>
-            <p className="text-warm-300 text-[10px] mt-1">&copy; 2024 CoolStay Hotel</p>
+            <p className="text-warm-400 text-[11px]">{siteConfig.phone}</p>
+            <p className="text-warm-300 text-[10px] mt-1">&copy; 2024 {siteConfig.name}</p>
           </div>
         </div>
       </div>

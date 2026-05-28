@@ -3,7 +3,7 @@
 import { Users, ArrowRight, ArrowLeft, Loader2 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
 import { useApiRooms } from "@/application/hooks/useApiRooms";
-import { SITE_HOTEL_ID } from "@/hotel-data";
+import { siteConfig } from "@/hotel-data";
 import { nightsBetween } from "@/domain/shared/utils";
 import type { ApiRoom } from "@/adapters/coolstay/types";
 
@@ -18,7 +18,7 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
   const { storeData, loading, error } = useApiRooms(store.checkIn, store.checkOut, nights);
 
   const handleSelect = (room: ApiRoom) => {
-    store.setHotel(SITE_HOTEL_ID);
+    store.setHotel(siteConfig.id);
     store.setRoom(room.packageKey);
     store.setApiRoom({
       motelKey: storeData?.motelKey ?? "",

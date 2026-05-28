@@ -12,7 +12,7 @@ import { useReservation } from "@/adapters/zustand/reservation-store";
 import { useTerms } from "@/application/hooks/useTerms";
 import { createGuestReservation } from "@/application/services/reservation-api";
 import { nightsBetween } from "@/domain/shared/utils";
-import { siteHotel } from "@/hotel-data";
+import { siteConfig } from "@/hotel-data";
 
 interface Props {
   onPrev: () => void;
@@ -69,7 +69,7 @@ export function Step4Review({ onPrev }: Props) {
       store.setReservationNumber(result.bookId);
 
       const params = new URLSearchParams({
-        hotelName: siteHotel.name,
+        hotelName: siteConfig.name,
         roomName: store.apiRoom.roomName,
         roomImage: store.apiRoom.roomImage || "",
         checkIn: store.checkIn,
@@ -262,7 +262,7 @@ export function Step4Review({ onPrev }: Props) {
               )}
               <div className="p-6 space-y-5">
                 <div>
-                  <h3 className="text-warm-900 font-medium text-lg">{siteHotel.name}</h3>
+                  <h3 className="text-warm-900 font-medium text-lg">{siteConfig.name}</h3>
                   <p className="text-warm-500 text-sm">{store.apiRoom.roomName}</p>
                 </div>
                 <div className="h-px bg-warm-100" />
