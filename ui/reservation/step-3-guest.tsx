@@ -33,6 +33,9 @@ export function Step3Guest({ onNext, onPrev }: Props) {
     if (!guestName || !isVerified) return;
     store.setGuestInfo({ name: guestName, phone: guestPhone });
     store.setPhoneVerified(true);
+    if (phoneVerify.authKey) {
+      store.setSmsAuth(phoneVerify.authKey, code);
+    }
     onNext();
   };
 

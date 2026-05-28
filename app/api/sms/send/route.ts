@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const { smsAuthKey } = await sendSmsCode(phone);
     return NextResponse.json({ sms_auth_key: smsAuthKey });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "인증번호 발송 실패";
-    return NextResponse.json({ error: msg }, { status: 502 });
+    console.error("[sms/send] error:", e);
+    return NextResponse.json({ error: "인증번호 발송에 실패했습니다. 잠시 후 다시 시도해 주세요." }, { status: 502 });
   }
 }

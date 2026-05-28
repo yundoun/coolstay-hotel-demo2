@@ -17,7 +17,7 @@ export async function GET(request: Request) {
     const policies = await fetchRefundPolicy({ storeKey, itemKey, packKey, checkIn, checkOut });
     return NextResponse.json({ refund_policies: policies });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "환불 규정 조회 실패";
-    return NextResponse.json({ error: msg }, { status: 502 });
+    console.error("[refund-policy] error:", e);
+    return NextResponse.json({ error: "환불 규정을 불러올 수 없습니다." }, { status: 502 });
   }
 }

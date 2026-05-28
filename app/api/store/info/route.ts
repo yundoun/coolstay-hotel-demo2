@@ -37,7 +37,7 @@ export async function GET() {
 
     return NextResponse.json(info);
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "숙소 정보 조회 실패";
-    return NextResponse.json({ message: msg }, { status: 502 });
+    console.error("[store/info] error:", err);
+    return NextResponse.json({ message: "숙소 정보를 불러올 수 없습니다." }, { status: 502 });
   }
 }

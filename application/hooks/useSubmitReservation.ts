@@ -36,6 +36,8 @@ export function useSubmitReservation() {
         basePrice: apiRoom.price,
         checkInTime: apiRoom.checkInTime,
         checkOutTime: apiRoom.checkOutTime,
+        smsAuthKey: s.smsAuthKey,
+        smsAuthCode: s.smsAuthCode,
       });
       s.setReservationNumber(result.bookId);
       router.push("/reservation/complete");

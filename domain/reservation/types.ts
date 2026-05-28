@@ -23,6 +23,8 @@ export type ReservationReadyParams = {
   basePrice: number;
   checkInTime: string;
   checkOutTime: string;
+  smsAuthKey: string;
+  smsAuthCode: string;
 };
 
 export type ReservationResult = {

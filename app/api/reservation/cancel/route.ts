@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   } catch (e) {
     console.error("[reservation cancel] error:", e);
     return NextResponse.json(
-      { message: e instanceof Error ? e.message : "예약 취소에 실패했습니다." },
+      { message: "예약 취소 처리 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요." },
       { status: 502 },
     );
   }

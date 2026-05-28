@@ -24,7 +24,7 @@ export async function GET(request: Request) {
   } catch (e) {
     console.error("[reservation lookup] error:", e);
     return NextResponse.json(
-      { message: e instanceof Error ? e.message : "예약 조회에 실패했습니다." },
+      { message: "예약 정보를 조회할 수 없습니다. 예약번호와 전화번호를 다시 확인해 주세요." },
       { status: 502 },
     );
   }

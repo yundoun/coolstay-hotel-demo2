@@ -64,6 +64,8 @@ export function Step4Review({ onPrev }: Props) {
         basePrice: store.apiRoom.price,
         checkInTime: store.apiRoom.checkInTime,
         checkOutTime: store.apiRoom.checkOutTime,
+        smsAuthKey: store.smsAuthKey,
+        smsAuthCode: store.smsAuthCode,
       });
 
       store.setReservationNumber(result.bookId);
@@ -143,21 +145,6 @@ export function Step4Review({ onPrev }: Props) {
                 <span className="text-warm-900">{store.guestPhone}</span>
               </div>
             </div>
-
-            {/* Daily prices */}
-            {store.apiRoom && store.apiRoom.dailyPrices.length > 1 && (
-              <>
-                <div className="h-px bg-warm-100" />
-                <div className="space-y-1 text-sm">
-                  {store.apiRoom.dailyPrices.map((p, i) => (
-                    <div key={i} className="flex justify-between text-warm-500">
-                      <span>{i + 1}박차</span>
-                      <span>{p.toLocaleString()}원</span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            )}
 
             <div className="h-px bg-warm-100" />
             <div className="flex justify-between items-center">

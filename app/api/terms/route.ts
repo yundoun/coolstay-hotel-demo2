@@ -6,8 +6,7 @@ export async function GET() {
     const terms = await fetchTermsList();
     return NextResponse.json({ terms });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "약관 조회 실패";
-    console.error("[api/terms] error:", msg, e);
-    return NextResponse.json({ error: msg }, { status: 502 });
+    console.error("[api/terms] error:", e);
+    return NextResponse.json({ error: "약관 정보를 불러올 수 없습니다." }, { status: 502 });
   }
 }

@@ -24,7 +24,7 @@ export async function GET(request: Request) {
       rooms,
     } satisfies RoomsResponse);
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "객실 조회 실패";
-    return NextResponse.json({ message: msg }, { status: 502 });
+    console.error("[store/rooms] error:", err);
+    return NextResponse.json({ message: "객실 정보를 불러올 수 없습니다. 잠시 후 다시 시도해 주세요." }, { status: 502 });
   }
 }

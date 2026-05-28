@@ -131,20 +131,6 @@ function RoomDetailModal({
             {room.checkOutTime && <span>체크아웃 {room.checkOutTime}시</span>}
           </div>
 
-          {/* daily prices */}
-          {room.dailyPrices.length > 1 && (
-            <div className="mb-5 p-3 bg-warm-50 rounded-lg">
-              <p className="text-xs text-warm-400 mb-2">일별 요금</p>
-              <div className="flex flex-wrap gap-2 text-sm text-warm-600">
-                {room.dailyPrices.map((p, i) => (
-                  <span key={i} className="bg-white px-2.5 py-1 rounded border border-warm-100">
-                    {i + 1}박: {p.toLocaleString()}원
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
           {/* total + select btn */}
           <div className="flex items-end justify-between pt-4 border-t border-warm-100">
             <div>
@@ -250,7 +236,7 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
 
   const handleSelect = (room: ApiRoom) => {
     store.setHotel(siteConfig.id);
-    store.setRoom(room.packageKey);
+    store.setRoom(room.itemKey);
     store.setApiRoom({
       motelKey: storeData?.motelKey ?? "",
       storeName: storeData?.storeName ?? "",

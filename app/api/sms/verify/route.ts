@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const { isVerified } = await verifySmsCode(sms_auth_key, sms_auth_code, phone_number);
     return NextResponse.json({ is_verified: isVerified });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "인증번호 확인 실패";
-    return NextResponse.json({ error: msg }, { status: 502 });
+    console.error("[sms/verify] error:", e);
+    return NextResponse.json({ error: "인증번호 확인에 실패했습니다. 잠시 후 다시 시도해 주세요." }, { status: 502 });
   }
 }
