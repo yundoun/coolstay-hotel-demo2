@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "coolstay_docs": {
+      "type": "http",
+      "url": "https://coolstay-docs-mcp.fly.dev/mcp"
+    }
+  }
+}
