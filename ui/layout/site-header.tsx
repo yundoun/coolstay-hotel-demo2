@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/hotel-data";
@@ -18,11 +19,8 @@ interface HeaderProps {
 }
 
 const DEFAULT_NAV: NavItem[] = [
-  { label: "인사말", href: "#greeting" },
-  { label: "호텔 소개", href: "#about" },
-  { label: "객실", href: "#rooms" },
-  { label: "예약", href: "#reservation", variant: "button" },
-  { label: "오시는 길", href: "#location" },
+  { label: "예약 조회", href: "/reservation-lookup" },
+  { label: "객실 예약", href: "#reservation", variant: "button" },
 ];
 
 export default function Header({
@@ -50,11 +48,15 @@ export default function Header({
 
   const showLight = !transparent || scrolled;
 
+  const router = useRouter();
+
   const handleNavClick = (href: string) => {
     setMobileOpen(false);
     if (href.startsWith("#")) {
       const el = document.getElementById(href.slice(1));
       if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(href);
     }
   };
 
