@@ -21,7 +21,7 @@ const DEFAULT_NAV: NavItem[] = [
   { label: "인사말", href: "#greeting" },
   { label: "호텔 소개", href: "#about" },
   { label: "객실", href: "#rooms" },
-  { label: "예약", href: "#booking", variant: "button" },
+  { label: "예약", href: "#reservation", variant: "button" },
   { label: "오시는 길", href: "#location" },
 ];
 

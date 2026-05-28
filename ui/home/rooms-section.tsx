@@ -48,7 +48,7 @@ export default function RoomsSection({ rooms, onSelectRoom }: Props) {
     if (onSelectRoom) {
       onSelectRoom(roomId);
     }
-    const bookingEl = document.getElementById("booking");
+    const bookingEl = document.getElementById("reservation");
     if (bookingEl) bookingEl.scrollIntoView({ behavior: "smooth" });
   };
 
