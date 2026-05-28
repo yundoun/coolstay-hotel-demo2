@@ -24,6 +24,7 @@ export default function HomePage() {
       <HeroSection
         images={siteConfig.heroImages.slice(0, 5)}
         hotelName={siteConfig.name}
+        titleSize={siteConfig.heroTitleSize}
       />
 
       <GreetingSection

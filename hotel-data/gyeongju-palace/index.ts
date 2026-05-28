@@ -29,6 +29,7 @@ const config: SiteConfig = {
     "https://storage.googleapis.com/coolstay-dev/v2/owner/shark1230/2024/05/28/10/95a3d91f0a65486e88f0589862da9b1e.jpg",
   ],
   shortConcept: "황리단길 도보 6분, 경주의 중심에서 만나는 프리미엄 호텔",
+  heroTitleSize: "sm",
 
   /* ── 인사말 섹션 ────────────────────────────── */
   greeting: {
