@@ -1,16 +1,20 @@
 /** CoolStay upstream API 클라이언트 */
 
-const API_BASE = process.env.COOLSTAY_API_BASE;
-
 /** yyyy-MM-dd → yyyyMMdd (검수기 내부 서비스 호환) */
 function toCompactDate(iso: string): string {
   return iso.replace(/-/g, "");
 }
-export const MOTEL_KEY = process.env.COOLSTAY_MOTEL_KEY ?? "";
 
 export function getApiBase() {
-  if (!API_BASE) throw new Error("COOLSTAY_API_BASE 미설정");
-  return API_BASE;
+  const base = process.env.COOLSTAY_API_BASE;
+  if (!base) throw new Error("COOLSTAY_API_BASE 미설정");
+  return base;
+}
+
+export function getMotelKey() {
+  const key = process.env.COOLSTAY_MOTEL_KEY;
+  if (!key) throw new Error("COOLSTAY_MOTEL_KEY 미설정");
+  return key;
 }
 
 /* ── 토큰 캐싱 (5분 TTL 토큰 → 4분 캐싱) ── */
@@ -190,9 +194,9 @@ export async function fetchRefundPolicy(params: {
 
 /** details/list upstream 호출 공통 */
 export async function fetchStoreDetail(params: { checkIn?: string; checkOut?: string }) {
-  if (!MOTEL_KEY) throw new Error("COOLSTAY_MOTEL_KEY 미설정");
+  const motelKey = getMotelKey();
   return callWithRetry(async (headers) => {
-    const qs = new URLSearchParams({ motel_key: MOTEL_KEY, pure_click_yn: "N" });
+    const qs = new URLSearchParams({ motel_key: motelKey, pure_click_yn: "N" });
     if (params.checkIn) qs.set("search_start", toCompactDate(params.checkIn));
     if (params.checkOut) qs.set("search_end", toCompactDate(params.checkOut));
 
