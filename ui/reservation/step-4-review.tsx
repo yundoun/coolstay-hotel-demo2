@@ -1,18 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   CalendarDays,
   Users,
   ArrowLeft,
   Banknote,
   Loader2,
+  CircleCheck,
 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
 import { useTerms } from "@/application/hooks/useTerms";
 import { createGuestReservation } from "@/application/services/reservation-api";
 import { nightsBetween } from "@/domain/shared/utils";
 import { siteConfig } from "@/hotel-data";
+import { TermsModal } from "./terms-modal";
 
 interface Props {
   onPrev: () => void;
@@ -32,6 +34,12 @@ export function Step4Review({ onPrev }: Props) {
   const [agreed, setAgreed] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [modalTerm, setModalTerm] = useState<{ name: string; url: string } | null>(null);
+
+  const openTerm = useCallback((name: string, url: string) => {
+    setModalTerm({ name, url });
+  }, []);
+  const closeTerm = useCallback(() => setModalTerm(null), []);
 
   const requiredTerms = terms.filter((t) => t.required);
   const allRequiredAgreed = requiredTerms.every((t) => agreed[t.code]);
@@ -148,14 +156,26 @@ export function Step4Review({ onPrev }: Props) {
 
             <div className="h-px bg-warm-100" />
             <div className="flex justify-between items-center">
-              <span className="text-warm-900 font-medium flex items-center gap-2">
-                <Banknote className="w-5 h-5 text-warm-500" />
-                현장결제 금액
-              </span>
+              <span className="text-warm-500 font-medium">총 금액</span>
               <span className="text-warm-900 text-2xl font-bold">
                 {store.apiRoom?.price.toLocaleString() ?? 0}원
               </span>
             </div>
+          </div>
+
+          {/* Payment method */}
+          <div className="bg-white border border-warm-200/50 rounded-sm p-5 md:p-7">
+            <h4 className="text-warm-900 font-medium text-lg mb-4">결제 방법</h4>
+            <label className="flex items-center gap-3 p-3.5 border-2 border-sig-500 bg-sig-500/[0.04] rounded-sm cursor-default">
+              <CircleCheck className="w-5 h-5 text-sig-600 shrink-0" />
+              <div className="flex-1">
+                <span className="text-warm-900 font-medium text-sm flex items-center gap-2">
+                  <Banknote className="w-4 h-4 text-warm-500" />
+                  현장결제
+                </span>
+                <p className="text-warm-400 text-xs mt-0.5">체크인 시 프론트에서 결제합니다</p>
+              </div>
+            </label>
           </div>
 
           {/* Terms */}
@@ -197,14 +217,16 @@ export function Step4Review({ onPrev }: Props) {
                       )}
                     </span>
                     {t.url && (
-                      <a
-                        href={t.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-warm-400 text-xs underline hover:text-warm-600"
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          openTerm(t.name, t.url);
+                        }}
+                        className="text-warm-400 text-xs underline hover:text-warm-600 transition-colors"
                       >
                         보기
-                      </a>
+                      </button>
                     )}
                   </label>
                 ))}
@@ -272,17 +294,30 @@ export function Step4Review({ onPrev }: Props) {
                   </div>
                 </div>
                 <div className="h-px bg-warm-100" />
-                <div className="flex justify-between items-center">
-                  <span className="text-warm-900 font-medium">현장결제</span>
-                  <span className="text-warm-900 text-2xl font-bold">
-                    {store.apiRoom.price.toLocaleString()}원
-                  </span>
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-warm-900 font-medium">총 금액</span>
+                    <span className="text-warm-900 text-2xl font-bold">
+                      {store.apiRoom.price.toLocaleString()}원
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-warm-400 text-xs">
+                    <Banknote className="w-3.5 h-3.5" />
+                    <span>현장결제</span>
+                  </div>
                 </div>
               </div>
             </div>
           )}
         </div>
       </div>
+
+      <TermsModal
+        open={!!modalTerm}
+        title={modalTerm?.name ?? ""}
+        url={modalTerm?.url ?? ""}
+        onClose={closeTerm}
+      />
     </div>
   );
 }

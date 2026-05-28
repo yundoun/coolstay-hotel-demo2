@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
 import { usePhoneVerification } from "@/application/hooks/usePhoneVerification";
+import { prefetchTerms } from "@/application/hooks/useTerms";
 import { nightsBetween, formatKoDate } from "@/domain/shared/utils";
 
 interface Props {
@@ -36,6 +37,14 @@ export function Step3Guest({ onNext, onPrev }: Props) {
     if (phoneVerify.authKey) {
       store.setSmsAuth(phoneVerify.authKey, code);
     }
+    // Step 4 진입 전에 약관 데이터를 미리 불러오기 시작
+    prefetchTerms({
+      storeKey: store.apiRoom?.motelKey ?? null,
+      itemKey: store.roomId ?? null,
+      packKey: store.apiRoom?.packageKey ?? null,
+      checkIn: store.checkIn,
+      checkOut: store.checkOut,
+    });
     onNext();
   };
 
