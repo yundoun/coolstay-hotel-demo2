@@ -70,12 +70,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="pt-6 border-t border-white/[0.06] flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
-          <div className="flex items-center gap-4 text-warm-600 text-[11px]">
-            <span className="cursor-pointer hover:text-warm-300 transition-colors">이용약관</span>
-            <span className="cursor-pointer hover:text-warm-300 transition-colors">개인정보처리방침</span>
-          </div>
-          <p className="text-warm-600 text-[11px]">&copy; 2024 {siteConfig.name}. All rights reserved.</p>
+        <div className="pt-6 border-t border-white/[0.06] text-center">
+          <p className="text-warm-600 text-[11px]">&copy; 2026 {siteConfig.name}. All rights reserved.</p>
         </div>
       </div>
     </footer>
