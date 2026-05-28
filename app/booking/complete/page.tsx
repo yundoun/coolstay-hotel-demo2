@@ -7,16 +7,8 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 import {
   Check,
-  Download,
   Home,
-  Phone,
-  Clock,
-  Sparkles,
 } from "lucide-react";
-
-const HEADER_NAV = [
-  { label: "홈으로", href: "/" as const },
-];
 
 function BookingCompleteContent() {
   const params = useSearchParams();
@@ -79,7 +71,7 @@ function BookingCompleteContent() {
               <div className="flex items-center gap-4 text-sm text-warm-500">
                 <span>객실 {1}</span>
                 <span className="text-warm-200">|</span>
-                <span>대인 {guests} / 소인 0</span>
+                <span>인원 {guests}명</span>
               </div>
             </div>
             <div className="hidden md:flex flex-col justify-center px-6 py-5 border-l border-warm-100">
@@ -120,7 +112,7 @@ function BookingCompleteContent() {
         </div>
 
         {/* Action buttons */}
-        <div className="flex items-center gap-3 justify-center mb-10">
+        <div className="flex items-center gap-3 justify-center">
           <Link
             href="/"
             className="flex-1 flex items-center justify-center gap-2 py-3.5 border border-warm-200 rounded-lg text-warm-600 hover:border-warm-300 hover:text-warm-900 transition-colors text-sm"
@@ -128,35 +120,6 @@ function BookingCompleteContent() {
             <Home className="w-4 h-4" />
             홈으로
           </Link>
-          <button className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-warm-800 text-white rounded-lg hover:bg-warm-900 transition-colors text-sm font-medium">
-            <Download className="w-4 h-4" />
-            예약내역 확인
-          </button>
-        </div>
-
-        {/* Info cards */}
-        <div className="grid grid-cols-3 gap-3">
-          <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
-            <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
-              <Clock className="w-4 h-4 text-warm-500" />
-            </div>
-            <p className="text-warm-900 text-xs font-medium">현장결제</p>
-            <p className="text-warm-400 text-xs mt-0.5">체크인 시</p>
-          </div>
-          <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
-            <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
-              <Sparkles className="w-4 h-4 text-warm-500" />
-            </div>
-            <p className="text-warm-900 text-xs font-medium">무료 취소</p>
-            <p className="text-warm-400 text-xs mt-0.5">환불규정 확인</p>
-          </div>
-          <div className="text-center bg-white border border-warm-200/30 rounded-lg px-3 py-5">
-            <div className="w-9 h-9 rounded-full bg-warm-100 flex items-center justify-center mx-auto mb-2.5">
-              <Phone className="w-4 h-4 text-warm-500" />
-            </div>
-            <p className="text-warm-900 text-xs font-medium">고객센터</p>
-            <p className="text-warm-400 text-xs mt-0.5">꿀스테이</p>
-          </div>
         </div>
       </div>
     </section>
@@ -166,7 +129,7 @@ function BookingCompleteContent() {
 export default function BookingCompletePage() {
   return (
     <main className="min-h-screen bg-[var(--warm-50)] flex flex-col">
-      <Header navItems={HEADER_NAV} />
+      <Header />
       <div className="pt-14 md:pt-16" />
       <Suspense
         fallback={

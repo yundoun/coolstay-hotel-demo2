@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   CalendarDays,
   Users,
@@ -13,6 +13,14 @@ import { useReservation } from "@/adapters/zustand/reservation-store";
 import { usePhoneVerification } from "@/application/hooks/usePhoneVerification";
 import { prefetchTerms } from "@/application/hooks/useTerms";
 import { nightsBetween, formatKoDate } from "@/domain/shared/utils";
+
+/** 숫자만 추출 후 전화번호 형식(010-1234-5678)으로 포맷 */
+function formatPhoneNumber(raw: string): string {
+  const digits = raw.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+}
 
 interface Props {
   onNext: () => void;
@@ -29,10 +37,21 @@ export function Step3Guest({ onNext, onPrev }: Props) {
   const [code, setCode] = useState("");
 
   const isVerified = phoneVerify.status === "verified";
+  const isExpired = phoneVerify.status === "expired";
+
+  // 만료 시 인증코드 초기화 + 재발송 시 인증코드 초기화
+  const prevStatus = useRef(phoneVerify.status);
+  const statusChanged = prevStatus.current !== phoneVerify.status;
+  if (statusChanged) {
+    if (phoneVerify.status === "expired" || (phoneVerify.status === "sent" && prevStatus.current !== "verifying")) {
+      setCode("");
+    }
+    prevStatus.current = phoneVerify.status;
+  }
 
   const handleNext = () => {
     if (!guestName || !isVerified) return;
-    store.setGuestInfo({ name: guestName, phone: guestPhone });
+    store.setGuestInfo({ name: guestName, phone: guestPhone.replace(/\D/g, "") });
     store.setPhoneVerified(true);
     if (phoneVerify.authKey) {
       store.setSmsAuth(phoneVerify.authKey, code);
@@ -115,16 +134,16 @@ export function Step3Guest({ onNext, onPrev }: Props) {
                     <input
                       type="tel"
                       value={guestPhone}
-                      onChange={(e) => setGuestPhone(e.target.value)}
+                      onChange={(e) => setGuestPhone(formatPhoneNumber(e.target.value))}
                       disabled={isVerified}
                       className="w-full bg-warm-50 border border-warm-200 rounded-sm pl-10 pr-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
-                      placeholder="01012345678"
+                      placeholder="010-1234-5678"
                     />
                   </div>
                   <button
                     type="button"
-                    onClick={() => phoneVerify.send(guestPhone)}
-                    disabled={isVerified || phoneVerify.status === "sending" || !guestPhone || guestPhone.replace(/[^0-9]/g, "").length < 10}
+                    onClick={() => phoneVerify.send(guestPhone.replace(/\D/g, ""))}
+                    disabled={isVerified || phoneVerify.status === "sending" || !guestPhone || guestPhone.replace(/\D/g, "").length < 10}
                     className="shrink-0 px-5 py-3 bg-warm-800 text-white text-sm font-medium rounded-sm hover:bg-warm-700 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                   >
                     {phoneVerify.status === "idle" && "인증번호 발송"}
@@ -137,7 +156,7 @@ export function Step3Guest({ onNext, onPrev }: Props) {
               </div>
 
               {/* Verification code */}
-              {(phoneVerify.status === "sent" || phoneVerify.status === "expired") && (
+              {(phoneVerify.status === "sent" || phoneVerify.status === "expired" || phoneVerify.status === "verifying") && (
                 <div className="animate-fade-in">
                   <label className="block text-warm-500 text-[10px] tracking-[0.2em] uppercase mb-2">인증번호</label>
                   <div className="flex gap-2">
@@ -148,7 +167,8 @@ export function Step3Guest({ onNext, onPrev }: Props) {
                         maxLength={6}
                         value={code}
                         onChange={(e) => setCode(e.target.value.replace(/\D/g, ""))}
-                        className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors tracking-[0.3em] text-center font-medium"
+                        disabled={isExpired}
+                        className="w-full bg-warm-50 border border-warm-200 rounded-sm px-4 py-3 text-warm-900 placeholder:text-warm-300 focus:border-sig-500 focus:outline-none transition-colors tracking-[0.3em] text-center font-medium disabled:opacity-60 disabled:cursor-not-allowed"
                         placeholder="인증번호 6자리"
                       />
                       {phoneVerify.remaining > 0 && (
@@ -159,15 +179,17 @@ export function Step3Guest({ onNext, onPrev }: Props) {
                     </div>
                     <button
                       type="button"
-                      onClick={() => phoneVerify.verify(code, guestPhone)}
-                      disabled={code.length < 6}
+                      onClick={() => phoneVerify.verify(code, guestPhone.replace(/\D/g, ""))}
+                      disabled={code.length < 6 || isExpired}
                       className="shrink-0 px-5 py-3 bg-sig-500 text-warm-900 text-sm font-semibold rounded-sm hover:bg-sig-400 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       확인
                     </button>
                   </div>
-                  <p className="text-warm-400 text-xs mt-2">
-                    입력하신 휴대폰 번호로 인증번호가 발송되었습니다.
+                  <p className={`text-xs mt-2 ${isExpired ? "text-red-500" : "text-warm-400"}`}>
+                    {isExpired
+                      ? "인증 시간이 만료되었습니다. 재발송 버튼을 눌러 다시 인증해 주세요."
+                      : "입력하신 휴대폰 번호로 인증번호가 발송되었습니다."}
                   </p>
                 </div>
               )}

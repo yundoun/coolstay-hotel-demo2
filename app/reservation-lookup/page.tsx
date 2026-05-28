@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Header from "@/ui/layout/site-header";
 import Footer from "@/ui/layout/site-footer";
 import Image from "next/image";
@@ -55,25 +56,29 @@ const STATUS_CONFIG: Record<
   },
 };
 
-/* ── 날짜 포맷 ── */
+/* ── 날짜 파싱 (timestamp / "20260601" / "2026-06-01" 모두 지원) ── */
+function parseDate(raw: string): Date {
+  // Unix timestamp (초 단위) — 숫자로만 구성되고 길이 10자리 내외
+  if (/^\d{9,11}$/.test(raw)) {
+    return new Date(Number(raw) * 1000);
+  }
+  // "20260601" or "2026-06-01" 등
+  const cleaned = raw.replace(/[-T:]/g, "").slice(0, 8);
+  return new Date(Number(cleaned.slice(0, 4)), Number(cleaned.slice(4, 6)) - 1, Number(cleaned.slice(6, 8)));
+}
+
 function formatDate(raw: string): string {
   if (!raw) return "";
-  // "20260601" or "2026-06-01" or "2026-06-01T..."
-  const cleaned = raw.replace(/[-T:]/g, "").slice(0, 8);
-  const y = cleaned.slice(0, 4);
-  const m = cleaned.slice(4, 6);
-  const d = cleaned.slice(6, 8);
-  const date = new Date(Number(y), Number(m) - 1, Number(d));
+  const date = parseDate(raw);
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
   const days = ["일", "월", "화", "수", "목", "금", "토"];
   return `${y}.${m}.${d}(${days[date.getDay()]})`;
 }
 
 function nightCount(checkIn: string, checkOut: string): number {
-  const parse = (s: string) => {
-    const c = s.replace(/[-T:]/g, "").slice(0, 8);
-    return new Date(Number(c.slice(0, 4)), Number(c.slice(4, 6)) - 1, Number(c.slice(6, 8)));
-  };
-  const diff = parse(checkOut).getTime() - parse(checkIn).getTime();
+  const diff = parseDate(checkOut).getTime() - parseDate(checkIn).getTime();
   return Math.max(1, Math.ceil(diff / (1000 * 60 * 60 * 24)));
 }
 
@@ -508,14 +513,14 @@ function ResultView({
         )}
       </div>
 
-      {/* ── 취소 확인 모달 ── */}
-      {showCancelConfirm && (
+      {/* ── 취소 확인 모달 (portal로 body에 렌더링) ── */}
+      {showCancelConfirm && createPortal(
         <>
           <div
             className="fixed inset-0 bg-black/40 z-[60] animate-fade-in"
             onClick={onCancelDismiss}
           />
-          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[61] max-w-[400px] mx-auto bg-white rounded-2xl p-6 shadow-xl animate-terms-slide-up">
+          <div className="fixed inset-x-4 top-1/2 -translate-y-1/2 z-[61] max-w-[400px] mx-auto bg-white rounded-2xl p-6 shadow-xl animate-modal-pop">
             <button
               onClick={onCancelDismiss}
               className="absolute top-4 right-4 text-warm-400 hover:text-warm-600 transition-colors"
@@ -559,7 +564,8 @@ function ResultView({
               </button>
             </div>
           </div>
-        </>
+        </>,
+        document.body
       )}
     </div>
   );
