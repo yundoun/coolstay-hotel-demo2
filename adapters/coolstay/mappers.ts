@@ -21,6 +21,7 @@ export function toApiRoom(item: any): {
   name: string;
   maxGuests: number;
   image: string | null;
+  images: { url: string; thumbUrl: string }[];
   price: number;
   dailyPrices: number[];
   checkInTime: string;
@@ -57,6 +58,10 @@ export function toApiRoom(item: any): {
     name: item.name,
     maxGuests: Number(extras.MAX ?? 2),
     image: item.images?.[0]?.thumb_url ?? null,
+    images: (item.images ?? []).map((img: any) => ({
+      url: img.url,
+      thumbUrl: img.thumb_url,
+    })),
     price: sub.price ?? dailyPrices.reduce((a: number, b: number) => a + b, 0),
     dailyPrices,
     checkInTime: stime,

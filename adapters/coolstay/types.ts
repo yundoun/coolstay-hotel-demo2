@@ -6,6 +6,7 @@ export type ApiRoom = {
   name: string;
   maxGuests: number;
   image: string | null;
+  images: { url: string; thumbUrl: string }[];
   price: number;
   dailyPrices: number[];
   checkInTime: string;
