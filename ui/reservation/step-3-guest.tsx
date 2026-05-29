@@ -220,24 +220,6 @@ export function Step3Guest({ onNext, onPrev }: Props) {
             </div>
           </div>
 
-          {/* Nav buttons */}
-          <div className="flex items-center justify-between pt-2">
-            <button
-              onClick={onPrev}
-              className="flex items-center gap-2 text-warm-500 text-sm hover:text-warm-700 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              객실 다시 선택
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={!guestName || !isVerified}
-              className="flex items-center gap-2 px-8 py-3 bg-sig-500 text-warm-900 font-semibold rounded-sm hover:bg-sig-400 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              예약 확인
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
         </div>
 
         {/* Sidebar */}
@@ -280,6 +262,27 @@ export function Step3Guest({ onNext, onPrev }: Props) {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Sticky bottom nav */}
+      <div className="sticky bottom-0 z-30 -mx-4 mt-10 pointer-events-none px-4 py-4 sm:-mx-0 sm:px-0">
+        <div className="pointer-events-auto rounded-lg border border-warm-200/60 bg-white/90 backdrop-blur-sm px-4 py-4 flex items-center justify-between">
+          <button
+            onClick={onPrev}
+            className="flex items-center gap-2 text-warm-500 text-sm hover:text-warm-700 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            객실 다시 선택
+          </button>
+          <button
+            onClick={handleNext}
+            disabled={!guestName || !isVerified}
+            className="flex items-center gap-2 px-8 py-3 bg-sig-500 text-warm-900 font-semibold rounded-sm hover:bg-sig-400 transition-all duration-300 active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            예약 확인
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </div>

@@ -270,23 +270,6 @@ export function Step4Review({ onPrev }: Props) {
             </div>
           )}
 
-          {/* Action buttons */}
-          <div className="flex items-center justify-between pt-2">
-            <button
-              onClick={onPrev}
-              className="flex items-center gap-2 text-warm-500 text-sm hover:text-warm-700 transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              예약자 정보 수정
-            </button>
-            <button
-              onClick={handleSubmit}
-              disabled={isSubmitting || !allRequiredAgreed}
-              className="px-10 py-3.5 bg-sig-500 text-warm-900 font-bold text-lg rounded-sm hover:bg-sig-400 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(255,198,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed tracking-wide"
-            >
-              {isSubmitting ? "예약 처리 중..." : "예약하기"}
-            </button>
-          </div>
         </div>
 
         {/* Sidebar */}
@@ -339,6 +322,26 @@ export function Step4Review({ onPrev }: Props) {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Sticky bottom nav */}
+      <div className="sticky bottom-0 z-30 -mx-4 mt-10 pointer-events-none px-4 py-4 sm:-mx-0 sm:px-0">
+        <div className="pointer-events-auto rounded-lg border border-warm-200/60 bg-white/90 backdrop-blur-sm px-4 py-4 flex items-center justify-between">
+          <button
+            onClick={onPrev}
+            className="flex items-center gap-2 text-warm-500 text-sm hover:text-warm-700 transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            예약자 정보 수정
+          </button>
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !allRequiredAgreed}
+            className="px-10 py-3.5 bg-sig-500 text-warm-900 font-bold text-lg rounded-sm hover:bg-sig-400 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(255,198,0,0.3)] disabled:opacity-50 disabled:cursor-not-allowed tracking-wide"
+          >
+            {isSubmitting ? "예약 처리 중..." : "예약하기"}
+          </button>
         </div>
       </div>
 
