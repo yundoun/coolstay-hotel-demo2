@@ -63,6 +63,7 @@ export default function HomePage() {
             </div>
             <h2 className="text-2xl md:text-3xl lg:text-[2.25rem] text-warm-900 font-light leading-snug tracking-tight">
               온라인 예약
+              <span className="text-lg md:text-xl lg:text-2xl text-warm-900 font-light ml-2">(Powered by 꿀스테이)</span>
             </h2>
           </div>
           <OnepageReservation />
@@ -74,8 +75,6 @@ export default function HomePage() {
           address: siteConfig.address,
           infoItems: [
             { label: "연락처", value: siteConfig.phone },
-            { label: "체크인", value: siteConfig.checkInTime },
-            { label: "체크아웃", value: siteConfig.checkOutTime },
             ...(directions.parkingInfo
               ? [{ label: "주차", value: directions.parkingInfo }]
               : []),

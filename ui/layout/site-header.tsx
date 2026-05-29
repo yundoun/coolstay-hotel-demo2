@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { siteConfig } from "@/hotel-data";
 
@@ -73,20 +72,11 @@ export default function Header({
           <div className="h-14 md:h-16 flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-3">
-              <Link href="/" className="flex items-center gap-2 group">
-                <Image
-                  src="/coolstay_logo.png"
-                  alt="꿀스테이"
-                  width={110}
-                  height={28}
-                  className={`h-5 md:h-6 w-auto transition-all duration-500 group-hover:opacity-80 ${
-                    !showLight ? "brightness-0 invert" : ""
-                  }`}
-                />
-                <span className={`text-xs font-medium tracking-widest uppercase transition-colors duration-500 ${
-                  showLight ? "text-warm-500" : "text-white/60"
+              <Link href="/" className="group">
+                <span className={`text-[15px] md:text-[17px] font-semibold tracking-tight transition-all duration-500 group-hover:opacity-75 ${
+                  showLight ? "text-warm-900" : "text-white"
                 }`}>
-                  Hotel
+                  {siteConfig.name}
                 </span>
               </Link>
             </div>
@@ -108,8 +98,8 @@ export default function Header({
                     key={item.href}
                     href={item.href}
                     onClick={(e) => { e.preventDefault(); handleNavClick(item.href); }}
-                    className={`text-sm transition-colors duration-500 hover:text-warm-500 ${
-                      showLight ? "text-warm-500" : "text-white/70"
+                    className={`text-sm font-medium transition-colors duration-500 hover:text-warm-500 ${
+                      showLight ? "text-warm-700" : "text-white/90"
                     }`}
                   >
                     {item.label}

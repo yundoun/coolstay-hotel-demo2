@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { Phone } from "lucide-react";
 import { siteConfig } from "@/hotel-data";
 
@@ -16,15 +15,10 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 mb-10 md:mb-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <Image
-                src="/coolstay_logo.png"
-                alt="꿀스테이"
-                width={80}
-                height={22}
-                className="h-4 w-auto brightness-0 invert opacity-60"
-              />
-              <span className="text-[10px] font-medium tracking-widest uppercase text-warm-500">Hotel</span>
+            <div className="mb-4">
+              <span className="text-[15px] font-semibold tracking-tight text-white/80">
+                {siteConfig.name}
+              </span>
             </div>
             <p className="text-warm-500 text-xs leading-relaxed">
               {siteConfig.name}<br />
@@ -62,9 +56,6 @@ export default function Footer() {
                 <Phone className="w-3.5 h-3.5 text-warm-500" />
                 <span>{siteConfig.phone}</span>
               </div>
-              <p className="text-warm-600 mt-1">
-                체크인 {siteConfig.checkInTime} &middot; 체크아웃 {siteConfig.checkOutTime}
-              </p>
             </div>
           </div>
         </div>
