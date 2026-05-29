@@ -39,8 +39,8 @@ const STATUS_CONFIG: Record<
   BEFORE: {
     label: "예약 확정",
     icon: CheckCircle2,
-    className: "text-emerald-700",
-    bg: "bg-emerald-50 border-emerald-200/60",
+    className: "text-green-600",
+    bg: "bg-green-100 border-green-400/60",
   },
   AFTER: {
     label: "이용 완료",
@@ -420,21 +420,26 @@ function ResultView({
         {/* 구분선 */}
         <div className="mx-5 border-t border-warm-100" />
 
-        {/* 체크인/체크아웃 */}
-        <div className="grid grid-cols-2 divide-x divide-warm-100 px-5 py-4">
-          <div className="pr-4">
-            <p className="text-warm-400 text-[11px] mb-1">체크인</p>
-            <p className="text-warm-900 text-sm font-medium">{formatDate(booking.checkIn)}</p>
+        {/* 체크인/체크아웃 + N박 커넥터 */}
+        <div className="relative px-5 py-4">
+          <div className="grid grid-cols-[1fr_auto_1fr] items-center">
+            {/* 체크인 */}
+            <div>
+              <p className="text-warm-400 text-[11px] mb-1">체크인</p>
+              <p className="text-warm-900 text-sm font-medium">{formatDate(booking.checkIn)}</p>
+            </div>
+            {/* N박 커넥터 */}
+            <div className="flex flex-col items-center px-3">
+              <span className="px-2.5 py-0.5 rounded-full bg-warm-800 text-white text-[11px] font-medium">
+                {nights}박
+              </span>
+            </div>
+            {/* 체크아웃 */}
+            <div className="text-right">
+              <p className="text-warm-400 text-[11px] mb-1">체크아웃</p>
+              <p className="text-warm-900 text-sm font-medium">{formatDate(booking.checkOut)}</p>
+            </div>
           </div>
-          <div className="pl-4">
-            <p className="text-warm-400 text-[11px] mb-1">체크아웃</p>
-            <p className="text-warm-900 text-sm font-medium">{formatDate(booking.checkOut)}</p>
-          </div>
-        </div>
-        <div className="mx-5 mb-0.5">
-          <span className="inline-block px-2 py-0.5 rounded bg-warm-50 text-warm-500 text-[11px]">
-            {nights}박
-          </span>
         </div>
       </div>
 
@@ -488,7 +493,7 @@ function ResultView({
           {booking.payment.refundCharge != null && booking.payment.refundCharge > 0 && (
             <div className="flex items-center justify-between text-sm">
               <span className="text-warm-400">환불 금액</span>
-              <span className="text-emerald-600">{booking.payment.refundCharge.toLocaleString()}원</span>
+              <span className="text-green-600 font-medium">{booking.payment.refundCharge.toLocaleString()}원</span>
             </div>
           )}
         </div>
@@ -506,7 +511,7 @@ function ResultView({
         {canCancel && (
           <button
             onClick={onCancel}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 border border-red-200/60 text-red-500 rounded-lg hover:bg-red-50 hover:border-red-300 transition-all text-sm"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all text-sm font-medium"
           >
             예약 취소
           </button>
