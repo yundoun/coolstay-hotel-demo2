@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import { siteConfig } from "@/hotel-data";
+import { ReservationResetGuard } from "@/ui/layout/reservation-reset-guard";
 import "./globals.css";
 
 const notoSansKR = Noto_Sans_KR({
@@ -21,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={notoSansKR.variable}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        <ReservationResetGuard />
+        {children}
+      </body>
     </html>
   );
 }
