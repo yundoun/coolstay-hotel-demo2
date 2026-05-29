@@ -126,61 +126,8 @@ export function Step4Review({ onPrev }: Props) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10">
-        {/* Main */}
+        {/* Main — 액션 영역 (결제·약관) */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Reservation summary */}
-          <div className="bg-white border border-warm-200/50 rounded-sm p-5 md:p-7 space-y-5">
-            <h4 className="text-warm-900 font-medium text-lg">예약 정보</h4>
-
-            {store.apiRoom && (
-              <div className="flex gap-4">
-                {store.apiRoom.roomImage && (
-                  <div
-                    className="w-24 h-24 rounded-sm bg-cover bg-center shrink-0"
-                    style={{ backgroundImage: `url(${store.apiRoom.roomImage})` }}
-                  />
-                )}
-                <div>
-                  <p className="text-warm-900 font-medium">{store.apiRoom.roomName}</p>
-                  <p className="text-warm-500 text-sm mt-1">최대 {store.apiRoom.maxGuests}인</p>
-                </div>
-              </div>
-            )}
-
-            <div className="h-px bg-warm-100" />
-
-            <div className="space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-warm-500 flex items-center gap-2">
-                  <CalendarDays className="w-4 h-4" /> 일정
-                </span>
-                <span className="text-warm-900">{store.checkIn} ~ {store.checkOut} ({nights}박)</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-warm-500 flex items-center gap-2">
-                  <Users className="w-4 h-4" /> 인원
-                </span>
-                <span className="text-warm-900">{store.adults}명</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-warm-500">예약자</span>
-                <span className="text-warm-900">{store.guestName}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-warm-500">연락처</span>
-                <span className="text-warm-900">{store.guestPhone}</span>
-              </div>
-            </div>
-
-            <div className="h-px bg-warm-100" />
-            <div className="flex justify-between items-center">
-              <span className="text-warm-500 font-medium">총 금액</span>
-              <span className="text-warm-900 text-2xl font-bold">
-                {store.apiRoom?.price.toLocaleString() ?? 0}원
-              </span>
-            </div>
-          </div>
-
           {/* Payment method */}
           <div className="bg-white border border-warm-200/50 rounded-sm p-5 md:p-7">
             <h4 className="text-warm-900 font-medium text-lg mb-4">결제 방법</h4>
@@ -272,8 +219,8 @@ export function Step4Review({ onPrev }: Props) {
 
         </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-2">
+        {/* Sidebar — 예약 요약 (모든 정보 통합) */}
+        <div className="lg:col-span-2 order-first lg:order-last">
           {store.apiRoom && (
             <div className="lg:sticky lg:top-28 bg-white border border-warm-200/50 rounded-sm overflow-hidden">
               {store.apiRoom.roomImage && (
@@ -286,24 +233,54 @@ export function Step4Review({ onPrev }: Props) {
                 <div>
                   <h3 className="text-warm-900 font-medium text-lg">{siteConfig.name}</h3>
                   <p className="text-warm-500 text-sm">{store.apiRoom.roomName}</p>
+                  <p className="text-warm-400 text-xs mt-1">최대 {store.apiRoom.maxGuests}인</p>
                 </div>
                 <div className="h-px bg-warm-100" />
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-warm-500">체크인</span>
+                    <span className="text-warm-500 flex items-center gap-2">
+                      <CalendarDays className="w-4 h-4" /> 체크인
+                    </span>
                     <span className="text-warm-900">{store.checkIn}</span>
                   </div>
+                  {store.apiRoom.checkInTime && (
+                    <div className="flex justify-between pl-6">
+                      <span className="text-warm-400 text-xs">입실 시간</span>
+                      <span className="text-warm-500 text-xs">{store.apiRoom.checkInTime.includes(":") ? store.apiRoom.checkInTime : `${store.apiRoom.checkInTime}:00`}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
-                    <span className="text-warm-500">체크아웃</span>
+                    <span className="text-warm-500 flex items-center gap-2">
+                      <CalendarDays className="w-4 h-4" /> 체크아웃
+                    </span>
                     <span className="text-warm-900">{store.checkOut}</span>
                   </div>
+                  {store.apiRoom.checkOutTime && (
+                    <div className="flex justify-between pl-6">
+                      <span className="text-warm-400 text-xs">퇴실 시간</span>
+                      <span className="text-warm-500 text-xs">{store.apiRoom.checkOutTime.includes(":") ? store.apiRoom.checkOutTime : `${store.apiRoom.checkOutTime}:00`}</span>
+                    </div>
+                  )}
                   <div className="flex justify-between">
-                    <span className="text-warm-500">인원</span>
+                    <span className="text-warm-500">숙박</span>
+                    <span className="text-warm-900">{nights}박</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-warm-500 flex items-center gap-2">
+                      <Users className="w-4 h-4" /> 인원
+                    </span>
                     <span className="text-warm-900">{store.adults}명</span>
                   </div>
+                </div>
+                <div className="h-px bg-warm-100" />
+                <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-warm-500">예약자</span>
                     <span className="text-warm-900">{store.guestName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-warm-500">연락처</span>
+                    <span className="text-warm-900">{store.guestPhone}</span>
                   </div>
                 </div>
                 <div className="h-px bg-warm-100" />
