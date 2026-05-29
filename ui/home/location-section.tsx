@@ -10,8 +10,7 @@ interface Props {
 
 export default function LocationSection({ location, hotelName }: Props) {
   const query = encodeURIComponent(location.address);
-  const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY ?? "";
-  const mapSrc = `https://www.google.com/maps/embed/v1/place?key=${mapsKey}&q=${query}&language=ko`;
+  const mapSrc = `https://maps.google.com/maps?q=${query}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
 
   return (
     <section
