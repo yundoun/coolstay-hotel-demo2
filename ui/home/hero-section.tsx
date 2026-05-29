@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
@@ -41,9 +42,13 @@ export default function HeroSection({ images, hotelName, titleSize = "base" }: P
         {images.map((image, i) => (
           <SwiperSlide key={i}>
             <div className="relative h-full w-full">
-              <div
-                className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[8000ms] ease-out"
-                style={{ backgroundImage: `url(${image})` }}
+              <Image
+                src={image}
+                alt={`${hotelName} ${i + 1}`}
+                fill
+                sizes="100vw"
+                priority={i === 0}
+                className="object-cover scale-105 transition-transform duration-[8000ms] ease-out"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/10" />
             </div>

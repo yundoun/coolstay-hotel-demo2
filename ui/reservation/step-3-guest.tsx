@@ -10,6 +10,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
+import { useShallow } from "zustand/react/shallow";
 import { usePhoneVerification } from "@/application/hooks/usePhoneVerification";
 import { prefetchTerms } from "@/application/hooks/useTerms";
 import { nightsBetween, formatKoDate } from "@/domain/shared/utils";
@@ -28,7 +29,18 @@ interface Props {
 }
 
 export function Step3Guest({ onNext, onPrev }: Props) {
-  const store = useReservation();
+  const store = useReservation(useShallow((s) => ({
+    checkIn: s.checkIn,
+    checkOut: s.checkOut,
+    adults: s.adults,
+    apiRoom: s.apiRoom,
+    roomId: s.roomId,
+    guestName: s.guestName,
+    guestPhone: s.guestPhone,
+    setGuestInfo: s.setGuestInfo,
+    setPhoneVerified: s.setPhoneVerified,
+    setSmsAuth: s.setSmsAuth,
+  })));
   const phoneVerify = usePhoneVerification();
   const nights = nightsBetween(store.checkIn, store.checkOut);
 

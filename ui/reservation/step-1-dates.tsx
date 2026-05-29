@@ -13,6 +13,7 @@ import { addDays, format, differenceInDays } from "date-fns";
 import { ko } from "date-fns/locale";
 import BookingCalendar from "@/ui/shared/calendar-widget";
 import { useReservation } from "@/adapters/zustand/reservation-store";
+import { useShallow } from "zustand/react/shallow";
 
 type DropdownType = "calendar" | "guest" | null;
 
@@ -31,16 +32,23 @@ interface Props {
 }
 
 export function Step1Dates({ onNext }: Props) {
-  const store = useReservation();
+  const { storeCheckIn, storeCheckOut, storeAdults, setDates, setAdults: commitAdults } =
+    useReservation(useShallow((s) => ({
+      storeCheckIn: s.checkIn,
+      storeCheckOut: s.checkOut,
+      storeAdults: s.adults,
+      setDates: s.setDates,
+      setAdults: s.setAdults,
+    })));
   const controlRef = useRef<HTMLDivElement>(null);
 
   const [checkIn, setCheckIn] = useState<Date | undefined>(
-    store.checkIn ? new Date(store.checkIn) : new Date()
+    storeCheckIn ? new Date(storeCheckIn) : new Date()
   );
   const [checkOut, setCheckOut] = useState<Date | undefined>(
-    store.checkOut ? new Date(store.checkOut) : addDays(new Date(), 1)
+    storeCheckOut ? new Date(storeCheckOut) : addDays(new Date(), 1)
   );
-  const [adults, setAdults] = useState(store.adults);
+  const [adults, setAdults] = useState(storeAdults);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
 
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
@@ -65,8 +73,8 @@ export function Step1Dates({ onNext }: Props) {
 
   const handleNext = () => {
     if (!checkIn || !checkOut || nights <= 0) return;
-    store.setDates(format(checkIn, "yyyy-MM-dd"), format(checkOut, "yyyy-MM-dd"));
-    store.setAdults(adults);
+    setDates(format(checkIn, "yyyy-MM-dd"), format(checkOut, "yyyy-MM-dd"));
+    commitAdults(adults);
     onNext();
   };
 

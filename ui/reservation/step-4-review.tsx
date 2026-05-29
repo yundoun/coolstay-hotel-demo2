@@ -11,6 +11,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
+import { useShallow } from "zustand/react/shallow";
 import { useTerms } from "@/application/hooks/useTerms";
 import { createGuestReservation } from "@/application/services/reservation-api";
 import { nightsBetween } from "@/domain/shared/utils";
@@ -22,7 +23,18 @@ interface Props {
 }
 
 export function Step4Review({ onPrev }: Props) {
-  const store = useReservation();
+  const store = useReservation(useShallow((s) => ({
+    checkIn: s.checkIn,
+    checkOut: s.checkOut,
+    adults: s.adults,
+    apiRoom: s.apiRoom,
+    roomId: s.roomId,
+    guestName: s.guestName,
+    guestPhone: s.guestPhone,
+    smsAuthKey: s.smsAuthKey,
+    smsAuthCode: s.smsAuthCode,
+    setReservationNumber: s.setReservationNumber,
+  })));
   const nights = nightsBetween(store.checkIn, store.checkOut);
   const { terms, refundPolicies, loading: termsLoading } = useTerms({
     storeKey: store.apiRoom?.motelKey ?? null,

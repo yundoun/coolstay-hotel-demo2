@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface Props {
   greeting: {
     ownerName: string;
@@ -50,9 +52,12 @@ export default function GreetingSection({ greeting }: Props) {
           {greeting.image && (
             <div className="relative">
               <div className="relative aspect-[4/5] rounded-sm overflow-hidden">
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${greeting.image})` }}
+                <Image
+                  src={greeting.image!}
+                  alt={greeting.title}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-warm-900/10 to-transparent" />
               </div>

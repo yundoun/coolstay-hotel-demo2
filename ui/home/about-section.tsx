@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Props {
@@ -49,10 +50,15 @@ export default function AboutSection({ about }: Props) {
       className="relative py-24 md:py-32 lg:py-40 bg-warm-900 text-white overflow-hidden"
     >
       {/* Background image with overlay */}
-      <div
-        className="absolute inset-0 bg-cover bg-center opacity-15"
-        style={{ backgroundImage: `url(${about.images[0]})` }}
-      />
+      <div className="absolute inset-0 opacity-15">
+        <Image
+          src={about.images[0]}
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover"
+        />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-b from-warm-900 via-warm-900/95 to-warm-900" />
 
       <div className="relative max-w-[1400px] mx-auto px-5 md:px-8 lg:px-12">
@@ -84,11 +90,14 @@ export default function AboutSection({ about }: Props) {
             {about.images.map((img, i) => (
               <div
                 key={i}
-                className="relative shrink-0 w-[75vw] md:w-[45vw] lg:w-[35vw] aspect-[3/2] overflow-hidden rounded-sm snap-start"
+                className="relative shrink-0 w-[75vw] md:w-[45vw] lg:w-[35vw] aspect-[3/2] overflow-hidden rounded-sm snap-start group/img"
               >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out hover:scale-105"
-                  style={{ backgroundImage: `url(${img})` }}
+                <Image
+                  src={img}
+                  alt={`${about.headline} ${i + 1}`}
+                  fill
+                  sizes="(max-width: 768px) 75vw, (max-width: 1024px) 45vw, 35vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover/img:scale-105"
                 />
               </div>
             ))}

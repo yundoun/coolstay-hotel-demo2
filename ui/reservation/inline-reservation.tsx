@@ -1,12 +1,29 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import dynamic from "next/dynamic";
+import { Loader2 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
+import { useShallow } from "zustand/react/shallow";
 import { StepIndicator } from "@/ui/shared/step-indicator";
 import { Step1Dates } from "./step-1-dates";
-import { Step2Rooms } from "./step-2-rooms";
-import { Step3Guest } from "./step-3-guest";
-import { Step4Review } from "./step-4-review";
+
+const StepLoading = () => (
+  <div className="flex items-center justify-center py-16">
+    <Loader2 className="w-5 h-5 text-warm-400 animate-spin mr-2" />
+    <span className="text-warm-500 text-sm">불러오는 중...</span>
+  </div>
+);
+
+const Step2Rooms = dynamic(() => import("./step-2-rooms").then((m) => ({ default: m.Step2Rooms })), {
+  loading: StepLoading,
+});
+const Step3Guest = dynamic(() => import("./step-3-guest").then((m) => ({ default: m.Step3Guest })), {
+  loading: StepLoading,
+});
+const Step4Review = dynamic(() => import("./step-4-review").then((m) => ({ default: m.Step4Review })), {
+  loading: StepLoading,
+});
 
 type Step = 1 | 2 | 3 | 4;
 
@@ -16,7 +33,13 @@ type Step = 1 | 2 | 3 | 4;
  */
 export function InlineReservation() {
   const [step, setStep] = useState<Step>(1);
-  const store = useReservation();
+  const { setRoom, clearApiRoom, setGuestInfo, setPhoneVerified } =
+    useReservation(useShallow((s) => ({
+      setRoom: s.setRoom,
+      clearApiRoom: s.clearApiRoom,
+      setGuestInfo: s.setGuestInfo,
+      setPhoneVerified: s.setPhoneVerified,
+    })));
 
   const scrollToTop = useCallback(() => {
     setTimeout(() => {
@@ -37,18 +60,18 @@ export function InlineReservation() {
     if (target >= step) return;
     // 이동하는 단계 이후의 데이터를 모두 초기화
     if (target <= 1) {
-      store.setRoom(null);
-      store.clearApiRoom();
-      store.setGuestInfo({ name: "", phone: "" });
-      store.setPhoneVerified(false);
+      setRoom(null);
+      clearApiRoom();
+      setGuestInfo({ name: "", phone: "" });
+      setPhoneVerified(false);
     } else if (target <= 2) {
-      store.setGuestInfo({ name: "", phone: "" });
-      store.setPhoneVerified(false);
+      setGuestInfo({ name: "", phone: "" });
+      setPhoneVerified(false);
     }
     // target === 3: 4단계 동의 상태는 로컬 state라 자동 초기화
     setStep(target as Step);
     scrollToTop();
-  }, [step, store, scrollToTop]);
+  }, [step, setRoom, clearApiRoom, setGuestInfo, setPhoneVerified, scrollToTop]);
 
   const content = (() => {
     switch (step) {

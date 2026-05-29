@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import { Users, ChevronLeft, ChevronRight } from "lucide-react";
 import type { RoomType } from "@/adapters/coolstay/types";
 
@@ -103,10 +104,15 @@ export default function RoomsSection({ rooms, onSelectRoom }: Props) {
                 >
                   {/* Image */}
                   <div className="relative h-56 md:h-60 overflow-hidden">
-                    <div
-                      className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
-                      style={{ backgroundImage: `url(${thumbImage})` }}
-                    />
+                    {thumbImage && (
+                      <Image
+                        src={thumbImage}
+                        alt={room.name}
+                        fill
+                        sizes="(max-width: 768px) 85vw, (max-width: 1024px) calc(50% - 12px), calc(25% - 18px)"
+                        className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                      />
+                    )}
                   </div>
 
                   {/* Info */}

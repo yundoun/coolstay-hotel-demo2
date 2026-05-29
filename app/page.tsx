@@ -1,22 +1,42 @@
-"use client";
-
 import { siteConfig } from "@/hotel-data";
-import { useStoreInfo } from "@/application/hooks/useStoreInfo";
 import Header from "@/ui/layout/site-header";
 import Footer from "@/ui/layout/site-footer";
-import HeroSection from "@/ui/home/hero-section";
+import HeroSection from "@/ui/home/hero-section-lazy";
 import GreetingSection from "@/ui/home/greeting-section";
 import AboutSection from "@/ui/home/about-section";
-import RoomsSection from "@/ui/home/rooms-section";
+import RoomsSectionConnected from "@/ui/home/rooms-section-connected";
 import { OnepageReservation } from "@/ui/reservation/onepage-reservation";
 import LocationSection from "@/ui/home/location-section";
 
+const { greeting, about, directions } = siteConfig;
+
+const greetingData = {
+  ownerName: "",
+  title: siteConfig.name,
+  message: greeting.body,
+  signature: greeting.signature,
+  image: siteConfig.heroImages[0],
+};
+
+const aboutData = {
+  headline: siteConfig.name,
+  description: about.body || `${siteConfig.name}에서 특별한 순간을 만나보세요.`,
+  features: [] as { icon: string; title: string; description: string }[],
+  images: about.images.slice(0, 5),
+};
+
+const locationData = {
+  address: siteConfig.address,
+  infoItems: [
+    { label: "연락처", value: siteConfig.phone },
+    ...(directions.parkingInfo
+      ? [{ label: "주차", value: directions.parkingInfo }]
+      : []),
+    ...directions.nearbyItems,
+  ],
+};
+
 export default function HomePage() {
-  const { greeting, about, directions } = siteConfig;
-
-  // API — 실시간 객실·가격 데이터
-  const { data: store } = useStoreInfo();
-
   return (
     <main className="min-h-screen bg-background">
       <Header transparent />
@@ -27,29 +47,11 @@ export default function HomePage() {
         titleSize={siteConfig.heroTitleSize}
       />
 
-      <GreetingSection
-        greeting={{
-          ownerName: "",
-          title: siteConfig.name,
-          message: greeting.body,
-          signature: greeting.signature,
-          image: siteConfig.heroImages[0],
-        }}
-      />
+      <GreetingSection greeting={greetingData} />
 
-      <AboutSection
-        about={{
-          headline: siteConfig.name,
-          description: about.body || `${siteConfig.name}에서 특별한 순간을 만나보세요.`,
-          features: [],
-          images: about.images.slice(0, 5),
-        }}
-      />
+      <AboutSection about={aboutData} />
 
-      <RoomsSection
-        rooms={store?.rooms ?? []}
-        storeKey={store?.motelKey ?? ""}
-      />
+      <RoomsSectionConnected />
 
       {/* ── 예약 (4단계 인라인 플로우) ── */}
       <section id="reservation" className="py-24 md:py-32 lg:py-40 bg-[var(--warm-50)]">
@@ -70,19 +72,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <LocationSection
-        location={{
-          address: siteConfig.address,
-          infoItems: [
-            { label: "연락처", value: siteConfig.phone },
-            ...(directions.parkingInfo
-              ? [{ label: "주차", value: directions.parkingInfo }]
-              : []),
-            ...directions.nearbyItems,
-          ],
-        }}
-        hotelName={siteConfig.name}
-      />
+      <LocationSection location={locationData} hotelName={siteConfig.name} />
 
       <Footer />
     </main>

@@ -11,6 +11,7 @@ import {
   X,
 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
+import { useShallow } from "zustand/react/shallow";
 import { useApiRooms } from "@/application/hooks/useApiRooms";
 import { siteConfig } from "@/hotel-data";
 import { nightsBetween } from "@/domain/shared/utils";
@@ -225,19 +226,27 @@ function RoomCard({
 /* ── 메인 Step2 ── */
 
 export function Step2Rooms({ onNext, onPrev }: Props) {
-  const store = useReservation();
-  const nights = nightsBetween(store.checkIn, store.checkOut);
+  const { checkIn, checkOut, adults, setHotel, setRoom, setApiRoom } =
+    useReservation(useShallow((s) => ({
+      checkIn: s.checkIn,
+      checkOut: s.checkOut,
+      adults: s.adults,
+      setHotel: s.setHotel,
+      setRoom: s.setRoom,
+      setApiRoom: s.setApiRoom,
+    })));
+  const nights = nightsBetween(checkIn, checkOut);
   const { storeData, loading, error } = useApiRooms(
-    store.checkIn,
-    store.checkOut,
+    checkIn,
+    checkOut,
     nights,
   );
   const [selectedRoom, setSelectedRoom] = useState<ApiRoom | null>(null);
 
   const handleSelect = (room: ApiRoom) => {
-    store.setHotel(siteConfig.id);
-    store.setRoom(room.itemKey);
-    store.setApiRoom({
+    setHotel(siteConfig.id);
+    setRoom(room.itemKey);
+    setApiRoom({
       motelKey: storeData?.motelKey ?? "",
       storeName: storeData?.storeName ?? "",
       sitePayment: storeData?.sitePayment ?? true,
@@ -261,8 +270,8 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
           객실을 선택해 주세요
         </h3>
         <p className="text-warm-500 text-sm">
-          {store.checkIn} ~ {store.checkOut} ({nights}박) · 성인{" "}
-          {store.adults}명
+          {checkIn} ~ {checkOut} ({nights}박) · 성인{" "}
+          {adults}명
         </p>
       </div>
 
@@ -291,7 +300,7 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
 
       {/* Grid */}
       {!loading && !error && (storeData?.rooms ?? []).length > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {storeData!.rooms.map((room) => (
             <RoomCard
               key={room.packageKey}
