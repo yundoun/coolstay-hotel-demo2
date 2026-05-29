@@ -50,8 +50,8 @@ export default function LocationSection({ location, hotelName }: Props) {
           {/* Info */}
           <div className="flex flex-col justify-center">
             {/* Address */}
-            <div className="flex items-start gap-4 mb-10">
-              <div className="w-10 h-10 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center shrink-0 mt-0.5">
+            <div className="flex items-center gap-4 mb-10">
+              <div className="w-10 h-10 rounded-full bg-white/[0.06] border border-white/[0.08] flex items-center justify-center shrink-0">
                 <MapPin className="w-5 h-5 text-white/50" />
               </div>
               <div>
@@ -67,7 +67,7 @@ export default function LocationSection({ location, hotelName }: Props) {
                     key={i}
                     className="flex items-baseline gap-4 py-3 border-b border-white/[0.06] last:border-b-0"
                   >
-                    <span className="text-white/40 text-sm shrink-0 w-20">
+                    <span className="text-white/40 text-sm shrink-0 w-28">
                       {item.label}
                     </span>
                     <span className="text-white/70 text-sm leading-relaxed">
