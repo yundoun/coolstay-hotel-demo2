@@ -8,6 +8,7 @@ import {
   Banknote,
   Loader2,
   CircleCheck,
+  ChevronDown,
 } from "lucide-react";
 import { useReservation } from "@/adapters/zustand/reservation-store";
 import { useTerms } from "@/application/hooks/useTerms";
@@ -23,7 +24,7 @@ interface Props {
 export function Step4Review({ onPrev }: Props) {
   const store = useReservation();
   const nights = nightsBetween(store.checkIn, store.checkOut);
-  const { terms, loading: termsLoading } = useTerms({
+  const { terms, refundPolicies, loading: termsLoading } = useTerms({
     storeKey: store.apiRoom?.motelKey ?? null,
     itemKey: store.roomId ?? null,
     packKey: store.apiRoom?.packageKey ?? null,
@@ -41,17 +42,22 @@ export function Step4Review({ onPrev }: Props) {
   }, []);
   const closeTerm = useCallback(() => setModalTerm(null), []);
 
+  const refundAgreedKey = "REFUND_POLICY";
+  const hasRefund = refundPolicies.length > 0;
   const requiredTerms = terms.filter((t) => t.required);
-  const allRequiredAgreed = requiredTerms.every((t) => agreed[t.code]);
+  const allRequiredAgreed =
+    requiredTerms.every((t) => agreed[t.code]) &&
+    (!hasRefund || !!agreed[refundAgreedKey]);
 
   const toggleTerm = (code: string) => {
     setAgreed((prev) => ({ ...prev, [code]: !prev[code] }));
   };
 
   const toggleAll = () => {
-    const allAgreed = terms.every((t) => agreed[t.code]);
+    const allKeys = [...terms.map((t) => t.code), ...(hasRefund ? [refundAgreedKey] : [])];
+    const allAgreed = allKeys.every((k) => agreed[k]);
     const next: Record<string, boolean> = {};
-    terms.forEach((t) => { next[t.code] = !allAgreed; });
+    allKeys.forEach((k) => { next[k] = !allAgreed; });
     setAgreed(next);
   };
 
@@ -193,7 +199,10 @@ export function Step4Review({ onPrev }: Props) {
                 <label className="flex items-center gap-3 p-3 border border-warm-200 rounded-sm cursor-pointer hover:bg-warm-50 transition-colors">
                   <input
                     type="checkbox"
-                    checked={terms.length > 0 && terms.every((t) => agreed[t.code])}
+                    checked={
+                      terms.length > 0 &&
+                      [...terms.map((t) => t.code), ...(hasRefund ? [refundAgreedKey] : [])].every((k) => agreed[k])
+                    }
                     onChange={toggleAll}
                     className="w-5 h-5 accent-sig-500"
                   />
@@ -230,6 +239,15 @@ export function Step4Review({ onPrev }: Props) {
                     )}
                   </label>
                 ))}
+
+                {/* 취소·환불 규정 */}
+                {hasRefund && (
+                  <RefundPolicyItem
+                    policies={refundPolicies}
+                    agreed={!!agreed[refundAgreedKey]}
+                    onToggle={() => toggleTerm(refundAgreedKey)}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -318,6 +336,82 @@ export function Step4Review({ onPrev }: Props) {
         url={modalTerm?.url ?? ""}
         onClose={closeTerm}
       />
+    </div>
+  );
+}
+
+/* ── 취소·환불 규정 접이식 컴포넌트 ── */
+
+function RefundPolicyItem({
+  policies,
+  agreed,
+  onToggle,
+}: {
+  policies: { until: string; percent: number; amount: number }[];
+  agreed: boolean;
+  onToggle: () => void;
+}) {
+  const [open, setOpen] = useState(false);
+
+  const freeCancel = policies.find((p) => p.percent === 100);
+  const summary = freeCancel
+    ? `${freeCancel.until.replace(/:\d{2}$/, "")}까지 무료 취소 가능`
+    : "취소 시 수수료가 발생합니다";
+
+  return (
+    <div className="px-3 py-2">
+      <div className="flex items-center gap-3">
+        <input
+          type="checkbox"
+          checked={agreed}
+          onChange={onToggle}
+          className="w-4 h-4 accent-sig-500"
+        />
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="flex-1 flex items-center justify-between gap-2 text-left"
+        >
+          <span className="text-warm-700 text-sm">
+            취소·환불 규정 동의
+            <span className="text-red-500 ml-1 text-xs">(필수)</span>
+          </span>
+          <ChevronDown
+            className={`w-4 h-4 text-warm-400 transition-transform ${open ? "rotate-180" : ""}`}
+          />
+        </button>
+      </div>
+
+      {/* 요약 */}
+      <p className="text-warm-400 text-xs mt-1 ml-7">{summary}</p>
+
+      {/* 상세 테이블 */}
+      {open && (
+        <div className="mt-3 ml-7 overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead>
+              <tr className="border-b border-warm-200">
+                <th className="pb-2 pr-4 font-medium text-warm-500">취소 기한</th>
+                <th className="pb-2 pr-4 font-medium text-warm-500 text-right">환불률</th>
+                <th className="pb-2 font-medium text-warm-500 text-right">환불 금액</th>
+              </tr>
+            </thead>
+            <tbody>
+              {policies.map((p, i) => (
+                <tr key={i} className="border-b border-warm-100 last:border-b-0">
+                  <td className="py-2 pr-4 text-warm-600">
+                    {p.until.replace(/:\d{2}$/, "")} 까지
+                  </td>
+                  <td className="py-2 pr-4 text-right text-warm-700">{p.percent}%</td>
+                  <td className="py-2 text-right text-warm-700">
+                    {p.amount.toLocaleString()}원
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
