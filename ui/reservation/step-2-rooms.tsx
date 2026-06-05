@@ -227,11 +227,10 @@ function RoomCard({
 /* ── 메인 Step2 ── */
 
 export function Step2Rooms({ onNext, onPrev }: Props) {
-  const { checkIn, checkOut, adults, setHotel, setRoom, setApiRoom } =
+  const { checkIn, checkOut, setHotel, setRoom, setApiRoom } =
     useReservation(useShallow((s) => ({
       checkIn: s.checkIn,
       checkOut: s.checkOut,
-      adults: s.adults,
       setHotel: s.setHotel,
       setRoom: s.setRoom,
       setApiRoom: s.setApiRoom,
@@ -270,10 +269,6 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
         <h3 className="text-xl md:text-2xl text-warm-900 font-medium mb-2">
           객실을 선택해 주세요
         </h3>
-        <p className="text-warm-500 text-sm">
-          {checkIn} ~ {checkOut} ({nights}박) · 성인{" "}
-          {adults}명
-        </p>
       </div>
 
       {loading && (

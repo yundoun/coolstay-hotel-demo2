@@ -7,6 +7,7 @@ import { useReservation } from "@/adapters/zustand/reservation-store";
 import { useShallow } from "zustand/react/shallow";
 import { StepIndicator } from "@/ui/shared/step-indicator";
 import { Step1Dates } from "./step-1-dates";
+import { formatKoDate, nightsBetween } from "@/domain/shared/utils";
 
 const StepLoading = () => (
   <div className="flex items-center justify-center py-16">
@@ -33,13 +34,18 @@ type Step = 1 | 2 | 3 | 4;
  */
 export function InlineReservation() {
   const [step, setStep] = useState<Step>(1);
-  const { setRoom, clearApiRoom, setGuestInfo, setPhoneVerified } =
+  const { checkIn, checkOut, adults, setRoom, clearApiRoom, setGuestInfo, setPhoneVerified } =
     useReservation(useShallow((s) => ({
+      checkIn: s.checkIn,
+      checkOut: s.checkOut,
+      adults: s.adults,
       setRoom: s.setRoom,
       clearApiRoom: s.clearApiRoom,
       setGuestInfo: s.setGuestInfo,
       setPhoneVerified: s.setPhoneVerified,
     })));
+
+  const nights = nightsBetween(checkIn, checkOut);
 
   const scrollToTop = useCallback(() => {
     setTimeout(() => {
@@ -90,6 +96,20 @@ export function InlineReservation() {
     <div>
       <div id="step-scroll-anchor" aria-hidden />
       <StepIndicator current={step} onStepClick={goToWithReset} />
+
+      {/* Sticky date context bar — visible from Step 2 onward */}
+      {step >= 2 && (
+        <div className="sticky top-14 md:top-16 z-[39] border-b border-warm-200/50 bg-white">
+          <div className="max-w-3xl mx-auto px-5 md:px-8 flex items-center gap-2 py-2.5 text-[13px] text-warm-500">
+            <span className="font-medium text-warm-900">{formatKoDate(checkIn)}</span>
+            <span className="text-warm-300">→</span>
+            <span className="font-medium text-warm-900">{formatKoDate(checkOut)}</span>
+            <span className="text-warm-200">·</span>
+            <span>{nights}박 · 성인 {adults}명</span>
+          </div>
+        </div>
+      )}
+
       <div className="pt-10">
         {content}
       </div>
