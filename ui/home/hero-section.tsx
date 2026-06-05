@@ -33,7 +33,7 @@ export default function HeroSection({ images, hotelName, titleSize = "base" }: P
       <Swiper
         modules={[Autoplay, EffectFade]}
         effect="fade"
-        autoplay={{ delay: 6000, disableOnInteraction: false }}
+        autoplay={{ delay: 10_000, disableOnInteraction: false }}
         onSwiper={setSwiperInstance}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
         loop
