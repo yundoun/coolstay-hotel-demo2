@@ -29,11 +29,13 @@ function RoomDetailModal({
   nights,
   onSelect,
   onClose,
+  exceeded,
 }: {
   room: ApiRoom;
   nights: number;
   onSelect: () => void;
   onClose: () => void;
+  exceeded?: boolean;
 }) {
   const [imgIdx, setImgIdx] = useState(0);
   const images = room.images.length > 0 ? room.images : null;
@@ -132,6 +134,13 @@ function RoomDetailModal({
             {room.checkOutTime && <span>체크아웃 {room.checkOutTime}시</span>}
           </div>
 
+          {/* exceeded notice */}
+          {exceeded && (
+            <div className="flex items-center gap-2 bg-red-50 border border-red-200/60 rounded-sm px-4 py-2.5 mb-4">
+              <span className="text-red-600 text-sm">선택하신 인원을 수용할 수 없는 객실입니다.</span>
+            </div>
+          )}
+
           {/* total + select btn */}
           <div className="flex items-end justify-between pt-4 border-t border-warm-100">
             <div>
@@ -145,7 +154,8 @@ function RoomDetailModal({
             </div>
             <button
               onClick={onSelect}
-              className="flex items-center gap-2 px-6 py-3 bg-sig-500 text-warm-900 font-semibold rounded-lg hover:bg-sig-400 transition-all duration-300 active:scale-[0.98] text-sm"
+              disabled={exceeded}
+              className="flex items-center gap-2 px-6 py-3 bg-sig-500 text-warm-900 font-semibold rounded-lg hover:bg-sig-400 transition-all duration-300 active:scale-[0.98] text-sm disabled:opacity-40 disabled:cursor-not-allowed"
             >
               선택하기
               <ArrowRight className="w-4 h-4" />
@@ -163,10 +173,12 @@ function RoomCard({
   room,
   nights,
   onClick,
+  exceeded,
 }: {
   room: ApiRoom;
   nights: number;
   onClick: () => void;
+  exceeded?: boolean;
 }) {
   const thumb = room.images[0]?.thumbUrl ?? room.image;
   const imageCount = room.images.length;
@@ -211,6 +223,12 @@ function RoomCard({
           {room.checkOutTime && <span>체크아웃 {room.checkOutTime}시</span>}
         </div>
 
+        {exceeded && (
+          <span className="inline-flex w-fit border border-red-200 bg-red-50 px-2 py-0.5 text-[11px] text-red-600 rounded-sm">
+            인원 초과
+          </span>
+        )}
+
         <div className="pt-3 border-t border-warm-100">
           <p className="text-warm-900 text-lg font-bold">
             {room.price.toLocaleString()}
@@ -227,10 +245,11 @@ function RoomCard({
 /* ── 메인 Step2 ── */
 
 export function Step2Rooms({ onNext, onPrev }: Props) {
-  const { checkIn, checkOut, setHotel, setRoom, setApiRoom } =
+  const { checkIn, checkOut, adults, setHotel, setRoom, setApiRoom } =
     useReservation(useShallow((s) => ({
       checkIn: s.checkIn,
       checkOut: s.checkOut,
+      adults: s.adults,
       setHotel: s.setHotel,
       setRoom: s.setRoom,
       setApiRoom: s.setApiRoom,
@@ -241,6 +260,11 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
     checkOut,
     nights,
   );
+  const allRooms = storeData?.rooms ?? [];
+  const filteredRooms = allRooms.filter((r) => r.maxGuests >= adults);
+  const otherRooms = allRooms.filter((r) => r.maxGuests < adults);
+  const hasFilteredRooms = filteredRooms.length > 0;
+
   const [selectedRoom, setSelectedRoom] = useState<ApiRoom | null>(null);
 
   const handleSelect = (room: ApiRoom) => {
@@ -286,7 +310,7 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
         </div>
       )}
 
-      {!loading && !error && (storeData?.rooms ?? []).length === 0 && (
+      {!loading && !error && allRooms.length === 0 && (
         <div className="text-center py-16">
           <p className="text-warm-500 text-sm">
             선택하신 날짜에 예약 가능한 객실이 없습니다.
@@ -294,10 +318,22 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
         </div>
       )}
 
-      {/* Grid */}
-      {!loading && !error && (storeData?.rooms ?? []).length > 0 && (
+      {/* 인원 기준 안내 — 예약 가능 객실 없고 인원 초과 객실만 있을 때 */}
+      {!loading && !error && !hasFilteredRooms && otherRooms.length > 0 && (
+        <div className="flex items-center gap-3 bg-amber-50 border border-amber-300 rounded-sm px-5 py-3.5 mb-6 text-sm text-warm-700">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-amber-600">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          성인 {adults}인 기준에 맞는 객실이 없습니다. 아래 다른 객실을 확인해 보세요.
+        </div>
+      )}
+
+      {/* 예약 가능 객실 Grid */}
+      {!loading && !error && hasFilteredRooms && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {storeData!.rooms.map((room) => (
+          {filteredRooms.map((room) => (
             <RoomCard
               key={room.packageKey}
               room={room}
@@ -305,6 +341,29 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
               onClick={() => setSelectedRoom(room)}
             />
           ))}
+        </div>
+      )}
+
+      {/* 인원 초과 객실 */}
+      {!loading && !error && otherRooms.length > 0 && (
+        <div className={hasFilteredRooms ? "mt-10" : ""}>
+          <div className="flex items-center gap-2 mb-4">
+            <p className="text-warm-400 text-xs tracking-wide">
+              다른 객실 · 최대 인원 초과 ({otherRooms.length}개)
+            </p>
+            <div className="flex-1 h-px bg-warm-200/50" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 opacity-60">
+            {otherRooms.map((room) => (
+              <RoomCard
+                key={room.packageKey}
+                room={room}
+                nights={nights}
+                onClick={() => setSelectedRoom(room)}
+                exceeded
+              />
+            ))}
+          </div>
         </div>
       )}
 
@@ -326,6 +385,7 @@ export function Step2Rooms({ onNext, onPrev }: Props) {
           nights={nights}
           onSelect={() => handleSelect(selectedRoom)}
           onClose={() => setSelectedRoom(null)}
+          exceeded={selectedRoom.maxGuests < adults}
         />
       )}
     </div>
