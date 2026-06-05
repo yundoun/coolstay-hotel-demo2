@@ -207,7 +207,8 @@ function RoomCard({
             <Users className="w-3 h-3" />
             <span>최대 {room.maxGuests}인</span>
           </div>
-          {room.checkInTime && <span>IN {room.checkInTime}시</span>}
+          {room.checkInTime && <span>체크인 {room.checkInTime}시</span>}
+          {room.checkOutTime && <span>체크아웃 {room.checkOutTime}시</span>}
         </div>
 
         <div className="pt-3 border-t border-warm-100">
