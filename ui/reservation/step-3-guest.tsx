@@ -2,8 +2,6 @@
 
 import { useRef, useState } from "react";
 import {
-  CalendarDays,
-  Users,
   ArrowRight,
   ArrowLeft,
   Phone,
@@ -13,7 +11,7 @@ import { useReservation } from "@/adapters/zustand/reservation-store";
 import { useShallow } from "zustand/react/shallow";
 import { usePhoneVerification } from "@/application/hooks/usePhoneVerification";
 import { prefetchTerms } from "@/application/hooks/useTerms";
-import { nightsBetween, formatKoDate } from "@/domain/shared/utils";
+import { nightsBetween } from "@/domain/shared/utils";
 
 /** 숫자만 추출 후 전화번호 형식(010-1234-5678)으로 포맷 */
 function formatPhoneNumber(raw: string): string {
@@ -93,34 +91,6 @@ export function Step3Guest({ onNext, onPrev }: Props) {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-10">
         {/* Form */}
         <div className="lg:col-span-3 space-y-6">
-          {/* Selected room summary */}
-          {store.apiRoom && (
-            <div className="bg-white border border-warm-200/50 rounded-sm p-5 flex gap-4">
-              {store.apiRoom.roomImage && (
-                <div
-                  className="w-24 h-24 rounded-sm bg-cover bg-center shrink-0"
-                  style={{ backgroundImage: `url(${store.apiRoom.roomImage})` }}
-                />
-              )}
-              <div>
-                <p className="text-warm-900 font-medium mb-1">{store.apiRoom.roomName}</p>
-                <div className="flex items-center gap-4 text-warm-500 text-xs">
-                  <span>최대 {store.apiRoom.maxGuests}인</span>
-                </div>
-                <div className="flex items-center gap-3 mt-2 text-xs">
-                  <span className="flex items-center gap-1.5 text-warm-600 bg-warm-50 px-2 py-1 rounded">
-                    <CalendarDays className="w-3 h-3 text-warm-500" />
-                    {store.checkIn} ~ {store.checkOut} ({nights}박)
-                  </span>
-                  <span className="flex items-center gap-1.5 text-warm-600 bg-warm-50 px-2 py-1 rounded">
-                    <Users className="w-3 h-3 text-warm-500" />
-                    {store.adults}명
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
           {/* Guest info */}
           <div className="bg-white border border-warm-200/50 rounded-sm p-5 md:p-7">
             <h3 className="text-warm-900 text-lg font-medium mb-5">예약자 정보</h3>
@@ -225,7 +195,7 @@ export function Step3Guest({ onNext, onPrev }: Props) {
         {/* Sidebar */}
         <div className="lg:col-span-2">
           {store.apiRoom && (
-            <div className="lg:sticky lg:top-28 bg-white border border-warm-200/50 rounded-sm overflow-hidden">
+            <div className="lg:sticky lg:top-48 bg-white border border-warm-200/50 rounded-sm overflow-hidden">
               {store.apiRoom.roomImage && (
                 <div
                   className="h-48 bg-cover bg-center"

@@ -222,7 +222,7 @@ export function Step4Review({ onPrev }: Props) {
         {/* Sidebar — 예약 요약 (모든 정보 통합) */}
         <div className="lg:col-span-2 order-first lg:order-last">
           {store.apiRoom && (
-            <div className="lg:sticky lg:top-28 bg-white border border-warm-200/50 rounded-sm overflow-hidden">
+            <div className="lg:sticky lg:top-48 bg-white border border-warm-200/50 rounded-sm overflow-hidden">
               {store.apiRoom.roomImage && (
                 <div
                   className="h-48 bg-cover bg-center"

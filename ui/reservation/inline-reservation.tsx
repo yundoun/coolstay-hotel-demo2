@@ -51,7 +51,8 @@ export function InlineReservation() {
     setTimeout(() => {
       const anchor = document.getElementById("step-scroll-anchor");
       if (anchor) {
-        const top = anchor.getBoundingClientRect().top + window.scrollY - 72;
+        const headerH = window.innerWidth >= 768 ? 64 : 56;
+        const top = anchor.getBoundingClientRect().top + window.scrollY - headerH;
         window.scrollTo({ top, behavior: "instant" });
       }
     }, 50);
@@ -95,20 +96,24 @@ export function InlineReservation() {
   return (
     <div>
       <div id="step-scroll-anchor" aria-hidden />
-      <StepIndicator current={step} onStepClick={goToWithReset} />
 
-      {/* Sticky date context bar — visible from Step 2 onward */}
-      {step >= 2 && (
-        <div className="sticky top-14 md:top-16 z-[39] border-b border-warm-200/50 bg-white">
-          <div className="max-w-3xl mx-auto px-5 md:px-8 flex items-center gap-2 py-2.5 text-[13px] text-warm-500">
-            <span className="font-medium text-warm-900">{formatKoDate(checkIn)}</span>
-            <span className="text-warm-300">→</span>
-            <span className="font-medium text-warm-900">{formatKoDate(checkOut)}</span>
-            <span className="text-warm-200">·</span>
-            <span>{nights}박 · 성인 {adults}명</span>
+      {/* Sticky header: StepIndicator + date context bar */}
+      <div className="sticky top-14 md:top-16 z-40 bg-white">
+        <StepIndicator current={step} onStepClick={goToWithReset} />
+
+        {/* Date context bar — visible from Step 2 onward */}
+        {step >= 2 && (
+          <div className="border-b border-warm-200/50">
+            <div className="max-w-3xl mx-auto px-5 md:px-8 flex flex-wrap items-center justify-center gap-x-2 gap-y-0.5 py-2 md:py-2.5 text-[12px] md:text-[13px] text-warm-500">
+              <span className="font-medium text-warm-900">{formatKoDate(checkIn)}</span>
+              <span className="text-warm-300">→</span>
+              <span className="font-medium text-warm-900">{formatKoDate(checkOut)}</span>
+              <span className="text-warm-200">·</span>
+              <span>{nights}박 · 성인 {adults}명</span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       <div className="pt-10">
         {content}
