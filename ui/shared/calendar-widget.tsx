@@ -12,17 +12,21 @@ import {
   isSameMonth,
   isSameDay,
   isBefore,
+  isAfter,
   isWithinInterval,
   startOfDay,
 } from "date-fns";
 import { ko } from "date-fns/locale";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { MAX_NIGHTS } from "@/domain/shared/constants";
 
 interface Props {
   checkIn: Date | undefined;
   checkOut: Date | undefined;
   onSelect: (checkIn: Date | undefined, checkOut: Date | undefined) => void;
   months?: number;
+  /** 체크아웃 선택 모드에서 이 날짜 이후를 비활성화 */
+  maxCheckOut?: Date;
 }
 
 export default function BookingCalendar({
@@ -30,9 +34,13 @@ export default function BookingCalendar({
   checkOut,
   onSelect,
   months = 2,
+  maxCheckOut,
 }: Props) {
   const [baseMonth, setBaseMonth] = useState(startOfMonth(new Date()));
   const today = startOfDay(new Date());
+
+  /* 체크아웃 선택 모드: checkIn은 있고 checkOut은 없는 상태 */
+  const isSelectingCheckOut = !!checkIn && !checkOut;
 
   const handleDayClick = (day: Date) => {
     if (isBefore(day, today)) return;
@@ -45,6 +53,8 @@ export default function BookingCalendar({
       if (isBefore(day, checkIn)) {
         onSelect(day, undefined);
       } else if (isSameDay(day, checkIn)) {
+        return;
+      } else if (maxCheckOut && isAfter(day, maxCheckOut)) {
         return;
       } else {
         onSelect(checkIn, day);
@@ -108,7 +118,8 @@ export default function BookingCalendar({
             {week.map((day, di) => {
               const outside = !isSameMonth(day, monthDate);
               const past = isPast(day);
-              const disabled = outside || past;
+              const beyondMax = isSelectingCheckOut && !!maxCheckOut && isAfter(day, maxCheckOut);
+              const disabled = outside || past || beyondMax;
               const rangeStart = isRangeStart(day);
               const rangeEnd = isRangeEnd(day);
               const inRange = isInRange(day);
@@ -198,6 +209,9 @@ export default function BookingCalendar({
               {format(checkIn, "M월 d일 (EEE)", { locale: ko })} ~{" "}
               {format(checkOut, "M월 d일 (EEE)", { locale: ko })}
             </span>
+          )}
+          {maxCheckOut && (
+            <span className="text-warm-400 text-xs ml-2">/ 최대 {MAX_NIGHTS}박</span>
           )}
         </div>
       )}

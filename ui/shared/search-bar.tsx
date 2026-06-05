@@ -15,6 +15,7 @@ import {
 import { addDays, format, differenceInDays } from "date-fns";
 import { ko } from "date-fns/locale";
 import BookingCalendar from "./calendar-widget";
+import { MAX_NIGHTS } from "@/domain/shared/constants";
 
 const REGIONS = [
   { id: "", name: "전체 지역" },
@@ -76,6 +77,7 @@ export default function SearchBar({
   useClickOutside(barRef, closeDropdown);
 
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
+  const maxCheckOut = checkIn ? addDays(checkIn, MAX_NIGHTS) : undefined;
 
   const handleDateSelect = (ci: Date | undefined, co: Date | undefined) => {
     setCheckIn(ci);
@@ -125,6 +127,7 @@ export default function SearchBar({
         activeDropdown={activeDropdown}
         toggleDropdown={toggleDropdown}
         closeDropdown={closeDropdown}
+        maxCheckOut={maxCheckOut}
       />
     );
   }
@@ -306,6 +309,7 @@ export default function SearchBar({
                 checkOut={checkOut}
                 onSelect={handleDateSelect}
                 months={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 2}
+                maxCheckOut={maxCheckOut}
               />
             </div>
           )}
@@ -346,6 +350,7 @@ function InlineSearchBar({
   activeDropdown,
   toggleDropdown,
   closeDropdown,
+  maxCheckOut,
 }: {
   isBookingMode: boolean;
   hotelName?: string;
@@ -362,6 +367,7 @@ function InlineSearchBar({
   activeDropdown: DropdownType;
   toggleDropdown: (type: DropdownType) => void;
   closeDropdown: () => void;
+  maxCheckOut?: Date;
 }) {
   const barRef = useRef<HTMLDivElement>(null);
   useClickOutside(barRef, closeDropdown);
@@ -518,6 +524,7 @@ function InlineSearchBar({
               checkOut={checkOut}
               onSelect={handleDateSelect}
               months={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 2}
+              maxCheckOut={maxCheckOut}
             />
           </div>
         )}

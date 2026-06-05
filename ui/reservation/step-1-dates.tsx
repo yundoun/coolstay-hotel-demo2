@@ -13,6 +13,7 @@ import { addDays, format, differenceInDays } from "date-fns";
 import { ko } from "date-fns/locale";
 import BookingCalendar from "@/ui/shared/calendar-widget";
 import { useReservation } from "@/adapters/zustand/reservation-store";
+import { MAX_NIGHTS } from "@/domain/shared/constants";
 import { useShallow } from "zustand/react/shallow";
 
 type DropdownType = "calendar" | "guest" | null;
@@ -52,6 +53,7 @@ export function Step1Dates({ onNext }: Props) {
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
 
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
+  const maxCheckOut = checkIn ? addDays(checkIn, MAX_NIGHTS) : undefined;
 
   const toggleDropdown = useCallback((type: DropdownType) => {
     setActiveDropdown((prev) => (prev === type ? null : type));
@@ -169,6 +171,7 @@ export function Step1Dates({ onNext }: Props) {
               checkOut={checkOut}
               onSelect={handleDateSelect}
               months={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 2}
+              maxCheckOut={maxCheckOut}
             />
           </div>
         )}
