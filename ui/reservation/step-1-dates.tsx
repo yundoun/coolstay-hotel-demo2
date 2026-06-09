@@ -44,13 +44,20 @@ export function Step1Dates({ onNext }: Props) {
   const controlRef = useRef<HTMLDivElement>(null);
 
   const [checkIn, setCheckIn] = useState<Date | undefined>(
-    storeCheckIn ? new Date(storeCheckIn) : new Date()
+    storeCheckIn ? new Date(storeCheckIn) : undefined
   );
   const [checkOut, setCheckOut] = useState<Date | undefined>(
-    storeCheckOut ? new Date(storeCheckOut) : addDays(new Date(), 1)
+    storeCheckOut ? new Date(storeCheckOut) : undefined
   );
   const [adults, setAdults] = useState(storeAdults);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (!storeCheckIn) setCheckIn(new Date());
+    if (!storeCheckOut) setCheckOut(addDays(new Date(), 1));
+    setIsMobile(window.innerWidth < 768);
+  }, [storeCheckIn, storeCheckOut]);
 
   const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
   const maxCheckOut = checkIn ? addDays(checkIn, MAX_NIGHTS) : undefined;
@@ -170,7 +177,7 @@ export function Step1Dates({ onNext }: Props) {
               checkIn={checkIn}
               checkOut={checkOut}
               onSelect={handleDateSelect}
-              months={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 2}
+              months={isMobile ? 1 : 2}
               maxCheckOut={maxCheckOut}
             />
           </div>

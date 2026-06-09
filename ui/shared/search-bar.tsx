@@ -59,10 +59,17 @@ export default function SearchBar({
 }: SearchBarProps) {
   const router = useRouter();
   const [selectedRegion, setSelectedRegion] = useState(REGIONS[0]);
-  const [checkIn, setCheckIn] = useState<Date | undefined>(new Date());
-  const [checkOut, setCheckOut] = useState<Date | undefined>(addDays(new Date(), 1));
+  const [checkIn, setCheckIn] = useState<Date | undefined>(undefined);
+  const [checkOut, setCheckOut] = useState<Date | undefined>(undefined);
   const [adults, setAdults] = useState(2);
   const [activeDropdown, setActiveDropdown] = useState<DropdownType>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setCheckIn(new Date());
+    setCheckOut(addDays(new Date(), 1));
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -128,6 +135,7 @@ export default function SearchBar({
         toggleDropdown={toggleDropdown}
         closeDropdown={closeDropdown}
         maxCheckOut={maxCheckOut}
+        isMobile={isMobile}
       />
     );
   }
@@ -308,7 +316,7 @@ export default function SearchBar({
                 checkIn={checkIn}
                 checkOut={checkOut}
                 onSelect={handleDateSelect}
-                months={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 2}
+                months={isMobile ? 1 : 2}
                 maxCheckOut={maxCheckOut}
               />
             </div>
@@ -351,6 +359,7 @@ function InlineSearchBar({
   toggleDropdown,
   closeDropdown,
   maxCheckOut,
+  isMobile,
 }: {
   isBookingMode: boolean;
   hotelName?: string;
@@ -368,6 +377,7 @@ function InlineSearchBar({
   toggleDropdown: (type: DropdownType) => void;
   closeDropdown: () => void;
   maxCheckOut?: Date;
+  isMobile: boolean;
 }) {
   const barRef = useRef<HTMLDivElement>(null);
   useClickOutside(barRef, closeDropdown);
@@ -523,7 +533,7 @@ function InlineSearchBar({
               checkIn={checkIn}
               checkOut={checkOut}
               onSelect={handleDateSelect}
-              months={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : 2}
+              months={isMobile ? 1 : 2}
               maxCheckOut={maxCheckOut}
             />
           </div>
