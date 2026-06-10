@@ -26,12 +26,9 @@ export function getMotelKey() {
   }
 }
 
-/* ── 토큰 캐싱 (5분 TTL 토큰 → 4분 캐싱) ── */
-
-const TOKEN_CACHE_TTL_MS = 4 * 60 * 1000; // 4분
+/* ── 토큰 캐싱 (만료는 서버 응답 기반으로 판단, callWithRetry가 재발급 처리) ── */
 
 let cachedToken: { accessToken: string; secret: string } | null = null;
-let cachedAt = 0;
 let inflightRequest: Promise<{ accessToken: string; secret: string }> | null = null;
 
 async function fetchNewToken() {
@@ -46,17 +43,15 @@ async function fetchNewToken() {
 }
 
 export async function getToken() {
-  // 캐시 유효하면 즉시 반환
-  if (cachedToken && Date.now() - cachedAt < TOKEN_CACHE_TTL_MS) {
-    return cachedToken;
-  }
+  // 캐시된 토큰이 있으면 즉시 반환 (만료 판단은 서버 응답에 위임)
+  if (cachedToken) return cachedToken;
+
   // 이미 발급 요청 중이면 그 결과를 공유 (thundering herd 방지)
   if (inflightRequest) return inflightRequest;
 
   inflightRequest = fetchNewToken()
     .then((t) => {
       cachedToken = t;
-      cachedAt = Date.now();
       return t;
     })
     .finally(() => {
@@ -69,7 +64,6 @@ export async function getToken() {
 /** 캐시 무효화 — 토큰 만료 에러 시 호출 */
 export function invalidateToken() {
   cachedToken = null;
-  cachedAt = 0;
 }
 
 /** 토큰 만료 에러 코드 */
