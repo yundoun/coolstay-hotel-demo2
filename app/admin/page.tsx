@@ -153,14 +153,6 @@ export default function AdminPage() {
           <Field label="대표 연락처">
             <input {...register("phone")} className="field" />
           </Field>
-          <div className="grid grid-cols-2 gap-4">
-            <Field label="체크인 시간">
-              <input {...register("checkInTime")} className="field" placeholder="15:00" />
-            </Field>
-            <Field label="체크아웃 시간">
-              <input {...register("checkOutTime")} className="field" placeholder="11:00" />
-            </Field>
-          </div>
         </Section>
 
         {/* ── Hero 섹션 ── */}

@@ -24,10 +24,6 @@ const config: SiteConfig = {
   address: "경북 경주시 봉황로51번길 11",
   /** 대표 연락처 */
   phone: "010-2881-4995",
-  /** 체크인 시간 */
-  checkInTime: "15:00",
-  /** 체크아웃 시간 */
-  checkOutTime: "11:00",
 
   /* ── Hero 섹션 (배너 슬라이드 이미지, 최대 5장) ── */
   heroImages: [

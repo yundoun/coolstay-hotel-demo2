@@ -21,10 +21,6 @@ export type SiteConfig = {
   address: string;
   /** 대표 연락처 (예: "010-2881-4995") */
   phone: string;
-  /** 체크인 시간 (예: "15:00") */
-  checkInTime: string;
-  /** 체크아웃 시간 (예: "11:00") */
-  checkOutTime: string;
 
   /* ══════════════════════════════════════
      Hero 섹션

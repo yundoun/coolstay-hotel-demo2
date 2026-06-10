@@ -81,12 +81,7 @@ const config: SiteConfig = {
   address: ${s(c.address)},
   /** \ub300\ud45c \uc5f0\ub77d\ucc98 */
   phone: ${s(c.phone)},
-  /** \uccb4\ud06c\uc778 \uc2dc\uac04 */
-  checkInTime: ${s(c.checkInTime)},
-  /** \uccb4\ud06c\uc544\uc6c3 \uc2dc\uac04 */
-  checkOutTime: ${s(c.checkOutTime)},
-
-  /* \u2500\u2500 Hero \uc139\uc158 (\ubc30\ub108 \uc2ac\ub77c\uc774\ub4dc \uc774\ubbf8\uc9c0, \ucd5c\ub300 5\uc7a5) \u2500\u2500 */
+  /*\u2500\u2500 Hero \uc139\uc158 (\ubc30\ub108 \uc2ac\ub77c\uc774\ub4dc \uc774\ubbf8\uc9c0, \ucd5c\ub300 5\uc7a5) \u2500\u2500 */
   heroImages: [
 ${heroImages}
   ],
