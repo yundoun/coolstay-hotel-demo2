@@ -70,10 +70,10 @@ REM ── 3. 개발 서버 실행 ──
 echo  [..] 서버를 시작합니다...
 echo.
 echo  ============================================
-echo    브라우저에서 http://localhost:3000 접속
+echo    브라우저에서 http://localhost:3000/admin 접속
 echo    종료하려면 이 창을 닫으세요
 echo  ============================================
 echo.
 
-start "" http://localhost:3000
+start "" http://localhost:3000/admin
 call npm run dev

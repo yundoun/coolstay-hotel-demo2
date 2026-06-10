@@ -57,11 +57,11 @@ fi
 echo " [..] 서버를 시작합니다..."
 echo ""
 echo " ============================================"
-echo "   브라우저에서 http://localhost:3000 접속"
+echo "   브라우저에서 http://localhost:3000/admin 접속"
 echo "   종료하려면 이 창을 닫으세요"
 echo " ============================================"
 echo ""
 
 # 서버 시작 후 브라우저 자동 오픈
-(sleep 3 && open http://localhost:3000) &
+(sleep 3 && open http://localhost:3000/admin) &
 npm run dev
