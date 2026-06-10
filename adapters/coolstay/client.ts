@@ -105,7 +105,7 @@ async function parseUpstream(res: Response, label: string) {
 export async function fetchGuestReservation(bookId: string, phoneNumber: string) {
   return callWithRetry(async (headers) => {
     const qs = new URLSearchParams({ book_id: bookId, phone_number: phoneNumber });
-    const res = await fetch(`${getApiBase()}/api/v2/mobile/reserv/guest/list?${qs}`, { headers });
+    const res = await fetch(`${getApiBase()}/api/v2/mobile/reserv/guest/list?${qs}`, { headers, cache: "no-store" });
     const data = await parseUpstream(res, "예약 조회 실패");
     return data.result;
   });
@@ -157,7 +157,7 @@ export async function verifySmsCode(smsAuthKey: string, smsAuthCode: string, pho
 /** 약관 목록 조회 */
 export async function fetchTermsList() {
   return callWithRetry(async (headers) => {
-    const res = await fetch(`${getApiBase()}/api/v2/mobile/manage/terms/list`, { headers });
+    const res = await fetch(`${getApiBase()}/api/v2/mobile/manage/terms/list`, { headers, cache: "no-store" });
     const data = await parseUpstream(res, "약관 조회 실패");
     return data.result.terms as {
       code: string;
@@ -185,7 +185,7 @@ export async function fetchRefundPolicy(params: {
       search_start_date: toCompactDate(params.checkIn),
       search_end_date: toCompactDate(params.checkOut),
     });
-    const res = await fetch(`${getApiBase()}/api/v2/mobile/contents/refund-policy/list?${qs}`, { headers });
+    const res = await fetch(`${getApiBase()}/api/v2/mobile/contents/refund-policy/list?${qs}`, { headers, cache: "no-store" });
     const data = await parseUpstream(res, "환불 규정 조회 실패");
     return (data.result.refund_policies ?? data.result.refundPolicies ?? []) as {
       until: string;
@@ -203,7 +203,7 @@ export async function fetchStoreDetail(params: { checkIn?: string; checkOut?: st
     if (params.checkIn) qs.set("search_start", toCompactDate(params.checkIn));
     if (params.checkOut) qs.set("search_end", toCompactDate(params.checkOut));
 
-    const res = await fetch(`${getApiBase()}/api/v2/mobile/contents/details/list?${qs}`, { headers });
+    const res = await fetch(`${getApiBase()}/api/v2/mobile/contents/details/list?${qs}`, { headers, cache: "no-store" });
     const data = await parseUpstream(res, "숙소 조회 실패");
     return data.result.motel;
   });
