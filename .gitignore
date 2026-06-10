@@ -33,6 +33,9 @@ Thumbs.db
 # playwright
 .playwright-mcp/
 
+# hotel api keys
+hotel-data/**/api-key.json
+
 # misc
 *.tsbuildinfo
 next-env.d.ts

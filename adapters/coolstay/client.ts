@@ -1,5 +1,8 @@
 /** CoolStay upstream API 클라이언트 */
 
+import { readFileSync } from "fs";
+import { join } from "path";
+
 /** yyyy-MM-dd → yyyyMMdd (검수기 내부 서비스 호환) */
 function toCompactDate(iso: string): string {
   return iso.replace(/-/g, "");
@@ -11,10 +14,16 @@ export function getApiBase() {
   return base;
 }
 
+/** 모텔키를 hotel-data/gyeongju-palace/api-key.json에서 매 요청마다 읽음 (admin에서 변경 즉시 반영) */
 export function getMotelKey() {
-  const key = process.env.COOLSTAY_MOTEL_KEY;
-  if (!key) throw new Error("COOLSTAY_MOTEL_KEY 미설정");
-  return key;
+  const keyPath = join(process.cwd(), "hotel-data", "gyeongju-palace", "api-key.json");
+  try {
+    const data = JSON.parse(readFileSync(keyPath, "utf-8"));
+    if (!data.motelKey) throw new Error("motelKey 비어있음");
+    return data.motelKey as string;
+  } catch {
+    throw new Error("COOLSTAY_MOTEL_KEY 미설정 — hotel-data/gyeongju-palace/api-key.json 확인");
+  }
 }
 
 /* ── 토큰 캐싱 (5분 TTL 토큰 → 4분 캐싱) ── */
