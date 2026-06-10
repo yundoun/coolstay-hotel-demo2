@@ -15,6 +15,12 @@ export async function GET(request: Request) {
 
   try {
     const motel = await fetchStoreDetail({ checkIn, checkOut });
+    if (!motel) {
+      return NextResponse.json(
+        { message: "숙소 정보를 찾을 수 없습니다. CMS에서 앱노출이 활성화되어 있는지 확인해주세요." },
+        { status: 502 },
+      );
+    }
     const rooms = (motel.items ?? []).map(toApiRoom).filter(Boolean) as ApiRoom[];
 
     return NextResponse.json({

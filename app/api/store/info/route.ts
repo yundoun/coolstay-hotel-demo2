@@ -7,6 +7,12 @@ import type { StoreInfo } from "@/adapters/coolstay/types";
 export async function GET() {
   try {
     const motel = await fetchStoreDetail({});
+    if (!motel) {
+      return NextResponse.json(
+        { message: "숙소 정보를 찾을 수 없습니다. CMS에서 앱노출이 활성화되어 있는지 확인해주세요." },
+        { status: 502 },
+      );
+    }
     const rooms = (motel.items ?? []).map(toRoomType).filter(Boolean) as NonNullable<ReturnType<typeof toRoomType>>[];
 
     const storeImages = (motel.images ?? []).map((img: any) => ({
