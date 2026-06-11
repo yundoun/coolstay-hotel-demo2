@@ -4,7 +4,7 @@ title CoolStay Hotel Demo
 
 echo.
 echo  ============================================
-echo    CoolStay Hotel Demo - 로컬 실행
+echo    CoolStay Hotel Demo - 환경 세팅 및 실행
 echo  ============================================
 echo.
 
@@ -51,20 +51,17 @@ echo  [OK] Node.js %NODE_VER% 감지됨
 echo.
 
 REM ── 2. 의존성 설치 ──
-if not exist "node_modules" (
-    echo  [..] 최초 실행 - 패키지를 설치합니다 (1~2분 소요)
+echo  [..] 패키지를 확인합니다...
+call npm install
+if %errorlevel% neq 0 (
     echo.
-    call npm install
-    if %errorlevel% neq 0 (
-        echo.
-        echo  [X] 패키지 설치에 실패했습니다.
-        pause
-        exit /b 1
-    )
-    echo.
-    echo  [OK] 패키지 설치 완료
-    echo.
+    echo  [X] 패키지 설치에 실패했습니다.
+    pause
+    exit /b 1
 )
+echo.
+echo  [OK] 패키지 준비 완료
+echo.
 
 REM ── 3. 개발 서버 실행 ──
 echo  [..] 서버를 시작합니다...
