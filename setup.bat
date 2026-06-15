@@ -84,12 +84,12 @@ echo  [..] starting server...
 echo [%date% %time%] npm run dev start >> "%LOG_FILE%"
 echo.
 echo  ============================================
-echo    http://localhost:3000/admin
+echo    http://localhost:3002/admin
 echo    Close this window to stop.
 echo  ============================================
 echo.
 
-start /b cmd /c "timeout /t 5 /nobreak >NUL && start http://localhost:3000/admin"
+start /b cmd /c "timeout /t 5 /nobreak >NUL && start http://localhost:3002/admin"
 call npm run dev 2>> "%LOG_FILE%"
 
 echo.
