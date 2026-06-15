@@ -15,14 +15,13 @@ export function getApiBase() {
 }
 
 /** 모텔키를 hotel-data/gyeongju-palace/api-key.json에서 매 요청마다 읽음 (admin에서 변경 즉시 반영) */
-export function getMotelKey() {
+export function getMotelKey(): string {
   const keyPath = join(process.cwd(), "hotel-data", "gyeongju-palace", "api-key.json");
   try {
     const data = JSON.parse(readFileSync(keyPath, "utf-8"));
-    if (!data.motelKey) throw new Error("motelKey 비어있음");
-    return data.motelKey as string;
+    return data.motelKey || "";
   } catch {
-    throw new Error("COOLSTAY_MOTEL_KEY 미설정 — hotel-data/gyeongju-palace/api-key.json 확인");
+    return process.env.COOLSTAY_MOTEL_KEY ?? "";
   }
 }
 
