@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Props {
   about: {
+    subtitle?: string;
     headline: string;
     description: string;
     features: { icon: string; title: string; description: string }[];
@@ -67,15 +68,15 @@ export default function AboutSection({ about }: Props) {
           <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
             <div className="w-8 md:w-10 h-px bg-white/30" />
             <p className="text-white/50 text-[10px] md:text-[11px] tracking-[0.35em] uppercase font-medium">
-              About
+              {about.subtitle || "About"}
             </p>
           </div>
 
-          <h2 className="text-2xl md:text-3xl lg:text-[2.25rem] font-light leading-snug mb-6 md:mb-8 tracking-tight">
+          <h2 className="text-2xl md:text-3xl lg:text-[2.25rem] font-light leading-snug mb-6 md:mb-8 tracking-tight whitespace-pre-line">
             {about.headline}
           </h2>
 
-          <p className="text-white/50 text-[15px] leading-[1.85]">
+          <p className="text-white/50 text-[15px] leading-[1.85] whitespace-pre-line">
             {about.description}
           </p>
         </div>

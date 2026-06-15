@@ -12,6 +12,7 @@ import "swiper/css/effect-fade";
 interface Props {
   images: string[];
   hotelName: string;
+  shortConcept?: string;
   titleSize?: "base" | "sm";
 }
 
@@ -20,7 +21,7 @@ const TITLE_CLASSES = {
   sm: "text-[1.5rem] md:text-[2.25rem] lg:text-[2.75rem]",
 } as const;
 
-export default function HeroSection({ images, hotelName, titleSize = "base" }: Props) {
+export default function HeroSection({ images, hotelName, shortConcept, titleSize = "base" }: Props) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
 
@@ -67,6 +68,12 @@ export default function HeroSection({ images, hotelName, titleSize = "base" }: P
             <h1 className={`${TITLE_CLASSES[titleSize]} text-white font-light leading-[1.15] mb-5 md:mb-7 whitespace-nowrap tracking-tight`}>
               {hotelName}
             </h1>
+
+            {shortConcept && (
+              <p className="text-white/50 text-[13px] md:text-[14px] leading-relaxed tracking-wide">
+                {shortConcept}
+              </p>
+            )}
           </div>
         </div>
       </div>

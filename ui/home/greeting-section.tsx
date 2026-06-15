@@ -35,7 +35,7 @@ export default function GreetingSection({ greeting }: Props) {
 
             <div className="space-y-4 mb-10 md:mb-12">
               {greeting.message.split("\n\n").map((paragraph, i) => (
-                <p key={i} className="text-warm-500 text-[15px] leading-[1.85]">
+                <p key={i} className="text-warm-500 text-[15px] leading-[1.85] whitespace-pre-line">
                   {paragraph}
                 </p>
               ))}

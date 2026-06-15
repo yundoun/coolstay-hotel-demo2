@@ -12,14 +12,15 @@ const { greeting, about, directions } = siteConfig;
 
 const greetingData = {
   ownerName: "",
-  title: siteConfig.name,
+  title: greeting.headline,
   message: greeting.body,
   signature: greeting.signature,
   image: siteConfig.heroImages[0],
 };
 
 const aboutData = {
-  headline: siteConfig.name,
+  subtitle: about.subtitle,
+  headline: about.title || siteConfig.name,
   description: about.body || `${siteConfig.name}에서 특별한 순간을 만나보세요.`,
   features: [] as { icon: string; title: string; description: string }[],
   images: about.images.slice(0, 5),
@@ -44,6 +45,7 @@ export default function HomePage() {
       <HeroSection
         images={siteConfig.heroImages.slice(0, 5)}
         hotelName={siteConfig.name}
+        shortConcept={siteConfig.shortConcept}
         titleSize={siteConfig.heroTitleSize}
       />
 

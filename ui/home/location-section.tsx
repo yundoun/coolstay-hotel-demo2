@@ -70,7 +70,7 @@ export default function LocationSection({ location, hotelName }: Props) {
                     <span className="text-white/40 text-sm shrink-0 w-28">
                       {item.label}
                     </span>
-                    <span className="text-white/70 text-sm leading-relaxed">
+                    <span className="text-white/70 text-sm leading-relaxed whitespace-pre-line">
                       {item.value}
                     </span>
                   </div>

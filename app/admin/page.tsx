@@ -135,18 +135,6 @@ export default function AdminPage() {
           <Field label="호텔명">
             <input {...register("name")} className="field" />
           </Field>
-          <Field label="도시">
-            <input {...register("city")} className="field" />
-          </Field>
-          <Field label="등급">
-            <select
-              {...register("grade", { valueAsNumber: true })}
-              className="field"
-            >
-              <option value={4}>4성급</option>
-              <option value={5}>5성급</option>
-            </select>
-          </Field>
           <Field label="주소" desc="지도 검색에도 사용됨">
             <input {...register("address")} className="field" />
           </Field>
@@ -189,9 +177,6 @@ export default function AdminPage() {
 
         {/* ── About ── */}
         <Section title="호텔 소개 (About)">
-          <Field label="소제목" desc="제목 위에 작게 표시 (예: About, Story)">
-            <input {...register("about.subtitle")} className="field" />
-          </Field>
           <Field label="제목" desc="줄바꿈은 Enter 키 사용">
             <textarea {...register("about.title")} className="field" rows={2} />
           </Field>
