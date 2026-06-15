@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>실행 가이드 — 경주 황리단길 팰리스 호텔</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, "Malgun Gothic", "맑은 고딕", sans-serif; color: #1a1a1a; line-height: 1.8; max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; background: #fafafa; }
+  h1 { font-size: 1.6em; margin-bottom: 32px; padding-bottom: 16px; border-bottom: 2px solid #222; }
+  h2 { font-size: 1.2em; margin-top: 40px; margin-bottom: 12px; color: #111; }
+  h3 { font-size: 1.05em; margin-top: 24px; margin-bottom: 8px; color: #333; }
+  p, li { font-size: 0.95em; color: #333; }
+  ol, ul { padding-left: 24px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; }
+  .tip { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px 16px; margin: 12px 0; font-size: 0.9em; border-radius: 4px; }
+  .warn { background: #f0f0f0; border-left: 4px solid #888; padding: 12px 16px; margin: 12px 0; font-size: 0.9em; border-radius: 4px; }
+  .section { margin-top: 36px; padding-top: 20px; border-top: 1px solid #ddd; }
+  strong { color: #000; }
+  code { background: #eee; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+  a { color: #0066cc; }
+</style>
+</head>
+<body>
+
+<h1>경주 황리단길 팰리스 호텔<br><span style="font-size:0.6em;font-weight:normal;color:#666;">예약 데모 사이트 — 실행 가이드</span></h1>
+
+<h2>처음 실행하기</h2>
+
+<h3>Windows</h3>
+<ol>
+  <li>받으신 폴더를 열어주세요</li>
+  <li><strong>setup</strong> 파일을 찾아서 <strong>두 번 클릭</strong>하세요 (파일 이름이 <code>setup.bat</code>으로 보일 수도 있습니다)</li>
+  <li>검은색 창이 열리면서 자동으로 설치가 진행됩니다. <strong>창을 닫지 마세요</strong></li>
+  <li>설치가 끝나면 인터넷 브라우저(크롬 등)가 자동으로 열립니다</li>
+</ol>
+<div class="warn">파란색 "Windows의 PC 보호" 경고가 나오면 → <strong>추가 정보</strong> → <strong>실행</strong> 클릭</div>
+<div class="tip">파일 이름 뒤에 <code>.bat</code>이 안 보이는 경우: 폴더 상단 <strong>보기</strong> → <strong>파일 확장명</strong> 체크하면 보입니다</div>
+
+<h3>Mac</h3>
+<ol>
+  <li>받으신 폴더를 열어주세요</li>
+  <li><strong>setup</strong> 파일을 찾아서 <strong>두 번 클릭</strong>하세요 (파일 이름이 <code>setup.command</code>로 보일 수도 있습니다)</li>
+  <li>터미널 창이 열리면서 자동으로 설치가 진행됩니다. <strong>창을 닫지 마세요</strong></li>
+  <li>설치가 끝나면 인터넷 브라우저(사파리 등)가 자동으로 열립니다</li>
+</ol>
+<div class="warn">"확인되지 않은 개발자" 경고가 나오면: 화면 좌측 상단 <strong>사과 아이콘</strong> → <strong>시스템 설정</strong> → <strong>개인정보 보호 및 보안</strong> → 하단의 <strong>확인 없이 열기</strong> 클릭</div>
+
+<div class="section">
+<h2>사이트 설정하기</h2>
+<p>브라우저가 열리면 <strong>관리자 페이지</strong>가 나타납니다.</p>
+<p style="margin-top:8px;">여기서 호텔 정보를 입력할 수 있습니다:</p>
+<ul style="margin-top:8px;">
+  <li><strong>호텔 연결 (API 키)</strong> — 쿨스테이에서 받은 모텔키를 입력하면 객실과 가격이 자동으로 연동됩니다</li>
+  <li><strong>기본 정보</strong> — 호텔 이름, 주소, 전화번호</li>
+  <li><strong>배너 이미지</strong> — 메인 화면에 보이는 큰 사진 (최대 5장, 최소 1장 필수)</li>
+  <li><strong>소개 이미지</strong> — 호텔 소개 영역에 보이는 사진 (최대 5장, 최소 1장 필수)</li>
+  <li><strong>인사말 / 소개</strong> — 호텔을 소개하는 글</li>
+  <li><strong>찾아오는 길</strong> — 주차 안내, 주변 관광지 정보</li>
+</ul>
+<p style="margin-top:12px;">내용을 수정한 뒤 화면 아래 <strong>저장</strong> 버튼을 눌러주세요.</p>
+</div>
+
+<div class="section">
+<h2>사이트 미리보기</h2>
+<p>관리자 페이지 오른쪽 위의 <strong>사이트 미리보기</strong>를 클릭하면 실제 손님에게 보이는 화면을 확인할 수 있습니다.</p>
+</div>
+
+<div class="section">
+<h2>종료하기</h2>
+<p>검은색 창(또는 터미널 창)을 닫으면 서버가 종료됩니다.</p>
+<p>다시 보고 싶으면 <code>setup</code> 파일을 다시 두 번 클릭하세요.</p>
+</div>
+
+<div class="section">
+<h2>소스가 업데이트된 경우</h2>
+<ol>
+  <li>SVN에서 <strong>업데이트</strong> 받으세요</li>
+  <li><code>setup</code> 파일을 다시 두 번 클릭하세요</li>
+</ol>
+<p>변경된 내용이 자동으로 반영됩니다.</p>
+</div>
+
+<div class="section">
+<h2>문제가 생겼을 때</h2>
+
+<h3>"Node.js가 설치되어 있지 않습니다" 라고 나오는 경우</h3>
+<p>보통 자동으로 설치됩니다. 자동 설치가 안 되면 아래 순서를 따라해 주세요:</p>
+<ol>
+  <li>인터넷 브라우저에서 <strong><a href="https://nodejs.org/ko">https://nodejs.org/ko</a></strong> 접속</li>
+  <li>화면의 초록색 버튼(<strong>LTS</strong>라고 적힌 것) 클릭 → 파일 다운로드</li>
+  <li>다운로드된 파일 두 번 클릭 → <strong>다음 → 다음 → 설치</strong> (모두 기본값)</li>
+  <li>설치 끝나면 <strong>컴퓨터를 재시작</strong></li>
+  <li>다시 <code>setup</code> 파일을 두 번 클릭</li>
+</ol>
+
+<h3>브라우저가 열렸는데 화면이 안 나오는 경우</h3>
+<ul>
+  <li>검은색 창이 아직 열려있는지 확인하세요 (닫으면 서버가 꺼집니다)</li>
+  <li>5~10초 기다린 뒤 브라우저에서 <strong>새로고침</strong> 해보세요
+    <br>Windows: 키보드 <code>F5</code> / Mac: 키보드 <code>⌘ + R</code></li>
+</ul>
+
+<h3>설정을 저장했는데 반영이 안 되는 경우</h3>
+<p>브라우저에서 <strong>새로고침</strong> 해보세요 (Windows: <code>F5</code> / Mac: <code>⌘ + R</code>)</p>
+
+<h3>위 방법으로도 해결이 안 되면</h3>
+<p>검은색 창에 나온 글자를 <strong>화면 캡처</strong>해서 담당 개발자에게 보내주세요.</p>
+<ul>
+  <li>Windows: 키보드 <code>Print Screen</code> 키</li>
+  <li>Mac: 키보드 <code>⌘ + Shift + 3</code></li>
+</ul>
+</div>
+
+</body>
+</html>
