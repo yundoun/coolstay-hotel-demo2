@@ -49,6 +49,14 @@ export default function AdminPage() {
   };
 
   const onSubmit = async (data: SiteConfig) => {
+    const missing: string[] = [];
+    if (!data.heroImages?.length) missing.push("Hero 배너 이미지");
+    if (!data.about?.images?.length) missing.push("소개 섹션 이미지");
+    if (missing.length) {
+      setMessage(`${missing.join(", ")}를 1장 이상 등록해주세요.`);
+      setTimeout(() => setMessage(""), 4000);
+      return;
+    }
     setSaving(true);
     setMessage("");
     const res = await fetch("/api/admin/config", {
